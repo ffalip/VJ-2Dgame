@@ -1,0 +1,70 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}|02-Bubble\\02-Bubble.vcxproj|C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Player.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}|02-Bubble\\02-Bubble.vcxproj|solutionrelative:02-Bubble\\Player.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}|02-Bubble\\02-Bubble.vcxproj|C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}|02-Bubble\\02-Bubble.vcxproj|solutionrelative:02-Bubble\\Game.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}|02-Bubble\\02-Bubble.vcxproj|C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Texture.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{5BE6CA2A-E5A8-40CC-9015-047CE0C78036}|02-Bubble\\02-Bubble.vcxproj|solutionrelative:02-Bubble\\Texture.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Player.cpp",
+              "DocumentMoniker": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Player.cpp",
+              "RelativeDocumentMoniker": "02-Bubble\\Player.cpp",
+              "ToolTip": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Player.cpp",
+              "RelativeToolTip": "02-Bubble\\Player.cpp",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAowC0AAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-14T12:14:34.608Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Game.cpp",
+              "DocumentMoniker": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Game.cpp",
+              "RelativeDocumentMoniker": "02-Bubble\\Game.cpp",
+              "ToolTip": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Game.cpp",
+              "RelativeToolTip": "02-Bubble\\Game.cpp",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAAAcAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-14T12:14:07.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Texture.cpp",
+              "DocumentMoniker": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Texture.cpp",
+              "RelativeDocumentMoniker": "02-Bubble\\Texture.cpp",
+              "ToolTip": "C:\\Users\\marti.DESKTOP-HBVCDFL\\OneDrive\\Escritorio\\Coses Uni\\VJ\\pang-game\\Pang\\src\\Pang\\02-Bubble\\Texture.cpp",
+              "RelativeToolTip": "02-Bubble\\Texture.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-14T12:14:07.473Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
