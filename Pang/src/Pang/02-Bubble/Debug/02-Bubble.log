@@ -1,13 +1,4 @@
-﻿  Game.cpp
-  main.cpp
-  Player.cpp
-  Scene.cpp
-  Shader.cpp
-  ShaderProgram.cpp
-  Sprite.cpp
-  Texture.cpp
-  TileMap.cpp
-  Generating Code...
+﻿  LINK : C:\Users\Usuario\Documents\GitHub\pang-game\Pang\src\Pang\Debug\Pang.exe not found or not built by the last incremental link; performing full link
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
 SOIL.lib(image_DXT.obj) : warning LNK4099: PDB '' was not found with 'SOIL.lib(image_DXT.obj)' or at ''; linking object as if no debug info
 SOIL.lib(image_helper.obj) : warning LNK4099: PDB '' was not found with 'SOIL.lib(image_helper.obj)' or at ''; linking object as if no debug info
