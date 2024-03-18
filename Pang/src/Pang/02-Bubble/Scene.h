@@ -6,6 +6,7 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Bullet.h"
 
 
 // Scene contains all the entities of our game.
@@ -29,6 +30,7 @@ private:
 private:
 	TileMap *map;
 	Player *player;
+	Bullet* bullet;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
