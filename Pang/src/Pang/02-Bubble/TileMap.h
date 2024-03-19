@@ -34,6 +34,7 @@ public:
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
 	bool collisionBullet(const glm::ivec2& pos, const glm::ivec2& size) const;
+	bool circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh, const glm::ivec2& pos) const;
 
 private:
 	bool loadLevel(const string &levelFile);

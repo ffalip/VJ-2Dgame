@@ -66,10 +66,10 @@ void Bubble::update(int deltaTime)
 			posBubble.y = int(startY - 130 * sin(3.14159f * jumpAngle / 180.f));
 			posBubble.x += velocity;
 			//Comprovar si choca amb paret
-			if (map->collisionMoveRight(posBubble, glm::ivec2(48, 48))) {
+			if (map->collisionMoveRight(posBubble, glm::ivec2(50, 50))) {
 				velocity = -(velocity);
 			}
-			if (map->collisionMoveLeft(posBubble, glm::ivec2(48, 48))) {
+			if (map->collisionMoveLeft(posBubble, glm::ivec2(50, 50))) {
 				velocity = -(velocity);
 			}
 			if (jumpAngle > 90)
