@@ -36,7 +36,7 @@ void Bullet::update(int deltaTime)
 		if (sprite->animation() != SHOOTING)
 		{
 			sprite->changeAnimation(SHOOTING);
-			sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBullet.x + 13), 24.f));
+			sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBullet.x + 28), 24.f));
 		}
 			
 	}

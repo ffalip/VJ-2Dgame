@@ -5,7 +5,7 @@
 #include "Game.h"
 
 
-#define SCREEN_X 0
+#define SCREEN_X 16
 #define SCREEN_Y 16
 
 #define INIT_PLAYER_X_TILES 4
@@ -33,7 +33,7 @@ void Scene::init()
 	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
 	
 	bullet = new Bullet();
-	bullet->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	bullet->init(glm::ivec2(0, 0), texProgram);
 	bullet->setTileMap(map);
 	
 	player = new Player();

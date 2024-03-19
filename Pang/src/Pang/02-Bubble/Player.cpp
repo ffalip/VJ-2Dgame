@@ -60,7 +60,21 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
-	if(Game::instance().getKey(GLFW_KEY_LEFT))
+	if (Game::instance().getKey(GLFW_KEY_S) && fire_cooldown == 0)
+	{
+		if (sprite->animation() != FIRE_RIGHT && sprite->animation() != FIRE_LEFT)
+		{
+			if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT) {
+				sprite->changeAnimation(FIRE_RIGHT);
+			}
+			else if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT) {
+				sprite->changeAnimation(FIRE_LEFT);
+			}
+			fire_cooldown = 30; //30 = 0.5s
+			shooting = 6;
+		}
+	}
+	else if(Game::instance().getKey(GLFW_KEY_LEFT))
 	{
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -80,20 +94,6 @@ void Player::update(int deltaTime)
 		{
 			posPlayer.x -= 2;
 			sprite->changeAnimation(STAND_RIGHT);
-		}
-	}
-	else if (Game::instance().getKey(GLFW_KEY_S) && fire_cooldown == 0)
-	{
-		if (sprite->animation() != FIRE_RIGHT && sprite->animation() != FIRE_LEFT)
-		{
-			if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT) {
-				sprite->changeAnimation(FIRE_RIGHT);
-			}
-			else if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT) {
-				sprite->changeAnimation(FIRE_LEFT);
-			}
-			fire_cooldown = 30; //30 = 0.5s
-			shooting = 3; 
 		}
 	}
 	else
