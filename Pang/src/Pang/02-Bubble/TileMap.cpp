@@ -202,6 +202,22 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	return false;
 }
 
+bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size) const
+{
+	int x0, x1, y;
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y - size.y + 8) / tileSize;
+	cout << y << endl;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 
 

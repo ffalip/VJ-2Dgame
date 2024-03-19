@@ -48,9 +48,13 @@ void Bullet::update(int deltaTime)
 	}
 	//else if (sprite->animation() != IDLE) 
 		//sprite->changeAnimation(IDLE);
+	int x = sprite->getFrame();
+	if (sprite->animation() != IDLE && map->collisionBullet(posBullet, glm::ivec2(16, 32 + 2 * x))) {
+		cout << x << " ";
+		sprite->changeAnimation(IDLE);
+	}
 
-
-	posBullet = player->getPos();
+	if (sprite->animation() == IDLE) posBullet = player->getPos();
 	
 }
 
