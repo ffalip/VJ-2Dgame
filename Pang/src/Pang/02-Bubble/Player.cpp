@@ -74,7 +74,7 @@ void Player::update(int deltaTime)
 			shooting = 6;
 		}
 	}
-	else if(Game::instance().getKey(GLFW_KEY_LEFT))
+	else if(Game::instance().getKey(GLFW_KEY_LEFT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
 	{
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
@@ -85,7 +85,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
-	else if(Game::instance().getKey(GLFW_KEY_RIGHT))
+	else if(Game::instance().getKey(GLFW_KEY_RIGHT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
 	{
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
