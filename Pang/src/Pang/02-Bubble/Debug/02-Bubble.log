@@ -1,12 +1,18 @@
-<<<<<<< Updated upstream
-﻿  TileMap.cpp
-  02-Bubble.vcxproj -> C:\Users\Usuario\Documents\GitHub\pang-game\Pang\src\Pang\Debug\Pang.exe
-=======
-<<<<<<< HEAD
 ﻿  Bubble.cpp
+  Bullet.cpp
+  Game.cpp
+  main.cpp
+  Player.cpp
+  Scene.cpp
+  Shader.cpp
+  ShaderProgram.cpp
+  Sprite.cpp
+  Texture.cpp
+  TileMap.cpp
+  Generando código...
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+SOIL.lib(image_DXT.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(image_DXT.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(image_helper.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(image_helper.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(SOIL.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(SOIL.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(stb_image_aug.obj) : warning LNK4099: no se encontró PDB '' con 'SOIL.lib(stb_image_aug.obj)' o en ''; se vinculará el objeto sin tener en cuenta información de depuración
   02-Bubble.vcxproj -> C:\Users\marti.DESKTOP-HBVCDFL\OneDrive\Escritorio\Coses Uni\VJ\pang-game\Pang\src\Pang\Debug\Pang.exe
-=======
-﻿  TileMap.cpp
-  02-Bubble.vcxproj -> C:\Users\Usuario\Documents\GitHub\pang-game\Pang\src\Pang\Debug\Pang.exe
->>>>>>> 6f748b6560dafbe003dbe523e1f577be0e0f253d
->>>>>>> Stashed changes
