@@ -30,8 +30,13 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
-	
+	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(16, 16), texProgram);
+
+	bubble = new Bubble();
+	bubble->init(glm::ivec2(16, 16), texProgram);
+	bubble->setPosition(glm::vec2(10 * map->getTileSize(), 10 * map->getTileSize()));
+	bubble->setTileMap(map);
+
 	bullet = new Bullet();
 	bullet->init(glm::ivec2(0, 0), texProgram);
 	bullet->setTileMap(map);
@@ -50,6 +55,7 @@ void Scene::init()
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
+	bubble->update(deltaTime);
 	bullet->update(deltaTime);
 	player->update(deltaTime);
 
@@ -66,6 +72,7 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
+	bubble->render();
 	bullet->render();
 	player->render();
 
