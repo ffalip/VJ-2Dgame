@@ -21,6 +21,8 @@ private:
 	Sprite *sprite;
 	Player *player;
 	TileMap* map;
+	bool canShoot;
+	int fireCooldown;
 };
 
 #endif // _BULLET_INCLUDE

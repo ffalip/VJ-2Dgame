@@ -38,7 +38,7 @@ void Scene::init()
 	bubble->setTileMap(map);
 
 	bullet = new Bullet();
-	bullet->init(glm::ivec2(0, 0), texProgram);
+	bullet->init(glm::ivec2(16, 0), texProgram);
 	bullet->setTileMap(map);
 	
 	player = new Player();

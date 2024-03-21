@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "Game.h"
 
+
 //constants i enums
 enum BulletAnims
 {
@@ -16,7 +17,7 @@ void Bullet::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite = Sprite::createSprite(glm::ivec2(16, 192), glm::vec2(1.f / 71.f,1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(2);
 	sprite->setAnimationSpeed(SHOOTING, 64);
-	for (int i = 0; i < 70; ++i) {
+	for (int i = 0; i <= 70; ++i) {
 		float x = (1.f / 71.f) * i;
 		sprite->addKeyframe(SHOOTING, glm::vec2(0.f+x, 0.f));
 	}
@@ -25,37 +26,39 @@ void Bullet::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	
 	sprite->changeAnimation(IDLE);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBullet.x + 1), 24.f));
-
+	canShoot = true;
+	fireCooldown = 0;
 }
 
 void Bullet::update(int deltaTime) 
 {
 	sprite->update(deltaTime);
-	if (Game::instance().getKey(GLFW_KEY_S))
+	if (Game::instance().getKey(GLFW_KEY_S) && canShoot && fireCooldown == 0)
 	{
 		if (sprite->animation() != SHOOTING)
 		{
 			sprite->changeAnimation(SHOOTING);
-			sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBullet.x + 28), 24.f));
+			sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBullet.x + 28), float(tileMapDispl.y + posBullet.y + 24)-168 ));
+			canShoot = false;
+			fireCooldown = 30;
 		}
 			
 	}
-	else if (Game::instance().getKey(GLFW_KEY_A))
-	{
-		if (sprite->animation() != IDLE)
-			sprite->changeAnimation(IDLE);
-		
-	}
-	//else if (sprite->animation() != IDLE) 
-		//sprite->changeAnimation(IDLE);
-	int x = sprite->getFrame();
-	if (sprite->animation() != IDLE && map->collisionBullet(posBullet, glm::ivec2(16, 32 + 2 * x))) {
-		cout << x << " ";
+	else if (canShoot) 
 		sprite->changeAnimation(IDLE);
+
+	int current_frame = sprite->getFrame();
+	int block2collide = (current_frame / 7) * 2;
+	if (current_frame % 7 >= 3) block2collide += 1;
+
+	//if (sprite->animation() == SHOOTING) cout << current_frame << " " << block2collide << endl;
+	if (sprite->animation() == SHOOTING && map->collisionBullet(posBullet, glm::ivec2(16, 192), block2collide)) {
+		sprite->changeAnimation(IDLE);
+		canShoot = true;
 	}
 
 	if (sprite->animation() == IDLE) posBullet = player->getPos();
-	
+	if (fireCooldown > 0) --fireCooldown;
 }
 
 void Bullet::render()
