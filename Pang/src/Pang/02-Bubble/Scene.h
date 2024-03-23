@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Bubble.h"
+#include "Background.h"
 
 
 // Scene contains all the entities of our game.
@@ -29,6 +30,7 @@ private:
 	void initShaders();
 
 private:
+	Background* bg;
 	TileMap *map;
 	Player *player;
 	Bullet *bullet;

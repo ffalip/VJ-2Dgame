@@ -31,6 +31,7 @@ void Scene::init()
 {
 	initShaders();
 	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
+	bg = Background::createBackground("images/bg3.png", glm::vec2(16, 16), texProgram);
 
 	bubble = new Bubble();
 	bubble->init(glm::ivec2(16, 16), texProgram);
@@ -71,6 +72,7 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	bg->render();
 	map->render();
 	bubble->render();
 	bullet->render();

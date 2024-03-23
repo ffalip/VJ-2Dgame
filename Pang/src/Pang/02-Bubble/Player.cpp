@@ -12,7 +12,7 @@
 
 enum PlayerAnims
 {
-	STAND_RIGHT, STAND_LEFT, MOVE_LEFT, MOVE_RIGHT, FIRE_RIGHT, FIRE_LEFT
+	STAND_RIGHT, STAND_LEFT, MOVE_LEFT, MOVE_RIGHT, FIRE_RIGHT, FIRE_LEFT, CLIMB_UP, CLIMB_DOWN, TOP_STAIRS
 };
 
 
@@ -48,7 +48,12 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	sprite->setAnimationSpeed(FIRE_LEFT, 1);
 	sprite->addKeyframe(FIRE_LEFT, glm::vec2(0.1f, 5.f / 6.f));
+	/*
+	sprite->setAnimationSpeed(CLIMB_UP, 8);
+	sprite->setAnimationSpeed(CLIMB_UP, glm::vec2(0.1f, 4.f / 6.f));
 
+	sprite->setAnimationSpeed(CLIMB_DOWN, 8);
+	sprite->setAnimationSpeed(CLIMB_DOWN, glm::vec2(0.1f, 3.f / 6.f));*/
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
