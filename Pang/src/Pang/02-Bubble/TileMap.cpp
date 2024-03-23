@@ -42,11 +42,12 @@ void TileMap::render() const
 	glEnableVertexAttribArray(posLocation);
 	glEnableVertexAttribArray(texCoordLocation);
 	glDrawArrays(GL_TRIANGLES, 0, 6 * nTiles);
-
-	glBindVertexArray(vaoS);
-	glEnableVertexAttribArray(posLocationStairs);
-	glEnableVertexAttribArray(texCoordLocationStairs);
-	glDrawArrays(GL_TRIANGLES, 0, 6 * nTilesSt);
+	if (layers > 1) {
+		glBindVertexArray(vaoS);
+		glEnableVertexAttribArray(posLocationStairs);
+		glEnableVertexAttribArray(texCoordLocationStairs);
+		glDrawArrays(GL_TRIANGLES, 0, 6 * nTilesSt);
+	}
 
 	glDisable(GL_TEXTURE_2D);
 	
@@ -98,7 +99,8 @@ bool TileMap::loadLevel(const string &levelFile)
 		sstream.str(line);
 		for (int i = 0; i < mapSize.x; ++i) {
 			getline(sstream, tile, ',');
-			map[j * mapSize.x + i] = stoi(tile);;
+			map[j * mapSize.x + i] = stoi(tile);
+			
 		}
 #ifndef _WIN32
 		fin.get(tile);
@@ -165,7 +167,7 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 				vertices.push_back(posTile.x); vertices.push_back(posTile.y + blockSize);
 				vertices.push_back(texCoordTile[0].x); vertices.push_back(texCoordTile[1].y);
 			}
-			if (tileStairs != 0) 
+			if (tileStairs != 0)
 			{
 				++nTilesSt;
 				// Same but for stairs
