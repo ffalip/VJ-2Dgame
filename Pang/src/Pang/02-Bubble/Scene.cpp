@@ -34,12 +34,12 @@ void Scene::init()
 	bg = Background::createBackground("images/bg3.png", glm::vec2(16, 16), texProgram);
 
 	bubble = new Bubble();
-	bubble->init(glm::ivec2(16, 16), texProgram);
+	bubble->init(glm::ivec2(0, 0), texProgram);
 	bubble->setPosition(glm::vec2(10 * map->getTileSize(), 10 * map->getTileSize()));
 	bubble->setTileMap(map);
 
 	bullet = new Bullet();
-	bullet->init(glm::ivec2(0, 0), texProgram);
+	bullet->init(glm::ivec2(16, 16), texProgram);
 	bullet->setTileMap(map);
 	
 	player = new Player();

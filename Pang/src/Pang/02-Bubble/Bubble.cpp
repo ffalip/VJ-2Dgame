@@ -35,6 +35,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = 1;
 	canJump = false;
+	direccio = 0;
 }
 
 void Bubble::update(int deltaTime)
@@ -51,43 +52,62 @@ void Bubble::update(int deltaTime)
 	if (Game::instance().getKey(GLFW_KEY_3)) {
 		sprite->changeAnimation(ENANA8);
 	}
-	
 
-	if (sprite->animation() == GRAN48 && canJump)
-	{
-		jumpAngle += JUMP_ANGLE_STEP;
-		if (jumpAngle == 180)
-		{
-			
-			posBubble.y = startY;
-		}
-		else
-		{
-			posBubble.y = int(startY - 130 * sin(3.14159f * jumpAngle / 180.f));
-			posBubble.x += velocity;
-			//Comprovar si choca amb paret
-			if (map->collisionMoveRight(posBubble, glm::ivec2(50, 50))) {
-				velocity = -(velocity);
-			}
-			if (map->collisionMoveLeft(posBubble, glm::ivec2(50, 50))) {
-				velocity = -(velocity);
-			}
-			if (jumpAngle > 90)
-				canJump = !map->collisionMoveDown(posBubble, glm::ivec2(48, 48), &posBubble.y);
-		}
-	}
 
-	else
-	{
-		posBubble.y += FALL_STEP;
-		if (map->collisionMoveDown(posBubble, glm::ivec2(48, 48), &posBubble.y))
+	if (sprite->animation() == GRAN48)
+	{ 
+
+
+
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 24);
+
+		if (direccio == 0) {
+			velocity = -(velocity);
+			posBubble.x -= 4;
+			cout << "right" << endl;
+		}
+		else if (direccio == 1) {
+			velocity = -(velocity);
+			posBubble.x += 4;
+			cout << "left" << endl;
+		}
+		else if (direccio == 2)
 		{
 			canJump = true;
-			jumpAngle = 0;
+
 			startY = posBubble.y;
-			
+			posBubble.y -= 4;
+			jumpAngle = 0;
+			cout << "bot" << endl;
+		}
+		else if (direccio == 3) {
+			canJump = false;
+			posBubble.y += 4;
+			cout << "top" << endl;
+
 		}
 
+
+		posBubble.x += velocity;
+
+		if (canJump) {
+			jumpAngle += JUMP_ANGLE_STEP;
+			if (jumpAngle == 180)
+			{
+				posBubble.y = startY;
+			}
+			else
+			{
+				posBubble.y = int(startY - 130 * sin(3.14159f * jumpAngle / 180.f));
+			}
+		}
+
+		else
+		{
+
+			
+			posBubble.y += 4;
+		}
 	}
 
 	sprite->update(deltaTime);

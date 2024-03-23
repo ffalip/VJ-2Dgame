@@ -57,7 +57,9 @@ void Bullet::update(int deltaTime)
 		canShoot = true;
 	}
 
-	if (sprite->animation() == IDLE) posBullet = player->getPos();
+	if (sprite->animation() == IDLE) {
+		posBullet = player->getPos();
+	}
 	if (fireCooldown > 0) --fireCooldown;
 }
 

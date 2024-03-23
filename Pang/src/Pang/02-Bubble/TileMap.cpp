@@ -285,7 +285,80 @@ bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int
 	return false;
 }
 
-bool circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh, const glm::ivec2& pos) {
+bool TileMap::collisionMoveRightCircle(const glm::ivec2& pos, float radius) const
+{
+	int y0 = (pos.y - radius) / tileSize;
+	int y1 = (pos.y + radius - 1) / tileSize;
+	int x = (pos.x + radius - 1) / tileSize; // Ajuste para incluir el radio del círculo
+
+	for (int y = y0; y <= y1; y++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+			return true;
+	}
+	return false;
+}
+
+bool TileMap::collisionMoveLeftCircle(const glm::ivec2& pos, float radius) const
+{
+	int y0 = (pos.y - radius) / tileSize;
+	int y1 = (pos.y + radius - 1) / tileSize;
+	int x = (pos.x - radius) / tileSize; // Ajuste para incluir el radio del círculo
+
+
+	for (int y = y0; y <= y1; y++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+			return true;
+	}
+	return false;
+}
+
+bool TileMap::collisionMoveDownCircle(const glm::ivec2& pos, float radius, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x - radius) / tileSize;
+	x1 = (pos.x + radius - 1) / tileSize;
+	y = (pos.y + radius - 1) / tileSize;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+		{
+			if (*posY - tileSize * y + radius <= 4)
+			{
+				*posY = tileSize * y - radius;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool TileMap::collisionMoveTopCircle(const glm::ivec2& pos, float radius, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x - radius) / tileSize;
+	x1 = (pos.x + radius - 1) / tileSize;
+	y = (pos.y - radius - 1) / tileSize;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+		{
+			if (tileSize * (y + 1) - (pos.y - radius) <= 4)
+			{
+				*posY = tileSize * (y + 1) + radius;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+int TileMap::circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh) {
 
 	// temporary variables to set edges for testing
 	float testX = cx;
@@ -294,8 +367,8 @@ bool circleRect(float cx, float cy, float radius, float rx, float ry, float rw, 
 	// which edge is closest?
 	if (cx < rx)         testX = rx;      // test left edge
 	else if (cx > rx + rw) testX = rx + rw;   // right edge
-	if (cy < ry)         testY = ry;      // top edge
-	else if (cy > ry + rh) testY = ry + rh;   // bottom edge
+	if (cy < ry)         testY = ry;      // bottom edge
+	else if (cy > ry + rh) testY = ry + rh;   // top edge
 
 	// get distance from closest edges
 	float distX = cx - testX;
@@ -304,7 +377,70 @@ bool circleRect(float cx, float cy, float radius, float rx, float ry, float rw, 
 
 	// if the distance is less than the radius, collision!
 	if (distance <= radius) {
-		return true;
+		// Determine the collision direction
+		if (distX < 0 && distY < 0) {
+			if (distX < distY) return 0;
+			else return 2;
+		}
+
+		else if (distX > 0 && distY > 0) {
+			if (distX > distY) return 1;
+			else return 3;
+		}
+
+
+		else if (distX > 0 && distY < 0) {
+			if (distX > -(distY)) return 1;
+			else return 2;
+		}
+
+		else if (distX < 0 && distY > 0) {
+			if (distY < -(distX)) return 0;
+			else return 3;
+		}
+
+
+
+		/*
+		if (distX < distY) {
+			if (cx < rx) return 0;
+			else return 1;
+		}
+
+
+		else {
+			if (cy < ry) return 2;
+			else return 3;
+		}
+		*/
 	}
-	return false;
+	return -1; // No collision
+}
+
+int TileMap::circleCollisionWithMap(float cx, float cy, float radius)
+{
+	int tile;
+	// Iterate through each tile in the map
+	for (int j = 0; j < mapSize.y; j++)
+	{
+		for (int i = 0; i < mapSize.x; i++)
+		{
+			tile = map[j * mapSize.x + i];
+			// Calculate the coordinates of the rectangle corresponding to this tile
+			if (tile != 0) {
+				float rx = i * tileSize;
+				float ry = j * tileSize;
+				float rw = tileSize;
+				float rh = tileSize;
+
+				// Check for collision between the circle and the rectangle
+				int collisionDirection = circleRect(cx, cy, radius, rx, ry, rw, rh);
+				if (collisionDirection != -1)
+				{
+					return collisionDirection; // Collision detected
+				}
+			}
+		}
+	}
+	return -1; // No collision detected
 }
