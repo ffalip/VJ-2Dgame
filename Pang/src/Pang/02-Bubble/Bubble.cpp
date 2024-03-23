@@ -32,6 +32,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite->addKeyframe(ENANA8, glm::vec2(0.5f, 0.5f));
 
 	sprite->changeAnimation(0);
+	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = 1;
 	canJump = false;
