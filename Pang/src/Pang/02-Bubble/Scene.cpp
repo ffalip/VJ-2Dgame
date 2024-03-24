@@ -51,6 +51,8 @@ void Scene::init()
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 	currentTime = 0.0f;
+	timeDisp = new Interface();
+	timeDisp->init(glm::ivec2(16, 16), texProgram);
 }
 
 void Scene::update(int deltaTime)
@@ -59,6 +61,8 @@ void Scene::update(int deltaTime)
 	bubble->update(deltaTime);
 	bullet->update(deltaTime);
 	player->update(deltaTime);
+	timeDisp->update(deltaTime);
+
 
 }
 
@@ -77,6 +81,7 @@ void Scene::render()
 	bubble->render();
 	bullet->render();
 	player->render();
+	timeDisp->render();
 
 }
 

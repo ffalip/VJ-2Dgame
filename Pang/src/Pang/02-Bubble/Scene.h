@@ -9,6 +9,7 @@
 #include "Bullet.h"
 #include "Bubble.h"
 #include "Background.h"
+#include "Interface.h"
 
 
 // Scene contains all the entities of our game.
@@ -36,8 +37,11 @@ private:
 	Bullet *bullet;
 	Bubble *bubble;
 	ShaderProgram texProgram;
+	Interface *timeDisp;
 	float currentTime;
 	glm::mat4 projection;
+	int f;
+	int t;
 
 };
 
