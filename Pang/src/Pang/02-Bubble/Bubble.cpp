@@ -31,7 +31,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite->setAnimationSpeed(ENANA8, 1);
 	sprite->addKeyframe(ENANA8, glm::vec2(0.5f, 0.5f));
 
-	sprite->changeAnimation(0);
+	sprite->changeAnimation(1);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = 1;
@@ -57,8 +57,6 @@ void Bubble::update(int deltaTime)
 
 	if (sprite->animation() == GRAN48)
 	{ 
-
-
 
 		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 24);
 
@@ -105,9 +103,167 @@ void Bubble::update(int deltaTime)
 
 		else
 		{
-
-			
 			posBubble.y += 4;
+		}
+	}
+
+	if (sprite->animation() == MITJA32)
+	{
+
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 18);
+
+		if (direccio == 0) {
+			velocity = -(velocity);
+			posBubble.x -= 2;
+			cout << "right" << endl;
+		}
+		else if (direccio == 1) {
+			velocity = -(velocity);
+			posBubble.x += 2;
+			cout << "left" << endl;
+		}
+		else if (direccio == 2)
+		{
+			canJump = true;
+
+			startY = posBubble.y;
+			posBubble.y -= 2;
+			jumpAngle = 0;
+			cout << "bot" << endl;
+		}
+		else if (direccio == 3) {
+			canJump = false;
+			posBubble.y += 2;
+			cout << "top" << endl;
+
+		}
+
+		cout << startY << endl;
+		posBubble.x += velocity;
+
+		if (canJump) {
+			jumpAngle += JUMP_ANGLE_STEP;
+			if (jumpAngle == 180)
+			{
+				posBubble.y = startY;
+			}
+			else
+			{
+				posBubble.y = int(startY - (100) * sin(3.14159f * jumpAngle / 180.f));
+			}
+		}
+
+		else
+		{
+			posBubble.y += 3;
+		}
+	}
+
+	if (sprite->animation() == PETITA16)
+	{
+
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 8);
+
+		if (direccio == 0) {
+			velocity = -(velocity);
+			posBubble.x -= 2;
+			cout << "right" << endl;
+		}
+		else if (direccio == 1) {
+			velocity = -(velocity);
+			posBubble.x += 2;
+			cout << "left" << endl;
+		}
+		else if (direccio == 2)
+		{
+			canJump = true;
+
+			startY = posBubble.y;
+			posBubble.y -= 2;
+			jumpAngle = 0;
+			cout << "bot" << endl;
+		}
+		else if (direccio == 3) {
+			canJump = false;
+			posBubble.y += 2;
+			cout << "top" << endl;
+
+		}
+
+
+		posBubble.x += velocity;
+
+		if (canJump) {
+			jumpAngle += JUMP_ANGLE_STEP;
+			if (jumpAngle == 180)
+			{
+				posBubble.y = startY;
+			}
+			else
+			{
+				posBubble.y = int(startY - 70 * sin(3.14159f * jumpAngle / 180.f));
+			}
+		}
+
+		else
+		{
+			posBubble.y += 2;
+		}
+	}
+
+	if (sprite->animation() == ENANA8)
+	{
+
+
+
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 4);
+
+		if (direccio == 0) {
+			velocity = -(velocity);
+			posBubble.x -= 2;
+			cout << "right" << endl;
+		}
+		else if (direccio == 1) {
+			velocity = -(velocity);
+			posBubble.x += 2;
+			cout << "left" << endl;
+		}
+		else if (direccio == 2)
+		{
+			canJump = true;
+
+			startY = posBubble.y;
+			posBubble.y -= 2;
+			jumpAngle = 0;
+			cout << "bot" << endl;
+		}
+		else if (direccio == 3) {
+			canJump = false;
+			posBubble.y += 2;
+			cout << "top" << endl;
+
+		}
+
+
+		posBubble.x += velocity;
+
+		if (canJump) {
+			jumpAngle += JUMP_ANGLE_STEP;
+			if (jumpAngle == 180)
+			{
+				posBubble.y = startY;
+			}
+			else
+			{
+				posBubble.y = int(startY - 50 * sin(3.14159f * jumpAngle / 180.f));
+			}
+		}
+
+		else
+		{
+
+
+			posBubble.y += 2;
 		}
 	}
 

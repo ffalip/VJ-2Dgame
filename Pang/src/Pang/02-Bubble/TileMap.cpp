@@ -380,41 +380,26 @@ int TileMap::circleRect(float cx, float cy, float radius, float rx, float ry, fl
 	// if the distance is less than the radius, collision!
 	if (distance <= radius) {
 		// Determine the collision direction
-		if (distX < 0 && distY < 0) {
-			if (distX < distY) return 0;
+		if (distX <= 0 && distY <= 0) {
+			if (distX <= distY) return 0;
 			else return 2;
 		}
 
-		else if (distX > 0 && distY > 0) {
-			if (distX > distY) return 1;
+		else if (distX >= 0 && distY >= 0) {
+			if (distX >= distY) return 1;
 			else return 3;
 		}
 
 
-		else if (distX > 0 && distY < 0) {
-			if (distX > -(distY)) return 1;
+		else if (distX >= 0 && distY <= 0) {
+			if (distX >= -(distY)) return 1;
 			else return 2;
 		}
 
-		else if (distX < 0 && distY > 0) {
-			if (distY < -(distX)) return 0;
+		else if (distX <= 0 && distY >= 0) {
+			if (distY <= -(distX)) return 0;
 			else return 3;
 		}
-
-
-
-		/*
-		if (distX < distY) {
-			if (cx < rx) return 0;
-			else return 1;
-		}
-
-
-		else {
-			if (cy < ry) return 2;
-			else return 3;
-		}
-		*/
 	}
 	return -1; // No collision
 }

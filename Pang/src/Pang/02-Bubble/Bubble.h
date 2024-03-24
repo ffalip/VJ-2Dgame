@@ -20,7 +20,8 @@ private:
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
-	int jumpAngle, startY, velocity, direccio;
+	int jumpAngle, startY, direccio;
+	float velocity;
 	bool canJump;
 };
 
