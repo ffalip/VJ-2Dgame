@@ -30,18 +30,41 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/lvl2.txt", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl" + std::to_string(1) + ".txt", glm::vec2(16, 16), texProgram);
+	
+		
 	bg = Background::createBackground("images/bg3.png", glm::vec2(16, 16), texProgram);
 
-	bubble = new Bubble();
-	bubble->init(glm::ivec2(16, 16), texProgram);
-	bubble->setPosition(glm::vec2(10 * map->getTileSize(), 10 * map->getTileSize()));
-	bubble->setTileMap(map);
+	for (int i = 0; i < 15; ++i) {
+		bubble = new Bubble();
+		if (i == 0) {
+			bubble->init(glm::ivec2(16, 16), texProgram, 0);
+			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubble->setTileMap(map);
+		}
+		else if (i > 0 && i <= 2) {
+			bubble->init(glm::ivec2(16, 16), texProgram, 1);
+			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubble->setTileMap(map);
+		}
+		else if (i >= 3 && i <= 6) {
+			bubble->init(glm::ivec2(16, 16), texProgram, 2);
+			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubble->setTileMap(map);
+		}
+		else {
+			bubble->init(glm::ivec2(16, 16), texProgram, 3);
+			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubble->setTileMap(map);
+		}
+		bubbles.push_back(bubble);
+	}
+
 
 	bullet = new Bullet();
 	bullet->init(glm::ivec2(16, 16), texProgram);
 	bullet->setTileMap(map);
-	
+
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
@@ -53,12 +76,15 @@ void Scene::init()
 	currentTime = 0.0f;
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
+	
 }
 
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
-	bubble->update(deltaTime);
+	for (int i = 0; i < 15; ++i) {
+		bubbles[i]->update(deltaTime);
+	}
 	bullet->update(deltaTime);
 	player->update(deltaTime);
 	timeDisp->update(deltaTime);
@@ -78,7 +104,9 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	bg->render();
 	map->render();
-	bubble->render();
+	for (int i = 0; i < 15; ++i) {
+		bubbles[i]->render();
+	}
 	bullet->render();
 	player->render();
 	timeDisp->render();

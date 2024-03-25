@@ -13,7 +13,7 @@ enum BubbleAnims
 	GRAN48, MITJA32, PETITA16, ENANA8
 };
 
-void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
+void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim)
 {
 	spritesheet.loadFromFile("images/Bubble.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.5f, 0.5f), &spritesheet, &shaderProgram);
@@ -31,7 +31,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 	sprite->setAnimationSpeed(ENANA8, 1);
 	sprite->addKeyframe(ENANA8, glm::vec2(0.5f, 0.5f));
 
-	sprite->changeAnimation(1);
+	sprite->changeAnimation(anim);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = 1;

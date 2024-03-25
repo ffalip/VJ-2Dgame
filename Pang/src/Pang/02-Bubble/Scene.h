@@ -36,13 +36,14 @@ private:
 	Player *player;
 	Bullet *bullet;
 	Bubble *bubble;
+	vector<Bubble*> bubbles;
 	ShaderProgram texProgram;
 	Interface *timeDisp;
 	float currentTime;
 	glm::mat4 projection;
 	int f;
 	int t;
-
+	int idLevel;
 };
 
 

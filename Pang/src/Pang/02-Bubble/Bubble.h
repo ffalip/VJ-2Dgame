@@ -8,7 +8,7 @@
 class Bubble
 {
 public:
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim);
 	void update(int deltaTime);
 	void render();
 
