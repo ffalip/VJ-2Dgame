@@ -30,8 +30,8 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/lvl2.txt", glm::vec2(16, 16), texProgram);
-	bg = Background::createBackground("images/bg3.png", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
+	bg = Background::createBackground("images/bg1.png", glm::vec2(16, 16), texProgram);
 
 	bubble = new Bubble();
 	bubble->init(glm::ivec2(16, 16), texProgram);
@@ -62,8 +62,7 @@ void Scene::update(int deltaTime)
 	bullet->update(deltaTime);
 	player->update(deltaTime);
 	timeDisp->update(deltaTime);
-
-
+	//timeDisp->updateLife(4);
 }
 
 void Scene::render()

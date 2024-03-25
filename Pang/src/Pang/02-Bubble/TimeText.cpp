@@ -7,14 +7,14 @@ using namespace std;
 
 enum TimeTextFrames
 {
-	T = 10, I = 11, M = 12, E = 13
+	T = 10, I = 11, M = 12, E = 13, LIFE = 14,
 };
 
 void TimeText::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const glm::ivec2& pos)
 {
 	font.loadFromFile("images/timeFont.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	textSprite = Sprite::createSprite(glm::ivec2(16, 16), glm::vec2(0.1, 0.5f), &font, &shaderProgram);
-	textSprite->setNumberAnimations(14);
+	textSprite->setNumberAnimations(15);
 	
 	//Number frames
 	for (int i = 0; i < 10; ++i) {
@@ -33,6 +33,9 @@ void TimeText::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, 
 
 	textSprite->setAnimationSpeed(E, 8);
 	textSprite->addKeyframe(E, glm::vec2(0.3f, 0.5f));
+
+	textSprite->setAnimationSpeed(LIFE, 8);
+	textSprite->addKeyframe(LIFE, glm::vec2(0.4f, 0.5f));
 
 	posTime = pos;
 	textSprite->changeAnimation(0);

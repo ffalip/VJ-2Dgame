@@ -12,11 +12,14 @@ public:
 	void update(int deltaTime);
 	void render();
 
+	void updateLife(int newLife);
+
 private:
 	
-	TimeText *timeText[4];
+	TimeText* timeText[4];
 	TimeText* timeDisplay[3];
-	int time, frames;
+	TimeText* lifeDisplay[4];
+	int time, frames, life;
 
 };
 
