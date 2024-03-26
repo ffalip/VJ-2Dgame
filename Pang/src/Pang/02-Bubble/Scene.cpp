@@ -30,36 +30,47 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/lvl" + std::to_string(1) + ".txt", glm::vec2(16, 16), texProgram);
-	
-		
-	bg = Background::createBackground("images/bg3.png", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl2.txt", glm::vec2(16, 16), texProgram);
+	bg = Background::createBackground("images/bg1.png", glm::vec2(16, 16), texProgram);
 
 	for (int i = 0; i < 15; ++i) {
 		bubble = new Bubble();
+		
 		if (i == 0) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 0);
+			bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else if (i > 0 && i <= 2) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 1);
+			bubble->init(glm::ivec2(16, 16), texProgram, 1, 1.f);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else if (i >= 3 && i <= 6) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 2);
+			bubble->init(glm::ivec2(16, 16), texProgram, 2, 1.f);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else {
-			bubble->init(glm::ivec2(16, 16), texProgram, 3);
+			bubble->init(glm::ivec2(16, 16), texProgram, 3, 1.f);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
+		
 		bubbles.push_back(bubble);
 	}
+	for (int i = 0; i < 15; ++i) {
+		bubblesActives.push_back(false);
+	}
+	bubblesActives[0] = true;
 
+	for (int i = 0; i < 15; ++i) {
+		bubEx = new BubbleExplosions();
+		bubEx->init(glm::ivec2(16, 16), texProgram);
+		bubEx->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+		bubEx->setTileMap(map);
+		bubExs.push_back(bubEx);
+	}
 
 	bullet = new Bullet();
 	bullet->init(glm::ivec2(16, 16), texProgram);
@@ -81,15 +92,20 @@ void Scene::init()
 
 void Scene::update(int deltaTime)
 {
+	if (Game::instance().getKey(GLFW_KEY_X)) {
+		peta(bubblesActives, bubbles, bubExs);
+	}
 	currentTime += deltaTime;
 	for (int i = 0; i < 15; ++i) {
-		bubbles[i]->update(deltaTime);
+		if (bubblesActives[i]) bubbles[i]->update(deltaTime);
+	}
+	for (int i = 0; i < 15; ++i) {
+		bubExs[i]->update(deltaTime);
 	}
 	bullet->update(deltaTime);
 	player->update(deltaTime);
 	timeDisp->update(deltaTime);
-
-
+	//timeDisp->updateLife(4);
 }
 
 void Scene::render()
@@ -105,8 +121,14 @@ void Scene::render()
 	bg->render();
 	map->render();
 	for (int i = 0; i < 15; ++i) {
-		bubbles[i]->render();
+		if (bubblesActives[i]) bubbles[i]->render();	
 	}
+
+	for (int i = 0; i < 15; ++i) {
+		
+		bubExs[i]->render();
+	}
+
 	bullet->render();
 	player->render();
 	timeDisp->render();
@@ -141,6 +163,44 @@ void Scene::initShaders()
 	texProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs) {
+	for (int i = 0; i < bubblesActives.size(); ++i) {
+		if (bubblesActives[i]) {
+
+			bubEx = new BubbleExplosions();
+			bubEx->init(glm::ivec2(16, 16), texProgram);
+			bubEx->setPosition(glm::ivec2(bubbles[i]->getPosition().x + 8, bubbles[i]->getPosition().y + 8));
+			bubEx->setAnimation(bubbles[i]->getSize());
+			bubEx->setTileMap(map);
+			bubExs[i] = bubEx;
+
+			bubblesActives[i] = false;
+
+			
+
+			bubExs[i]->setAnimation(bubbles[i]->getSize());
+			if ((i + 1) * 2 < bubblesActives.size()) {
+				bubble = new Bubble();
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity());
+				bubble->setPosition(glm::ivec2(bubbles[i] -> getPosition().x + 4, bubbles[i]->getPosition().y));
+				bubble->setTileMap(map);
+				bubbles[(i + 1) * 2 - 1] = bubble;
+				bubblesActives[(i + 1) * 2 - 1] = true;
+				
+				bubble = new Bubble();
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()));
+				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - 4, bubbles[i]->getPosition().y));
+				bubble->setTileMap(map);
+				bubbles[(i + 1) * 2] = bubble;
+				bubblesActives[(i + 1) * 2] = true;
+				break;
+				
+			}
+			break;
+		}
+	}
 }
 
 

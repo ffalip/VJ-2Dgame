@@ -10,6 +10,8 @@
 #include "Bubble.h"
 #include "Background.h"
 #include "Interface.h"
+#include "Sprite.h"
+#include "BubbleExplosions.h"
 
 
 // Scene contains all the entities of our game.
@@ -29,6 +31,7 @@ public:
 
 private:
 	void initShaders();
+	void peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs);
 
 private:
 	Background* bg;
@@ -37,6 +40,9 @@ private:
 	Bullet *bullet;
 	Bubble *bubble;
 	vector<Bubble*> bubbles;
+	BubbleExplosions *bubEx;
+	vector<BubbleExplosions*> bubExs;
+	vector<bool> bubblesActives;
 	ShaderProgram texProgram;
 	Interface *timeDisp;
 	float currentTime;

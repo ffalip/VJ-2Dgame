@@ -13,7 +13,7 @@ enum BubbleAnims
 	GRAN48, MITJA32, PETITA16, ENANA8
 };
 
-void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim)
+void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel)
 {
 	spritesheet.loadFromFile("images/Bubble.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.5f, 0.5f), &spritesheet, &shaderProgram);
@@ -34,25 +34,16 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 	sprite->changeAnimation(anim);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
-	velocity = 1;
-	canJump = false;
-	direccio = 0;
+	velocity = vel;
+	canJump = true;
+	startY = 130;
+	direccio = 2;
+	jumpAngle = 70;
+
 }
 
 void Bubble::update(int deltaTime)
 {
-	if (Game::instance().getKey(GLFW_KEY_0)) {
-		sprite->changeAnimation(GRAN48);
-	}
-	if (Game::instance().getKey(GLFW_KEY_1)) {
-		sprite->changeAnimation(MITJA32);
-	}
-	if (Game::instance().getKey(GLFW_KEY_2)) {
-		sprite->changeAnimation(PETITA16);
-	}
-	if (Game::instance().getKey(GLFW_KEY_3)) {
-		sprite->changeAnimation(ENANA8);
-	}
 
 
 	if (sprite->animation() == GRAN48)
@@ -63,12 +54,12 @@ void Bubble::update(int deltaTime)
 		if (direccio == 0) {
 			velocity = -(velocity);
 			posBubble.x -= 4;
-			cout << "right" << endl;
+			//cout << "right" << endl;
 		}
 		else if (direccio == 1) {
 			velocity = -(velocity);
 			posBubble.x += 4;
-			cout << "left" << endl;
+			//cout << "left" << endl;
 		}
 		else if (direccio == 2)
 		{
@@ -77,12 +68,12 @@ void Bubble::update(int deltaTime)
 			startY = posBubble.y;
 			posBubble.y -= 4;
 			jumpAngle = 0;
-			cout << "bot" << endl;
+			//cout << "bot" << endl;
 		}
 		else if (direccio == 3) {
 			canJump = false;
 			posBubble.y += 4;
-			cout << "top" << endl;
+			//cout << "top" << endl;
 
 		}
 
@@ -90,7 +81,7 @@ void Bubble::update(int deltaTime)
 		posBubble.x += velocity;
 
 		if (canJump) {
-			jumpAngle += JUMP_ANGLE_STEP;
+			jumpAngle += 1.5;
 			if (jumpAngle == 180)
 			{
 				posBubble.y = startY;
@@ -103,59 +94,63 @@ void Bubble::update(int deltaTime)
 
 		else
 		{
+			
 			posBubble.y += 4;
 		}
 	}
 
 	if (sprite->animation() == MITJA32)
 	{
-
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 18);
+		cout << jumpAngle  << " " << startY << endl;
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 16);
 
 		if (direccio == 0) {
 			velocity = -(velocity);
 			posBubble.x -= 2;
-			cout << "right" << endl;
+			//cout << "right" << endl;
 		}
 		else if (direccio == 1) {
 			velocity = -(velocity);
 			posBubble.x += 2;
-			cout << "left" << endl;
+			//cout << "left" << endl;
 		}
 		else if (direccio == 2)
 		{
 			canJump = true;
-
 			startY = posBubble.y;
 			posBubble.y -= 2;
 			jumpAngle = 0;
-			cout << "bot" << endl;
+			//cout << "bot" << endl;
+			
+			
+			
 		}
 		else if (direccio == 3) {
 			canJump = false;
 			posBubble.y += 2;
-			cout << "top" << endl;
+			//cout << "top" << endl;
 
 		}
-
-		cout << startY << endl;
 		posBubble.x += velocity;
 
 		if (canJump) {
-			jumpAngle += JUMP_ANGLE_STEP;
+			jumpAngle += 2;
+			if (jumpAngle >= 90 && startY < 130) canJump = false;
 			if (jumpAngle == 180)
 			{
 				posBubble.y = startY;
 			}
 			else
 			{
-				posBubble.y = int(startY - (100) * sin(3.14159f * jumpAngle / 180.f));
+				posBubble.y = int(startY - (100*startY/150) * sin(3.14159f * jumpAngle * 150/startY / 180.f));
 			}
 		}
 
 		else
 		{
+			
 			posBubble.y += 3;
+
 		}
 	}
 
@@ -167,12 +162,12 @@ void Bubble::update(int deltaTime)
 		if (direccio == 0) {
 			velocity = -(velocity);
 			posBubble.x -= 2;
-			cout << "right" << endl;
+			//cout << "right" << endl;
 		}
 		else if (direccio == 1) {
 			velocity = -(velocity);
 			posBubble.x += 2;
-			cout << "left" << endl;
+			//cout << "left" << endl;
 		}
 		else if (direccio == 2)
 		{
@@ -181,12 +176,12 @@ void Bubble::update(int deltaTime)
 			startY = posBubble.y;
 			posBubble.y -= 2;
 			jumpAngle = 0;
-			cout << "bot" << endl;
+			//cout << "bot" << endl;
 		}
 		else if (direccio == 3) {
 			canJump = false;
 			posBubble.y += 2;
-			cout << "top" << endl;
+			//cout << "top" << endl;
 
 		}
 
@@ -194,7 +189,7 @@ void Bubble::update(int deltaTime)
 		posBubble.x += velocity;
 
 		if (canJump) {
-			jumpAngle += JUMP_ANGLE_STEP;
+			jumpAngle += 2.5;
 			if (jumpAngle == 180)
 			{
 				posBubble.y = startY;
@@ -207,6 +202,7 @@ void Bubble::update(int deltaTime)
 
 		else
 		{
+
 			posBubble.y += 2;
 		}
 	}
@@ -221,12 +217,12 @@ void Bubble::update(int deltaTime)
 		if (direccio == 0) {
 			velocity = -(velocity);
 			posBubble.x -= 2;
-			cout << "right" << endl;
+			//cout << "right" << endl;
 		}
 		else if (direccio == 1) {
 			velocity = -(velocity);
 			posBubble.x += 2;
-			cout << "left" << endl;
+			//cout << "left" << endl;
 		}
 		else if (direccio == 2)
 		{
@@ -235,12 +231,12 @@ void Bubble::update(int deltaTime)
 			startY = posBubble.y;
 			posBubble.y -= 2;
 			jumpAngle = 0;
-			cout << "bot" << endl;
+			//cout << "bot" << endl;
 		}
 		else if (direccio == 3) {
 			canJump = false;
 			posBubble.y += 2;
-			cout << "top" << endl;
+			//cout << "top" << endl;
 
 		}
 
@@ -248,7 +244,7 @@ void Bubble::update(int deltaTime)
 		posBubble.x += velocity;
 
 		if (canJump) {
-			jumpAngle += JUMP_ANGLE_STEP;
+			jumpAngle += 3.f;
 			if (jumpAngle == 180)
 			{
 				posBubble.y = startY;
@@ -266,6 +262,7 @@ void Bubble::update(int deltaTime)
 			posBubble.y += 2;
 		}
 	}
+
 
 	sprite->update(deltaTime);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
@@ -286,4 +283,21 @@ void Bubble::setPosition(const glm::vec2& pos)
 {
 	posBubble = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
+}
+
+glm::ivec2 Bubble::getPosition() 
+{
+	return posBubble;
+}
+
+int Bubble::getSize() {
+	if (sprite->animation() == GRAN48) return 0;
+	if (sprite->animation() == MITJA32) return 1;
+	if (sprite->animation() == PETITA16) return 2;
+	if (sprite->animation() == ENANA8) return 3;
+
+}
+
+float Bubble::getVelocity() {
+	return velocity;
 }
