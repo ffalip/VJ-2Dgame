@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include "TimeText.h"
+#include "SimpleText.h"
 
 class Interface
 {
@@ -13,6 +14,7 @@ public:
 	void render();
 
 	void updateLife(int newLife);
+	vector<int> textReader(const string& txt); //retuns a vector with the sprite characters idx
 
 private:
 	
@@ -20,6 +22,7 @@ private:
 	TimeText* timeDisplay[3];
 	TimeText* lifeDisplay[4];
 	int time, frames, life;
+	vector<SimpleText*> textDisplay;
 
 };
 

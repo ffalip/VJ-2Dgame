@@ -1,5 +1,5 @@
-#ifndef _TIMETEXT_INCLUDE
-#define _TIMETEXT_INCLUDE
+#ifndef _SIMPLETEXT_INCLUDE
+#define _SIMPLETEXT_INCLUDE
 
 
 #include <glm/glm.hpp>
@@ -7,7 +7,7 @@
 #include "ShaderProgram.h"
 #include "Sprite.h"
 
-class TimeText
+class SimpleText
 {
 public:
 	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, const glm::ivec2& pos);
@@ -17,7 +17,7 @@ public:
 private:
 	Texture font;
 	Sprite* textSprite;
-	glm::ivec2 tileMapDispl, posTime;
+	glm::ivec2 tileMapDispl, posText;
 
 };
 

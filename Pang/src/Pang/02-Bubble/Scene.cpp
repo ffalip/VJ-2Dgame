@@ -106,7 +106,7 @@ void Scene::update(int deltaTime)
 	bullet->update(deltaTime);
 	player->update(deltaTime);
 	timeDisp->update(deltaTime);
-	//timeDisp->updateLife(4);
+
 }
 
 void Scene::render()
