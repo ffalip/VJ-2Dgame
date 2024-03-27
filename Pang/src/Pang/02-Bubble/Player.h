@@ -20,9 +20,12 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
-	
 	glm::ivec2 getPos();
+	bool interseccio(glm::ivec2& topLeft1, int width1, int height1,
+		glm::ivec2& topLeft2, int width2, int height2) ;
 private:
+	
+	
 	bool bJumping;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY, fire_cooldown, shooting;

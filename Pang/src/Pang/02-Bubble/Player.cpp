@@ -146,7 +146,8 @@ void Player::update(int deltaTime)
 	
 	if (fire_cooldown > 0) --fire_cooldown;
 	if (shooting > 0) --shooting;
-	
+
+	//PART COLISIO DINAMITA
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 
@@ -166,11 +167,28 @@ void Player::setPosition(const glm::vec2 &pos)
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
 
+
 glm::ivec2 Player::getPos() 
 {
 	return posPlayer;
 }
 
 
+bool Player::interseccio(glm::ivec2& topLeft1, int width1, int height1,
+	glm::ivec2& topLeft2, int width2, int height2) {
+	// Calcula las coordenadas de la esquina bottom-right de cada rectángulo
+	glm::ivec2 bottomRight1 = { topLeft1.x + width1, topLeft1.y + height1 };
+	glm::ivec2 bottomRight2 = { topLeft2.x + width2, topLeft2.y + height2 };
 
+	// Comprueba si hay intersección en base a la posición de las esquinas
+	if (topLeft1.x > bottomRight2.x || topLeft2.x > bottomRight1.x) {
+		return false; // No hay intersección en el eje X
+	}
+
+	if (topLeft1.y > bottomRight2.y || topLeft2.y > bottomRight1.y) {
+		return false; // No hay intersección en el eje Y
+	}
+
+	return true; // Hay intersección
+}
 

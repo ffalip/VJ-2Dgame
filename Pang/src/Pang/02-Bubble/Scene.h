@@ -12,7 +12,8 @@
 #include "Interface.h"
 #include "Sprite.h"
 #include "BubbleExplosions.h"
-
+#include "Dinamita.h"
+#include "PararTemps.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -32,6 +33,7 @@ public:
 private:
 	void initShaders();
 	void peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs);
+	void petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs);
 
 private:
 	Background* bg;
@@ -43,6 +45,8 @@ private:
 	BubbleExplosions *bubEx;
 	vector<BubbleExplosions*> bubExs;
 	vector<bool> bubblesActives;
+	Dinamita* din;
+	PararTemps* pt;
 	ShaderProgram texProgram;
 	Interface *timeDisp;
 	float currentTime;
