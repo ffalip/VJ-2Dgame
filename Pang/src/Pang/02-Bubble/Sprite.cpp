@@ -111,4 +111,3 @@ int Sprite::getFrame() const
 	return currentKeyframe;
 }
 
-

@@ -8,20 +8,23 @@
 class Bubble
 {
 public:
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel);
 	void update(int deltaTime);
 	void render();
 
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
+	glm::ivec2 getPosition();
+	int getSize();
+	float getVelocity();
 
 private:
 	glm::ivec2 tileMapDispl, posBubble;
 	Texture spritesheet;
 	Sprite* sprite;
 	TileMap* map;
-	int jumpAngle, startY, direccio;
-	float velocity;
+	int  startY, direccio;
+	float velocity, jumpAngle;
 	bool canJump;
 };
 
