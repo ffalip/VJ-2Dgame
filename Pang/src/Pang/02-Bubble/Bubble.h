@@ -17,8 +17,9 @@ public:
 	glm::ivec2 getPosition();
 	int getSize();
 	float getVelocity();
-
 	bool collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, int widthBullet);
+	bool Bubble::collisionWithPlayer(const glm::ivec2& posBullet, int heightPlayer, int widthPlayer);
+	bool freeze;
 private:
 	glm::ivec2 tileMapDispl, posBubble;
 	Texture spritesheet;

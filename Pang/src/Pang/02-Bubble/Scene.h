@@ -14,6 +14,7 @@
 #include "BubbleExplosions.h"
 #include "Dinamita.h"
 #include "PararTemps.h"
+#include "Invencibility.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -47,6 +48,7 @@ private:
 	vector<bool> bubblesActives;
 	Dinamita* din;
 	PararTemps* pt;
+	Invencibility* inv;
 	ShaderProgram texProgram;
 	Interface *timeDisp;
 	float currentTime;
@@ -54,6 +56,10 @@ private:
 	int f;
 	int t;
 	int idLevel;
+	int contadorFreeze;
+	bool activarContadorFreeze;
+	bool dinAct, ptAct, invAct;
+	bool invAplied;
 };
 
 

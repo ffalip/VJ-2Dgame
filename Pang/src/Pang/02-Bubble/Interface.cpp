@@ -75,6 +75,10 @@ void Interface::updateLife(int newLife) {
 	life = newLife;
 }
 
+int Interface::getLife() {
+	return life;
+}
+
 void Interface::render()
 {
 	for (int i = 0; i < 4; ++i) {

@@ -12,7 +12,7 @@ public:
 	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	void update(int deltaTime);
 	void render();
-
+	int getLife();
 	void updateLife(int newLife);
 	vector<int> textReader(const string& txt); //retuns a vector with the sprite characters idx
 

@@ -39,7 +39,7 @@ void Scene::init()
 		
 		if (i == 0) {
 			bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f);
-			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else if (i > 0 && i <= 2) {
@@ -57,7 +57,7 @@ void Scene::init()
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
-		
+
 		bubbles.push_back(bubble);
 	}
 	for (int i = 0; i < 15; ++i) {
@@ -76,6 +76,13 @@ void Scene::init()
 	bullet = new Bullet();
 	bullet->init(glm::ivec2(16, 16), texProgram);
 	bullet->setTileMap(map);
+	
+	//inv = new Invencibility();
+	//inv->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	//inv->setPosition(glm::vec2(30 * map->getTileSize(), 20 * map->getTileSize()));
+	//inv->setTileMap(map);
+
+
 
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -83,10 +90,11 @@ void Scene::init()
 	player->setTileMap(map);
 
 	bullet->setPlayer(player);
+	//inv->setPlayer(player);
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 	currentTime = 0.0f;
-
+	/*
 	din = new Dinamita();
 	din->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	din->setPosition(glm::vec2(20 * map->getTileSize(), 20 * map->getTileSize()));
@@ -96,10 +104,12 @@ void Scene::init()
 	pt->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	pt->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
 	pt->setTileMap(map);
-
+	*/
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
-	
+
+	contadorFreeze = 0;
+	activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
 }
 
 void Scene::update(int deltaTime)
@@ -107,12 +117,38 @@ void Scene::update(int deltaTime)
 	if (Game::instance().getKey(GLFW_KEY_X)) {
 		peta(bubblesActives, bubbles, bubExs, 0);
 	}
-	if (player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16)) {
+
+	if (dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16)) {
 		petaTot(bubblesActives, bubbles, bubExs);
+		dinAct = false;
 	}
-	if (player->interseccio(player->getPos(), 32, 32, pt->getPosition(), 16, 16)) {
-		petaTot(bubblesActives, bubbles, bubExs);
+
+	if (ptAct && player->interseccio(player->getPos(), 32, 32, pt->getPosition(), 16, 16)) {
+		contadorFreeze = 0;
+		activarContadorFreeze = true;
+		for (int i = 0; i < bubbles.size(); ++i) {
+			bubbles[i]->freeze = true;
+		}
+		ptAct = false;
 	}
+
+	if (invAct && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
+		inv->setAplied();
+		invAplied = inv->getAplied();
+		
+	}
+
+	if (activarContadorFreeze) {
+		++contadorFreeze;
+		cout << contadorFreeze << endl;
+		if (contadorFreeze >= 300) {
+			for (int i = 0; i < bubbles.size(); ++i) {
+				bubbles[i]->freeze = false;
+				activarContadorFreeze = false;
+			}
+		}
+	}
+
 	currentTime += deltaTime;
 	for (int i = 0; i < 15; ++i) {
 		if (bubblesActives[i]) {
@@ -120,18 +156,47 @@ void Scene::update(int deltaTime)
 			if (bullet->shooting() && bubbles[i]->collisionWithBullet(bullet->getPos(), bullet->getHeight(), 8)) {
 				peta(bubblesActives, bubbles, bubExs, i);
 				bullet->stopShooting();
+				if (!dinAct && rand() % 3 == 0) {
+					dinAct = true;
+					din = new Dinamita();
+					din->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					din->setPosition(glm::vec2(bubbles[i] -> getPosition().x +32, bubbles[i]->getPosition().y + 32));
+					din->setTileMap(map);
+				}
+				if (!ptAct && rand() % 3 == 1) {
+					ptAct = true;
+					pt = new PararTemps();
+					pt->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					pt->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
+					pt->setTileMap(map);
+				}
+				if (!invAct && rand() % 3 == 2) {
+					invAct = true;
+					inv = new Invencibility();
+					inv->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					inv->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
+					inv->setTileMap(map);
+					inv->setPlayer(player);
+				}
+			}
+			if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32) && !(invAplied)) {
+				timeDisp->updateLife(timeDisp->getLife() - 1);
 			}
 		}
 	}
+
 	for (int i = 0; i < 15; ++i) {
 		bubExs[i]->update(deltaTime);
 	}
 
 	bullet->update(deltaTime);
+	if (invAct) inv->update(deltaTime);
 	player->update(deltaTime);
 	timeDisp->update(deltaTime);
-	din->update(deltaTime);
-	pt->update(deltaTime);
+	if (dinAct) din->update(deltaTime);
+	if (ptAct) pt->update(deltaTime);
+	
+	
 }
 
 void Scene::render()
@@ -157,10 +222,12 @@ void Scene::render()
 	}
 
 	bullet->render();
+	if (invAct) inv->render();
 	player->render();
 	timeDisp->render();
-	din->render();
-	pt->render();
+	if (dinAct) din->render();
+	if (ptAct) pt->render();
+	
 }
 
 void Scene::initShaders()
@@ -199,7 +266,7 @@ void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<
 
 			bubEx = new BubbleExplosions();
 			bubEx->init(glm::ivec2(16, 16), texProgram);
-			bubEx->setPosition(glm::ivec2(bubbles[i]->getPosition().x + 8, bubbles[i]->getPosition().y + 8));
+			bubEx->setPosition(glm::ivec2(bubbles[i]->getPosition().x + 16, bubbles[i]->getPosition().y + 16));
 			bubEx->setAnimation(bubbles[i]->getSize());
 			bubEx->setTileMap(map);
 			bubExs[i] = bubEx;

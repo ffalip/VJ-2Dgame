@@ -39,228 +39,228 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 	startY = 130;
 	direccio = 2;
 	jumpAngle = 50;
+	freeze = false;
 
 }
 
 void Bubble::update(int deltaTime)
 {
 
-
-	if (sprite->animation() == GRAN48)
-	{ 
-
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 24);
-
-		if (direccio == 0) {
-			velocity = -(velocity);
-			posBubble.x -= 4;
-			//cout << "right" << endl;
-		}
-		else if (direccio == 1) {
-			velocity = -(velocity);
-			posBubble.x += 4;
-			//cout << "left" << endl;
-		}
-		else if (direccio == 2)
+	if (!freeze) {
+		if (sprite->animation() == GRAN48)
 		{
-			canJump = true;
 
-			startY = posBubble.y;
-			posBubble.y -= 4;
-			jumpAngle = 0;
-			//cout << "bot" << endl;
-		}
-		else if (direccio == 3) {
-			canJump = false;
-			posBubble.y += 4;
-			//cout << "top" << endl;
+			direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 24);
 
-		}
-
-
-		posBubble.x += velocity;
-
-		if (canJump) {
-			jumpAngle += 1.5;
-			if (jumpAngle == 180)
+			if (direccio == 0) {
+				velocity = -(velocity);
+				posBubble.x -= 4;
+				//cout << "right" << endl;
+			}
+			else if (direccio == 1) {
+				velocity = -(velocity);
+				posBubble.x += 4;
+				//cout << "left" << endl;
+			}
+			else if (direccio == 2)
 			{
-				posBubble.y = startY;
+				canJump = true;
+
+				startY = posBubble.y;
+				posBubble.y -= 4;
+				jumpAngle = 0;
+				//cout << "bot" << endl;
+			}
+			else if (direccio == 3) {
+				canJump = false;
+				posBubble.y += 4;
+				//cout << "top" << endl;
+
+			}
+
+
+			posBubble.x += velocity;
+
+			if (canJump) {
+				jumpAngle += 1.5;
+				if (jumpAngle == 180)
+				{
+					posBubble.y = startY;
+				}
+				else
+				{
+					posBubble.y = int(startY - 130 * sin(3.14159f * jumpAngle / 180.f));
+				}
+			}
+
+			else
+			{
+
+				posBubble.y += 4;
+			}
+		}
+
+		if (sprite->animation() == MITJA32)
+		{
+			//cout << jumpAngle  << " " << startY << endl;
+			direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 16);
+
+			if (direccio == 0) {
+				velocity = -(velocity);
+				posBubble.x -= 2;
+				//cout << "right" << endl;
+			}
+			else if (direccio == 1) {
+				velocity = -(velocity);
+				posBubble.x += 2;
+				//cout << "left" << endl;
+			}
+			else if (direccio == 2)
+			{
+				canJump = true;
+				startY = posBubble.y;
+				posBubble.y -= 2;
+				jumpAngle = 0;
+				//cout << "bot" << endl;
+
+
+
+			}
+			else if (direccio == 3) {
+				canJump = false;
+				posBubble.y += 2;
+				//cout << "top" << endl;
+
+			}
+			posBubble.x += velocity;
+
+			if (canJump) {
+				jumpAngle += 2;
+				if (jumpAngle >= 90 && startY < 130) canJump = false;
+				if (jumpAngle == 180)
+				{
+					posBubble.y = startY;
+				}
+				else
+				{
+					posBubble.y = int(startY - (100 * startY / 150) * sin(3.14159f * jumpAngle * 150 / startY / 180.f));
+				}
+			}
+
+			else
+			{
+
+				posBubble.y += 3;
+
+			}
+		}
+
+		if (sprite->animation() == PETITA16)
+		{
+
+			direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 9);
+
+			if (direccio == 0) {
+				velocity = -(velocity);
+				posBubble.x -= 2;
+				//cout << "right" << endl;
+			}
+			else if (direccio == 1) {
+				velocity = -(velocity);
+				posBubble.x += 2;
+				//cout << "left" << endl;
+			}
+			else if (direccio == 2)
+			{
+				canJump = true;
+
+				startY = posBubble.y;
+				posBubble.y -= 2;
+				jumpAngle = 0;
+				//cout << "bot" << endl;
+			}
+			else if (direccio == 3) {
+				canJump = false;
+				posBubble.y += 2;
+				//cout << "top" << endl;
+
+			}
+
+
+			posBubble.x += velocity;
+
+			if (canJump) {
+				jumpAngle += 2.5;
+				if (jumpAngle == 180)
+				{
+					posBubble.y = startY;
+				}
+				else
+				{
+					posBubble.y = int(startY - 70 * sin(3.14159f * jumpAngle / 180.f));
+				}
+			}
+
+			else
+			{
+
+				posBubble.y += 2;
+			}
+		}
+
+		if (sprite->animation() == ENANA8)
+		{
+
+
+
+			direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 5);
+
+			if (direccio == 0) {
+				velocity = -(velocity);
+				posBubble.x -= 2;
+				//cout << "right" << endl;
+			}
+			else if (direccio == 1) {
+				velocity = -(velocity);
+				posBubble.x += 2;
+				//cout << "left" << endl;
+			}
+			else if (direccio == 2)
+			{
+				canJump = true;
+
+				startY = posBubble.y;
+				posBubble.y -= 2;
+				jumpAngle = 0;
+				//cout << "bot" << endl;
+			}
+			else if (direccio == 3) {
+				canJump = false;
+				posBubble.y += 2;
+				//cout << "top" << endl;
+
+			}
+
+			posBubble.x += velocity;
+
+			if (canJump) {
+				jumpAngle += 3.f;
+				if (jumpAngle == 180)
+				{
+					posBubble.y = startY;
+				}
+				else
+				{
+					posBubble.y = int(startY - 50 * sin(3.14159f * jumpAngle / 180.f));
+				}
 			}
 			else
 			{
-				posBubble.y = int(startY - 130 * sin(3.14159f * jumpAngle / 180.f));
+				posBubble.y += 2;
 			}
-		}
-
-		else
-		{
-			
-			posBubble.y += 4;
 		}
 	}
-
-	if (sprite->animation() == MITJA32)
-	{
-		//cout << jumpAngle  << " " << startY << endl;
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 16);
-
-		if (direccio == 0) {
-			velocity = -(velocity);
-			posBubble.x -= 2;
-			//cout << "right" << endl;
-		}
-		else if (direccio == 1) {
-			velocity = -(velocity);
-			posBubble.x += 2;
-			//cout << "left" << endl;
-		}
-		else if (direccio == 2)
-		{
-			canJump = true;
-			startY = posBubble.y;
-			posBubble.y -= 2;
-			jumpAngle = 0;
-			//cout << "bot" << endl;
-			
-			
-			
-		}
-		else if (direccio == 3) {
-			canJump = false;
-			posBubble.y += 2;
-			//cout << "top" << endl;
-
-		}
-		posBubble.x += velocity;
-
-		if (canJump) {
-			jumpAngle += 2;
-			if (jumpAngle >= 90 && startY < 130) canJump = false;
-			if (jumpAngle == 180)
-			{
-				posBubble.y = startY;
-			}
-			else
-			{
-				posBubble.y = int(startY - (100*startY/150) * sin(3.14159f * jumpAngle * 150/startY / 180.f));
-			}
-		}
-
-		else
-		{
-			
-			posBubble.y += 3;
-
-		}
-	}
-
-	if (sprite->animation() == PETITA16)
-	{
-
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 9);
-
-		if (direccio == 0) {
-			velocity = -(velocity);
-			posBubble.x -= 2;
-			//cout << "right" << endl;
-		}
-		else if (direccio == 1) {
-			velocity = -(velocity);
-			posBubble.x += 2;
-			//cout << "left" << endl;
-		}
-		else if (direccio == 2)
-		{
-			canJump = true;
-
-			startY = posBubble.y;
-			posBubble.y -= 2;
-			jumpAngle = 0;
-			//cout << "bot" << endl;
-		}
-		else if (direccio == 3) {
-			canJump = false;
-			posBubble.y += 2;
-			//cout << "top" << endl;
-
-		}
-
-
-		posBubble.x += velocity;
-
-		if (canJump) {
-			jumpAngle += 2.5;
-			if (jumpAngle == 180)
-			{
-				posBubble.y = startY;
-			}
-			else
-			{
-				posBubble.y = int(startY - 70 * sin(3.14159f * jumpAngle / 180.f));
-			}
-		}
-
-		else
-		{
-
-			posBubble.y += 2;
-		}
-	}
-
-	if (sprite->animation() == ENANA8)
-	{
-
-
-
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 5);
-
-		if (direccio == 0) {
-			velocity = -(velocity);
-			posBubble.x -= 2;
-			//cout << "right" << endl;
-		}
-		else if (direccio == 1) {
-			velocity = -(velocity);
-			posBubble.x += 2;
-			//cout << "left" << endl;
-		}
-		else if (direccio == 2)
-		{
-			canJump = true;
-
-			startY = posBubble.y;
-			posBubble.y -= 2;
-			jumpAngle = 0;
-			//cout << "bot" << endl;
-		}
-		else if (direccio == 3) {
-			canJump = false;
-			posBubble.y += 2;
-			//cout << "top" << endl;
-
-		}
-
-		posBubble.x += velocity;
-
-		if (canJump) {
-			jumpAngle += 3.f;
-			if (jumpAngle == 180)
-			{
-				posBubble.y = startY;
-			}
-			else
-			{
-				posBubble.y = int(startY - 50 * sin(3.14159f * jumpAngle / 180.f));
-			}
-		}
-
-		else
-		{
-			posBubble.y += 2;
-		}
-	}
-
-
+	
 	sprite->update(deltaTime);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 
@@ -336,5 +336,43 @@ bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, 
 	}
 	return false;
 
+
+}
+
+bool Bubble::collisionWithPlayer(const glm::ivec2& posPlayer, int heightPlayer, int widthPlayer)
+{
+	int r;
+	switch (getSize())
+	{
+	case 0:  r = 22; break;
+	case 1:  r = 14; break;
+	case 3:  r = 6; break;
+	default: r = 2; break;
+	}
+
+	for (int i = 0; i < heightPlayer; ++i)
+	{
+		// temporary variables to set edges for testing
+		float testX = posBubble.x+32;
+		float testY = posBubble.y+32;
+
+		// which edge is closest?
+		if (posBubble.x + 32 < posPlayer.x)         testX = posPlayer.x;      // test left edge
+		else if (posBubble.x + 32 > posPlayer.x + widthPlayer) testX = posPlayer.x + widthPlayer;   // right edge
+		if (posBubble.y + 32 < posPlayer.y)         testY = posPlayer.y;      // top edge
+		else if (posBubble.y + 32 > posPlayer.y + heightPlayer) testY = posPlayer.y + heightPlayer;   // bottom edge
+
+		// get distance from closest edges
+		float distX = posBubble.x + 32 - testX;
+		float distY = posBubble.y + 32 - testY;
+		float distance = sqrt((distX * distX) + (distY * distY));
+
+		// if the distance is less than the radius, collision!
+		if (distance <= r) {
+			return true;
+		}
+		return false;
+	}
+	return false;
 
 }

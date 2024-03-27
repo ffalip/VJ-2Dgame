@@ -19,6 +19,7 @@
     <ClInclude Include="Dinamita.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="Invencibility.h" />
     <ClInclude Include="PararTemps.h" />
     <ClInclude Include="SimpleText.h" />
     <ClInclude Include="TimeText.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="Dinamita.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="Invencibility.cpp" />
     <ClCompile Include="PararTemps.cpp" />
     <ClCompile Include="SimpleText.cpp" />
     <ClCompile Include="TimeText.cpp" />
