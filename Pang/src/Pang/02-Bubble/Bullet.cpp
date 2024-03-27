@@ -37,6 +37,7 @@ void Bullet::update(int deltaTime)
 	{
 		if (sprite->animation() != SHOOTING)
 		{
+			posBullet = player->getPos();
 			sprite->changeAnimation(SHOOTING);
 			sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBullet.x + 28), float(tileMapDispl.y + posBullet.y + 24)-168 ));
 			canShoot = false;
@@ -54,6 +55,7 @@ void Bullet::update(int deltaTime)
 	//if (sprite->animation() == SHOOTING) cout << current_frame << " " << block2collide << endl;
 	if (sprite->animation() == SHOOTING && map->collisionBullet(posBullet, glm::ivec2(16, 192), block2collide)) {
 		sprite->changeAnimation(IDLE);
+		posBullet = player->getPos();
 		canShoot = true;
 	}
 
@@ -76,4 +78,28 @@ void Bullet::setTileMap(TileMap* tileMap)
 void Bullet::setPlayer(Player* p)
 {
 	player = p;
+}
+
+glm::vec2 Bullet::getPos()
+{
+	return posBullet;
+}
+
+int Bullet::getHeight()
+{
+	float x = sprite->getFrame() / 70.f;
+	int h = x * 168;
+	return h;
+}
+
+bool Bullet::shooting()
+{
+	if (sprite->animation() == SHOOTING) return true;
+	else return false;
+}
+
+void Bullet::stopShooting()
+{
+	sprite->changeAnimation(IDLE);
+	canShoot = true;
 }

@@ -38,7 +38,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 	canJump = true;
 	startY = 130;
 	direccio = 2;
-	jumpAngle = 70;
+	jumpAngle = 50;
 
 }
 
@@ -101,7 +101,7 @@ void Bubble::update(int deltaTime)
 
 	if (sprite->animation() == MITJA32)
 	{
-		cout << jumpAngle  << " " << startY << endl;
+		//cout << jumpAngle  << " " << startY << endl;
 		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 16);
 
 		if (direccio == 0) {
@@ -157,7 +157,7 @@ void Bubble::update(int deltaTime)
 	if (sprite->animation() == PETITA16)
 	{
 
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 8);
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 9);
 
 		if (direccio == 0) {
 			velocity = -(velocity);
@@ -212,7 +212,7 @@ void Bubble::update(int deltaTime)
 
 
 
-		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 4);
+		direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 5);
 
 		if (direccio == 0) {
 			velocity = -(velocity);
@@ -240,7 +240,6 @@ void Bubble::update(int deltaTime)
 
 		}
 
-
 		posBubble.x += velocity;
 
 		if (canJump) {
@@ -257,8 +256,6 @@ void Bubble::update(int deltaTime)
 
 		else
 		{
-
-
 			posBubble.y += 2;
 		}
 	}
@@ -290,14 +287,54 @@ glm::ivec2 Bubble::getPosition()
 	return posBubble;
 }
 
-int Bubble::getSize() {
+int Bubble::getSize() 
+{
 	if (sprite->animation() == GRAN48) return 0;
 	if (sprite->animation() == MITJA32) return 1;
 	if (sprite->animation() == PETITA16) return 2;
 	if (sprite->animation() == ENANA8) return 3;
-
 }
 
 float Bubble::getVelocity() {
 	return velocity;
+}
+
+bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, int widthBullet) 
+{
+	int x0 = posBullet.x + 24 - widthBullet;
+	int x1 = posBullet.x + 24 + widthBullet;
+	int r;
+	switch (getSize())
+	{
+	case 0:  r = 26; break;
+	case 1:  r = 18; break;
+	case 3:  r = 10; break;
+	default: r =  6; break;
+	}
+
+	glm::ivec2 bCenter = glm::ivec2(posBubble.x + 32, posBubble.y + 32);
+
+	//cout << "->" << posBullet.y - heightBullet << " (" << bCenter.x << " " << bCenter.y << ") " << r << endl;
+	for (int i = 0; i < heightBullet + 32; ++i) 
+	{
+		float distX0 = abs(x0 - bCenter.x);
+		float distX1 = abs(x0 - bCenter.x);
+		float distY  = abs((posBullet.y - i + 32) - bCenter.y);
+
+		float dist2center0 = sqrt((distX0 * distX0) + (distY * distY));
+		float dist2center1 = sqrt((distX1 * distX1) + (distY * distY));
+
+		if (dist2center0 < r) return true;
+		if (dist2center1 < r) return true;
+	}
+	for (int i = x0; i < x1+1; ++i)
+	{
+		float distX = abs((x0 + i) - bCenter.x);
+		float distY = abs((posBullet.y + heightBullet) - bCenter.y);
+		float dist2center = sqrt((distX * distX) + (distY * distY));
+		if (dist2center < r) return true;
+	}
+	return false;
+
+
 }

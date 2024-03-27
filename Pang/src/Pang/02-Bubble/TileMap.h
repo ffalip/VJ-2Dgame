@@ -40,6 +40,7 @@ public:
 	bool collisionMoveTopCircle(const glm::ivec2& pos, float radius, int* posY) const;
 	int circleCollisionWithMap(float cx, float cy, float radius);
 	int circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh);
+	void updateArrays(const glm::vec2& minCoords, ShaderProgram& program);
 
 private:
 	bool loadLevel(const string &levelFile);
@@ -55,6 +56,7 @@ private:
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	int *map, *mapStairs;
+	bool needToUpdate;
 
 };
 

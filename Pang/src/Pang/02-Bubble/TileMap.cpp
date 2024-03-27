@@ -12,7 +12,6 @@ using namespace std;
 TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	TileMap *map = new TileMap(levelFile, minCoords, program);
-	
 	return map;
 }
 
@@ -20,6 +19,12 @@ TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoo
 TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	loadLevel(levelFile);
+	prepareArrays(minCoords, program);
+	needToUpdate = false;
+}
+
+void TileMap::updateArrays(const glm::vec2& minCoords, ShaderProgram& program)
+{
 	prepareArrays(minCoords, program);
 }
 
@@ -281,6 +286,10 @@ bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int
 	{
 		if (map[y * mapSize.x + x] != 0)
 		{
+			int tile = map[y * mapSize.x + x];
+			if (tile >= 15 && tile <= 18) {
+				map[y * mapSize.x + x] = 0;
+			}
 			return true;
 		}
 	}

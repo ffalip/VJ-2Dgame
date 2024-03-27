@@ -15,6 +15,11 @@ public:
 	void setTileMap(TileMap* tileMap);
 	void setPosition(const glm::vec2& pos);
 	void setPlayer(Player* p);
+
+	glm::vec2 getPos();
+	int getHeight();
+	bool shooting();
+	void stopShooting();
 private:
 	glm::ivec2 tileMapDispl, posBullet;
 	Texture spritesheet;

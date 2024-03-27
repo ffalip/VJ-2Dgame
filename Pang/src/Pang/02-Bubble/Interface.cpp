@@ -9,6 +9,9 @@ using namespace std;
 #define POS_LIFE_X 16 
 #define POS_LIFE_Y 212
 
+#define POS_SCORE_X 128
+#define POS_SCORE_Y 212
+
 void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
 	for (int i = 0; i < 4; ++i) 
@@ -29,11 +32,11 @@ void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 		lifeDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_LIFE_X + i * 20, POS_LIFE_Y));
 		lifeDisplay[i]->update(16, 14);
 	}
-	vector<int> chars = textReader("0000");
+	vector<int> chars = textReader("score00000");
 	for (int i = 0; i < chars.size(); ++i)
 	{
 		SimpleText* aux = new SimpleText;
-		aux->init(tileMapPos, shaderProgram, glm::ivec2(16 * i, 32));
+		aux->init(tileMapPos, shaderProgram, glm::ivec2(POS_SCORE_X + 15 * i, POS_SCORE_Y));
 		aux->update(16, chars[i]);
 		textDisplay.push_back(aux);
 	}
@@ -62,7 +65,7 @@ void Interface::update(int deltaTime)
 	vector<int> chars = textReader(to_string(time));
 	for (int i = chars.size()-1; i > 0; --i)
 	{
-		textDisplay[i]->update(deltaTime, chars[i]);
+		//textDisplay[i]->update(deltaTime, chars[i]);
 	}
 
 

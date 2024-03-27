@@ -105,7 +105,7 @@ void Scene::init()
 void Scene::update(int deltaTime)
 {
 	if (Game::instance().getKey(GLFW_KEY_X)) {
-		peta(bubblesActives, bubbles, bubExs);
+		peta(bubblesActives, bubbles, bubExs, 0);
 	}
 	if (player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16)) {
 		petaTot(bubblesActives, bubbles, bubExs);
@@ -115,11 +115,18 @@ void Scene::update(int deltaTime)
 	}
 	currentTime += deltaTime;
 	for (int i = 0; i < 15; ++i) {
-		if (bubblesActives[i]) bubbles[i]->update(deltaTime);
+		if (bubblesActives[i]) {
+			bubbles[i]->update(deltaTime);
+			if (bullet->shooting() && bubbles[i]->collisionWithBullet(bullet->getPos(), bullet->getHeight(), 8)) {
+				peta(bubblesActives, bubbles, bubExs, i);
+				bullet->stopShooting();
+			}
+		}
 	}
 	for (int i = 0; i < 15; ++i) {
 		bubExs[i]->update(deltaTime);
 	}
+
 	bullet->update(deltaTime);
 	player->update(deltaTime);
 	timeDisp->update(deltaTime);
@@ -138,6 +145,7 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	bg->render();
+	map->updateArrays(glm::vec2(16, 16), texProgram);
 	map->render();
 	for (int i = 0; i < 15; ++i) {
 		if (bubblesActives[i]) bubbles[i]->render();	
@@ -185,8 +193,8 @@ void Scene::initShaders()
 	fShader.free();
 }
 
-void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs) {
-	for (int i = 0; i < bubblesActives.size(); ++i) {
+void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs, int i) {
+	//for (int i = 0; i < bubblesActives.size(); ++i) {
 		if (bubblesActives[i]) {
 
 			bubEx = new BubbleExplosions();
@@ -215,12 +223,12 @@ void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<
 				bubble->setTileMap(map);
 				bubbles[(i + 1) * 2] = bubble;
 				bubblesActives[(i + 1) * 2] = true;
-				break;
+				//break;
 				
 			}
-			break;
+			//break;
 		}
-	}
+	//}
 }
 
 void Scene::petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs) {
