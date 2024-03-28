@@ -40,7 +40,7 @@ void Invencibility::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProg
 	spriteAura->addKeyframe(AURA, glm::vec2(0.5f, 0.f));
 
 	spriteAura->changeAnimation(AURA);
-	aplied = true;
+	aplied = false;
 }
 
 void Invencibility::update(int deltaTime)
@@ -63,8 +63,8 @@ void Invencibility::update(int deltaTime)
 
 void Invencibility::render()
 {
-	if(aplied) spriteAura->render();
-	spriteIdle->render();
+	if (aplied) spriteAura->render();
+	if (!aplied) spriteIdle->render();
 }
 
 void Invencibility::setTileMap(TileMap* tileMap)

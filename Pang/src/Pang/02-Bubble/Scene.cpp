@@ -132,10 +132,9 @@ void Scene::update(int deltaTime)
 		ptAct = false;
 	}
 
-	if (invAct && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
+	if (invAct  && !inv->getAplied() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
 		inv->setAplied();
 		invAplied = inv->getAplied();
-		
 	}
 
 	if (activarContadorFreeze) {
