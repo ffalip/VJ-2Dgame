@@ -4,8 +4,8 @@
 
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include "Sprite.h"
 #include "ShaderProgram.h"
-#include "DestroyTileAnim.h"
 
 
 // Class Tilemap is capable of loading a tile map from a text file in a very
