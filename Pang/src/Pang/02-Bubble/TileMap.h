@@ -55,7 +55,6 @@ private:
 	GLuint vao, vaoS;
 	GLuint vbo, vboS;
 	GLint posLocation, texCoordLocation, posLocationStairs, texCoordLocationStairs;
-	ShaderProgram texProgram;
 	int nTiles, nTilesSt, layers;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSize, blockSize;
