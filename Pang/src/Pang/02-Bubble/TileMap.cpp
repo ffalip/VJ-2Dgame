@@ -376,7 +376,7 @@ bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int
 	y = (pos.y / tileSize) - b2c - 1;
 	for (int x = x0; x <= x1; x++)
 	{
-		if (mapStairs[y * mapSize.x + x] != 0)
+		if (map[y * mapSize.x + x] != 0)
 		{
 			int tile = map[y * mapSize.x + x];
 			if (tile >= 15 && tile <= 18) {
