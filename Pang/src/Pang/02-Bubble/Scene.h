@@ -62,6 +62,8 @@ private:
 	bool activarContadorFreeze;
 	bool dinAct, ptAct, invAct, bananaAct;
 	bool invAplied;
+	bool guanyat;
+	bool perdut;
 };
 
 

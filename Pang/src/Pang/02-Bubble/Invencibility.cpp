@@ -41,6 +41,7 @@ void Invencibility::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProg
 
 	spriteAura->changeAnimation(AURA);
 	aplied = false;
+	getInv = true;
 }
 
 void Invencibility::update(int deltaTime)
@@ -64,7 +65,7 @@ void Invencibility::update(int deltaTime)
 void Invencibility::render()
 {
 	if (aplied) spriteAura->render();
-	if (!aplied) spriteIdle->render();
+	if (getInv) spriteIdle->render();
 }
 
 void Invencibility::setTileMap(TileMap* tileMap)
@@ -90,13 +91,27 @@ void Invencibility::setPlayer(Player* play)
 	spriteAura->setPosition(glm::vec2((player->getPos().x ), (player->getPos().y)));
 }
 
-void Invencibility::setAplied() {
+void Invencibility::setApliedTrue() {
 	aplied = true;
+}
+void Invencibility::setApliedFalse() {
+	aplied = false;
+}
+void Invencibility::setGetInvTrue() {
+	getInv = true;
+}
+void Invencibility::setGetInvFalse() {
+	getInv = false;
 }
 
 bool Invencibility::getAplied() {
 	return aplied;
 }
+
+bool Invencibility::getGetInv() {
+	return getInv;
+}
+
 
 glm::ivec2 Invencibility::getPosition()
 {

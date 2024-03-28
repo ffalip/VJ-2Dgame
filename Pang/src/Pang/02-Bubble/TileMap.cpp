@@ -147,6 +147,7 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 		for(int i=0; i<mapSize.x; i++)
 		{
 			tile = map[j * mapSize.x + i];
+			
 			tileStairs = mapStairs[j * mapSize.x + i];
 			if (tile != 0)
 			{
@@ -246,7 +247,7 @@ bool TileMap::collisionMoveLeftStairs(const glm::ivec2& pos, const glm::ivec2& s
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for (int y = y0; y <= y1; y++)
 	{
-		if (mapStairs[y * mapSize.x + x] != 0) {
+		if (mapStairs[y * mapSize.x + x] >= 21 && mapStairs[y * mapSize.x + x] <= 23) {
 			return true;
 		}
 			
@@ -280,7 +281,7 @@ bool TileMap::collisionMoveRightStairs(const glm::ivec2& pos, const glm::ivec2& 
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for (int y = y0; y <= y1; y++)
 	{
-		if (mapStairs[y * mapSize.x + x] != 0) {
+		if (mapStairs[y * mapSize.x + x] >= 21 && mapStairs[y * mapSize.x + x] <= 23) {
 			return true;
 		}
 			
@@ -320,7 +321,7 @@ bool TileMap::collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& s
 	y = (pos.y + size.y - 1) / tileSize;
 	for (int x = x0; x <= x1; x++)
 	{
-		if (mapStairs[y * mapSize.x + x] != 0)
+		if (mapStairs[y * mapSize.x + x] >= 21 && mapStairs[y * mapSize.x + x] <= 23)
 		{
 			if (*posY - tileSize * y + size.y <= 4)
 			{
@@ -343,7 +344,7 @@ bool TileMap::collisionMoveUpStairs(const glm::ivec2& pos, const glm::ivec2& siz
 
 	for (int x = x0; x <= x1; x++)
 	{
-		if (mapStairs[y * mapSize.x + x] != 0)
+		if (mapStairs[y * mapSize.x + x] >= 21 && mapStairs[y * mapSize.x + x] <= 23)
 		{
 			if (*posY + size.y - tileSize * y <= 4) // Cambio aquí para detectar colisiones desde arriba
 			{

@@ -18,8 +18,12 @@ public:
 	glm::ivec2 getPosition();
 	void setAnimation(int anim);
 	void setPlayer(Player* play);
-	void setAplied();
+	void setApliedTrue();
+	void setApliedFalse();
+	void setGetInvTrue();
+	void setGetInvFalse();
 	bool getAplied();
+	bool getGetInv();
 
 private:
 	glm::ivec2 tileMapDispl, posInv;
@@ -30,7 +34,7 @@ private:
 	Sprite* spriteAura;
 	Player* player;
 	TileMap* map;
-	bool aplied;
+	bool aplied, getInv;
 };
 
 #endif // _INVENCIBILITY_INCLUDE

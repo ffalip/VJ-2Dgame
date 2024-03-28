@@ -12,7 +12,7 @@
 
 enum PlayerAnims
 {
-	STAND_RIGHT, STAND_LEFT, MOVE_LEFT, MOVE_RIGHT, FIRE_RIGHT, FIRE_LEFT, CLIMB_UP, CLIMB_DOWN, TOP_STAIRS, HIT
+	STAND_RIGHT, STAND_LEFT, MOVE_LEFT, MOVE_RIGHT, FIRE_RIGHT, FIRE_LEFT, CLIMB_UP, CLIMB_DOWN, TOP_STAIRS, HIT, CLIMB_IDLE
 };
 
 
@@ -21,7 +21,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	bJumping = false;
 	spritesheet.loadFromFile("images/PlayerInGame.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.1, 1.f/6.f), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(6);
+	sprite->setNumberAnimations(12);
 
 	sprite->setAnimationSpeed(STAND_RIGHT, 8);
 	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.4f, 1.f / 6.f));
@@ -50,27 +50,50 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->addKeyframe(FIRE_LEFT, glm::vec2(0.1f, 5.f / 6.f));
 	
 	sprite->setAnimationSpeed(CLIMB_UP, 8);
-	sprite->addKeyframe(CLIMB_UP, glm::vec2(0.6f, 1.f / 6.f));
+	sprite->addKeyframe(CLIMB_UP, glm::vec2(0.2f, 1.f / 6.f));
+	sprite->addKeyframe(CLIMB_UP, glm::vec2(0.3f, 1.f / 6.f));
 
 	sprite->setAnimationSpeed(CLIMB_DOWN, 8);
-	sprite->addKeyframe(CLIMB_DOWN, glm::vec2(0.2f, 1.f / 6.f));
+	sprite->addKeyframe(CLIMB_DOWN, glm::vec2(0.f, 1.f / 6.f));
+	sprite->addKeyframe(CLIMB_DOWN, glm::vec2(0.1f, 1.f / 6.f));
+
+	sprite->setAnimationSpeed(CLIMB_IDLE, 1);
+	sprite->addKeyframe(CLIMB_IDLE, glm::vec2(0.f, 1.f / 6.f));
 
 	sprite->setAnimationSpeed(HIT, 1);
-	sprite->addKeyframe(HIT, glm::vec2(0.2f, 3.f / 6.f));
+	sprite->addKeyframe(HIT, glm::vec2(0.2f, 1.f / 6.f));
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	fire_cooldown = 0;
 	shooting = 0;
+	frames = 0;
 }
 
 void Player::update(int deltaTime)
 {
 	sprite->update(deltaTime);
 	if (map->collisionMoveLeftStairs(posPlayer, glm::ivec2(32, 32)) || map->collisionMoveRightStairs(posPlayer, glm::ivec2(32, 32))) {
-		posPlayer.y -= 4;
-		cout << "PUJAAA" << endl;
+		if (Game::instance().getKey(GLFW_KEY_UP)) {
+			if(sprite->animation() != CLIMB_UP) sprite->changeAnimation(CLIMB_UP);
+			posPlayer.y -= 2;
+		} 
+		else if (Game::instance().getKey(GLFW_KEY_DOWN)) {
+			if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
+			posPlayer.y += 2;
+		} 
+		else {
+			sprite->changeAnimation(CLIMB_IDLE);
+		}
+	}
+	else if (map->collisionMoveDownStairs(posPlayer, glm::ivec2(32, 34), &posPlayer.y)) {
+		
+		if (Game::instance().getKey(GLFW_KEY_DOWN )) {
+			if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
+			posPlayer.y += 16;
+		}
+		
 	}
 	
 	if (Game::instance().getKey(GLFW_KEY_S) && fire_cooldown == 0)
@@ -140,19 +163,18 @@ void Player::update(int deltaTime)
 		*/
 	}
 	
-	else
+	if (!(map->collisionMoveLeftStairs(posPlayer, glm::ivec2(32, 32)) || map->collisionMoveRightStairs(posPlayer, glm::ivec2(32, 32))))
 	{
 		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+	}
+	if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+	{
+		if (Game::instance().getKey(GLFW_KEY_UP))
 		{
-			if(Game::instance().getKey(GLFW_KEY_UP))
-			{
-				bJumping = true;
-				jumpAngle = 0;
-				startY = posPlayer.y;
-			}
+			bJumping = true;
+			jumpAngle = 0;
+			startY = posPlayer.y;
 		}
-
 	}
 	
 	if (fire_cooldown > 0) --fire_cooldown;

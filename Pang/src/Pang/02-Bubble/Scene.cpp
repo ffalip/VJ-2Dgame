@@ -31,8 +31,8 @@ void Scene::init()
 {
 	initShaders();
 
-	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
-	bg = Background::createBackground("images/bg2.png", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(16, 16), texProgram);
+	bg = Background::createBackground("images/bg1.png", glm::vec2(16, 16), texProgram);
 
 	for (int i = 0; i < 15; ++i) {
 		bubble = new Bubble();
@@ -119,6 +119,23 @@ void Scene::init()
 
 void Scene::update(int deltaTime)
 {
+	if (timeDisp->getLife() <= 0) {
+		perdut = true;
+		//cout << "perdut" << endl;
+	}
+	if (!guanyat) {
+		bool algunBubbleActive = false;
+		for (int i = 0; i < bubblesActives.size(); ++i) {
+			if (bubblesActives[i]) {
+				algunBubbleActive = true;
+			}
+		}
+		if (algunBubbleActive) guanyat = false;
+		else {
+			guanyat = true;
+			cout << "guanyaaaaaat" << endl;
+		} 
+	}
 	if (Game::instance().getKey(GLFW_KEY_X)) {
 		peta(bubblesActives, bubbles, bubExs, 0);
 	}
@@ -137,8 +154,9 @@ void Scene::update(int deltaTime)
 		ptAct = false;
 	}
 
-	if (invAct  && !inv->getAplied() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
-		inv->setAplied();
+	if (invAct  && inv->getGetInv() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
+		inv->setApliedTrue();
+		inv->setGetInvFalse();
 		invAplied = inv->getAplied();
 	}
 
@@ -189,8 +207,12 @@ void Scene::update(int deltaTime)
 					inv->setPlayer(player);
 				}
 			}
-			if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32) && !(invAplied)) {
-				timeDisp->updateLife(timeDisp->getLife() - 1);
+			if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32)) {
+				if (!invAplied) timeDisp->updateLife(timeDisp->getLife() - 1);
+				else {
+					invAplied = false;
+					inv->setApliedFalse();
+				}
 			}
 		}
 	}
