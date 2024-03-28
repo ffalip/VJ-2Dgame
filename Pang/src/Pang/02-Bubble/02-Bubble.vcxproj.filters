@@ -63,6 +63,15 @@
     <ClInclude Include="SimpleText.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Dinamita.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="PararTemps.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="destroyTileAnim.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -108,9 +117,18 @@
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="BubbleExplosions.cpp">
-	  <Filter>Archivos de código fuente</Filter>
-	</ClCompile>
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
     <ClCompile Include="SimpleText.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Dinamita.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="PararTemps.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="destroyTileAnim.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>
