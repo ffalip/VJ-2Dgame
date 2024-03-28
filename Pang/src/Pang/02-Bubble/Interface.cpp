@@ -3,17 +3,31 @@
 
 using namespace std;
 
-#define POS_TIME_X 264
-#define POS_TIME_Y 16
+#define POS_TIME_X 260
+#define POS_TIME_Y 14
 
 #define POS_LIFE_X 16 
-#define POS_LIFE_Y 212
+#define POS_LIFE_Y 220
 
-#define POS_SCORE_X 128
-#define POS_SCORE_Y 212
+#define POS_TEXT_X 16
+#define POS_TEXT_Y 210
+
+#define POS_SCORE_X 104
+#define POS_SCORE_Y 210
+
+#define POS_ICOIN_X 300
+#define POS_ICOIN_Y 224
+
+#define POS_STAGE_X 176
+#define POS_STAGE_Y 224
 
 void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
+	stage = 1;
+	time = 100;
+	life = 4;
+	frames = 0;
+
 	for (int i = 0; i < 4; ++i) 
 	{
 		timeText[i] = new TimeText;
@@ -32,18 +46,34 @@ void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 		lifeDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_LIFE_X + i * 20, POS_LIFE_Y));
 		lifeDisplay[i]->update(16, 14);
 	}
-	vector<int> chars = textReader("score00000");
-	for (int i = 0; i < chars.size(); ++i)
+	vector<int> chars1 = textReader("PLAYER-1");
+	for (int i = 0; i < 8; ++i)
 	{
-		SimpleText* aux = new SimpleText;
-		aux->init(tileMapPos, shaderProgram, glm::ivec2(POS_SCORE_X + 15 * i, POS_SCORE_Y));
-		aux->update(16, chars[i]);
-		textDisplay.push_back(aux);
+		playerTextDisplay[i] = new SimpleText;
+		playerTextDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_TEXT_X + i * 7, POS_TEXT_Y));
+		playerTextDisplay[i]->update(16, chars1[i]);
 	}
-
-	time = 100;
-	life = 4;
-	frames = 0;
+	vector<int> chars2 = textReader("000000");
+	for (int i = 0; i < 6; ++i)
+	{
+		scoreDisplay[i] = new SimpleText;
+		scoreDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_SCORE_X + i * 7, POS_SCORE_Y));
+		scoreDisplay[i]->update(16, chars2[i]);
+	}
+	vector<int> chars3 = textReader("INSERT COIN");
+	for (int i = 0; i < 11; ++i)
+	{
+		insertCoinDisplay[i] = new SimpleText;
+		insertCoinDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_ICOIN_X + i * 7, POS_ICOIN_Y));
+		insertCoinDisplay[i]->update(16, chars3[i]);
+	}
+	vector<int> chars4 = textReader("STAGE-" + to_string(stage));
+	for (int i = 0; i < 7; ++i)
+	{
+		stageDisplay[i] = new SimpleText;
+		stageDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_STAGE_X + i * 7, POS_STAGE_Y));
+		stageDisplay[i]->update(16, chars4[i]);
+	}
 }
 
 void Interface::update(int deltaTime) 
@@ -75,6 +105,10 @@ void Interface::updateLife(int newLife) {
 	life = newLife;
 }
 
+void Interface::updateStage(int newStage) {
+	stage = newStage;
+}
+
 int Interface::getLife() {
 	return life;
 }
@@ -90,8 +124,19 @@ void Interface::render()
 	for (int i = 0; i < life; ++i) {
 		lifeDisplay[i]->render();
 	}
-	for (int i = 0; i < textDisplay.size(); ++i) {
-		textDisplay[i]->render();
+	for (int i = 0; i < 8; ++i) {
+		playerTextDisplay[i]->render();
+	}
+	for (int i = 0; i < 6; ++i) {
+		scoreDisplay[i]->render();
+	}
+	for (int i = 0; i < 7; ++i) {
+		stageDisplay[i]->render();
+	}
+	if (time % 2 == 0) {
+		for (int i = 0; i < 11; ++i) {
+			insertCoinDisplay[i]->render();
+		}
 	}
 }
 
@@ -100,12 +145,17 @@ vector<int> Interface::textReader(const string& txt)
 	vector<int> chars;
 	for (int i = 0; i < txt.length(); ++i) {
 		if (txt[i] == ' ')
-			chars.push_back(0);
+			chars.push_back(62);
+		else if (txt[i] == '-')
+			chars.push_back(64);
+		else if (txt[i] == ':')
+			chars.push_back(63);
 		else if (txt[i] >= 'a')
-			chars.push_back(int(txt[i] - 'a'));
+			chars.push_back(int(txt[i] - 'a') + 26);
+		else if (txt[i] >= 'A')
+			chars.push_back(int(txt[i] - 'A'));
 		else
-			chars.push_back(int(txt[i] - '0') + 26);
-		//cout << txt[i] << "-" << chars[i] << " ";
+			chars.push_back(int(txt[i] - '0') + 52);
 	}
 	return chars;
 }
