@@ -29,63 +29,82 @@ Scene::~Scene()
 
 void Scene::init()
 {
+	idLevel = 1;
+	
 	initShaders();
 
-	map = TileMap::createTileMap("levels/lvl" + std::to_string(idLevel) + ".txt", glm::vec2(16, 16), texProgram);
-	bg = Background::createBackground("images/bg1.png", glm::vec2(16, 16), texProgram);
+	if (idLevel == 1 || idLevel == 3) {
+		map = TileMap::createTileMap("levels/lvl" + std::to_string(idLevel) + ".txt", glm::vec2(16, 16), texProgram);
+		bg = Background::createBackground("images/bg" + std::to_string(idLevel) + ".png", glm::vec2(16, 16), texProgram);
+		for (int i = 0; i < 16; ++i) {
+			bubble = new Bubble();
+			if (i == 1) {
+				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
+				bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 4 * map->getTileSize()));
+				bubble->setTileMap(map);
+			}
+			bubbles.push_back(bubble);
+		}
+		for (int i = 0; i < 16; ++i) {
+			bubblesActives.push_back(false);
+		}
+		bubblesActives[1] = true;
 
-	for (int i = 0; i < 15; ++i) {
-		bubble = new Bubble();
-		
-		if (i == 0) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
-			bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 10 * map->getTileSize()));
-			bubble->setTileMap(map);
+		for (int i = 0; i < 16; ++i) {
+			bubEx = new BubbleExplosions();
+			bubEx->init(glm::ivec2(16, 16), texProgram);
+			bubEx->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubEx->setTileMap(map);
+			bubExs.push_back(bubEx);
 		}
-		else if (i > 0 && i <= 2) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 1, 1.f, 130);
-			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
-			bubble->setTileMap(map);
-		}
-		else if (i >= 3 && i <= 6) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 2, 1.f, 130);
-			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
-			bubble->setTileMap(map);
-		}
-		else {
-			bubble->init(glm::ivec2(16, 16), texProgram, 3, 1.f, 130);
-			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
-			bubble->setTileMap(map);
-		}
-		
-		bubbles.push_back(bubble);
 	}
-	for (int i = 0; i < 15; ++i) {
-		bubblesActives.push_back(false);
-	}
-	bubblesActives[0] = true;
 
-	for (int i = 0; i < 15; ++i) {
-		bubEx = new BubbleExplosions();
-		bubEx->init(glm::ivec2(16, 16), texProgram);
-		bubEx->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
-		bubEx->setTileMap(map);
-		bubExs.push_back(bubEx);
+	else if (idLevel == 2) {
+		map = TileMap::createTileMap("levels/lvl" + std::to_string(idLevel) + ".txt", glm::vec2(16, 16), texProgram);
+		bg = Background::createBackground("images/bg" + std::to_string(idLevel) + ".png", glm::vec2(16, 16), texProgram);
+		for (int i = 0; i < 32; ++i) {
+			bubble = new Bubble();
+
+			if (i == 2) {
+				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
+				bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 10 * map->getTileSize()));
+				bubble->setTileMap(map);
+			}
+			else if (i == 3) {
+				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
+				bubble->setPosition(glm::vec2(40 * map->getTileSize(), 10 * map->getTileSize()));
+				bubble->setTileMap(map);
+			}
+
+			bubbles.push_back(bubble);
+		}
+		
+		for (int i = 0; i < 32; ++i) {
+			bubblesActives.push_back(false);
+		}
+		bubblesActives[2] = true;
+		bubblesActives[3] = true;
+
+		for (int i = 0; i < 32; ++i) {
+			bubEx = new BubbleExplosions();
+			bubEx->init(glm::ivec2(16, 16), texProgram);
+			bubEx->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
+			bubEx->setTileMap(map);
+			bubExs.push_back(bubEx);
+		}
 	}
+
 
 	bullet = new Bullet();
 	bullet->init(glm::ivec2(16, 16), texProgram);
 	bullet->setTileMap(map);
 
-
-
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
+	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), 20 * map->getTileSize()));
 	player->setTileMap(map);
 
 	bullet->setPlayer(player);
-	//inv->setPlayer(player);
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 
@@ -97,8 +116,8 @@ void Scene::init()
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
-	contadorFreeze = 0;
-	activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
+	contadorFreeze = contadorInvencibilitat = 0;
+	activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
 }
 
 void Scene::update(int deltaTime)
@@ -118,6 +137,7 @@ void Scene::update(int deltaTime)
 		else {
 			guanyat = true;
 			cout << "guanyaaaaaat" << endl;
+			resetScene();
 		} 
 	}
 	if (Game::instance().getKey(GLFW_KEY_X)) {
@@ -143,6 +163,10 @@ void Scene::update(int deltaTime)
 		inv->setGetInvFalse();
 		invAplied = inv->getAplied();
 	}
+	if (activarContadorInvencibilitat) {
+		++contadorInvencibilitat;
+		if (contadorInvencibilitat > 120) activarContadorInvencibilitat = false;
+	}
 
 	if (bananaAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
 		timeDisp->updateScore(50);
@@ -162,7 +186,7 @@ void Scene::update(int deltaTime)
 	}
 
 	currentTime += deltaTime;
-	for (int i = 0; i < 15; ++i) {
+	for (int i = 0; i < bubblesActives.size(); ++i) {
 		if (bubblesActives[i]) {
 			bubbles[i]->update(deltaTime);
 			if (bullet->shooting() && bubbles[i]->collisionWithBullet(bullet->getPos(), bullet->getHeight(), 8)) {
@@ -192,16 +216,26 @@ void Scene::update(int deltaTime)
 				}
 			}
 			if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32)) {
-				if (!invAplied) timeDisp->updateLife(timeDisp->getLife() - 1);
+				if (!invAplied && ( !activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
+					//timeDisp->updateLife(timeDisp->getLife() - 1);
+					resetScene();
+				} 
+				else if (activarContadorInvencibilitat) {
+					invAplied = false;
+					inv->setApliedFalse();
+					activarContadorInvencibilitat = true;
+				}
 				else {
 					invAplied = false;
 					inv->setApliedFalse();
+					activarContadorInvencibilitat = true;
+					contadorInvencibilitat = 0;
 				}
 			}
 		}
 	}
 
-	for (int i = 0; i < 15; ++i) {
+	for (int i = 0; i < bubExs.size(); ++i) {
 		bubExs[i]->update(deltaTime);
 	}
 
@@ -297,15 +331,15 @@ void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<
 				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY());
 				bubble->setPosition(glm::ivec2(bubbles[i] -> getPosition().x + 4, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
-				bubbles[(i + 1) * 2 - 1] = bubble;
-				bubblesActives[(i + 1) * 2 - 1] = true;
+				bubbles[i * 2] = bubble;
+				bubblesActives[i * 2] = true;
 				
 				bubble = new Bubble();
 				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY());
 				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - 4, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
-				bubbles[(i + 1) * 2] = bubble;
-				bubblesActives[(i + 1) * 2] = true;
+				bubbles[i * 2+1] = bubble;
+				bubblesActives[i * 2+1] = true;
 				//break;
 				
 			}
@@ -329,20 +363,20 @@ void Scene::petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vect
 			bubExs[i]->setAnimation(bubbles[i]->getSize());
 
 
-			if ((i + 1) * 2 < bubblesActives.size()) {
+			if ((i  * 2) + 1 < bubblesActives.size()) {
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY()- 20);
-				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x + rand() % 20, bubbles[i]->getPosition().y));
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY()+10);
+				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x + rand() % 10, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
-				bubbles[(i + 1) * 2 - 1] = bubble;
-				bubblesActives[(i + 1) * 2 - 1] = true;
+				bubbles[i * 2] = bubble;
+				bubblesActives[i * 2] = true;
 
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY()-20);
-				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - rand()%20, bubbles[i]->getPosition().y));
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY()+10);
+				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - rand()%10, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
-				bubbles[(i + 1) * 2] = bubble;
-				bubblesActives[(i + 1) * 2] = true;
+				bubbles[(i * 2)+1] = bubble;
+				bubblesActives[(i * 2)+1] = true;
 				
 
 			}
@@ -350,5 +384,47 @@ void Scene::petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vect
 	}
 }
 
+void Scene::resetScene() {
+	// Eliminar los objetos actuales
+	if (map != nullptr) {
+		delete map;
+		map = nullptr;
+	}
+	if (player != nullptr) {
+		delete player;
+		player = nullptr;
+	}
+	for (auto& bubble : bubbles) {
+		delete bubble;
+	}
+	bubbles.clear();
+	for (auto& bubEx : bubExs) {
+		delete bubEx;
+	}
+	bubExs.clear();
+	delete bullet;
+	bullet = nullptr;
+	delete fd;
+	fd = nullptr;
+
+	timeDisp->updateLife(timeDisp->getLife() - 1);
+	timeDisp->reset();
+
+	delete din;
+	din = nullptr;
+	delete pt;
+	pt = nullptr;
+	delete inv;
+	inv = nullptr;
+
+	// Reiniciar variables de estado
+	guanyat = perdut = false;
+	bubblesActives.clear();
+	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = bananaAct = activarContadorInvencibilitat =  false;
+	contadorFreeze = contadorInvencibilitat =  0;
+
+	// Volver a inicializar la escena
+	init();
+}
 
 

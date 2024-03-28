@@ -17,6 +17,7 @@ public:
 	void updateLife(int newLife);
 	void updateStage(int newStage);
 	void updateScore(int addScore);
+	void reset();
 	int getScore();
 
 private:

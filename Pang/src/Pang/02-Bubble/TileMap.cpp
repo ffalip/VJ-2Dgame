@@ -352,7 +352,7 @@ bool TileMap::collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& s
 
 	x0 = (pos.x + OFFSET) / tileSize;
 	x1 = (pos.x + size.x - OFFSET - 1) / tileSize;
-	y = (pos.y + size.y - 1) / tileSize;
+	y = (pos.y + size.y -1) / tileSize;
 	for (int x = x0; x <= x1; x++)
 	{
 		if (mapStairs[y * mapSize.x + x] >= 21 && mapStairs[y * mapSize.x + x] <= 23)
@@ -364,6 +364,7 @@ bool TileMap::collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& s
 			}
 		}
 	}
+	return false;
 }
 
 bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int b2c)

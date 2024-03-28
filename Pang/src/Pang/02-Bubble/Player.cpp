@@ -87,11 +87,13 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(CLIMB_IDLE);
 		}
 	}
-	else if (map->collisionMoveDownStairs(posPlayer, glm::ivec2(32, 34), &posPlayer.y)) {
-		
+	else if (map->collisionMoveDownStairs(posPlayer, glm::ivec2(32, 33), &posPlayer.y)) {
 		if (Game::instance().getKey(GLFW_KEY_DOWN )) {
+
 			if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
-			posPlayer.y += 16;
+			
+			posPlayer.y += 8;
+			
 		}
 		
 	}

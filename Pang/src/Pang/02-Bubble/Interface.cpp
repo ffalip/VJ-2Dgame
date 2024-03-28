@@ -163,6 +163,12 @@ int Interface::getScore() {
 	return score;
 }
 
+void Interface::reset() {
+	stage = 1;
+	time = 100;
+	frames = 0;
+}
+
 vector<int> Interface::textReader(const string& txt)
 {
 	vector<int> chars;

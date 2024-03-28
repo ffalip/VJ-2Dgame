@@ -36,7 +36,7 @@ private:
 	void initShaders();
 	void peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs, int i);
 	void petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs);
-
+	void resetScene();
 private:
 	Background* bg;
 	TileMap *map;
@@ -58,8 +58,8 @@ private:
 	int f;
 	int t;
 	int idLevel;
-	int contadorFreeze;
-	bool activarContadorFreeze;
+	int contadorFreeze, contadorInvencibilitat;
+	bool activarContadorFreeze, activarContadorInvencibilitat;
 	bool dinAct, ptAct, invAct, bananaAct;
 	bool invAplied;
 	bool guanyat;
