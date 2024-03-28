@@ -161,7 +161,7 @@ void Scene::update(int deltaTime)
 	}
 
 	if (bananaAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
-		timeDisp->setScore(50);
+		timeDisp->updateScore(50);
 		bananaAct = false;
 		cout << timeDisp->getScore() << endl;
 	}

@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include "Sprite.h"
 #include "ShaderProgram.h"
 
 
@@ -25,7 +26,7 @@ public:
 
 	~TileMap();
 
-	void render() const;
+	void render();
 	void free();
 	
 	int getTileSize() const { return tileSize; }
@@ -35,9 +36,13 @@ public:
 	bool collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	bool collisionMoveRightStairs(const glm::ivec2& pos, const glm::ivec2& size) const;
 	bool collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
+	bool collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int b2c);
+	bool collisionMoveRightCircle(const glm::ivec2& pos, float radius) const;
+	bool collisionMoveLeftCircle(const glm::ivec2& pos, float radius) const;
+	bool collisionMoveDownCircle(const glm::ivec2& pos, float radius, int* posY) const;
+	bool collisionMoveTopCircle(const glm::ivec2& pos, float radius, int* posY) const;
 	bool collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
 	bool collisionMoveUpStairs(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
-	bool collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int b2c) const;
 	int circleCollisionWithMap(float cx, float cy, float radius);
 	int circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh);
 	void updateArrays(const glm::vec2& minCoords, ShaderProgram& program);
@@ -50,14 +55,18 @@ private:
 	GLuint vao, vaoS;
 	GLuint vbo, vboS;
 	GLint posLocation, texCoordLocation, posLocationStairs, texCoordLocationStairs;
+	ShaderProgram texProgram;
 	int nTiles, nTilesSt, layers;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSize, blockSize;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	int *map, *mapStairs;
-	bool needToUpdate;
+	bool needToUpdate, visibleDt;
 
+	Texture spritesheet;
+	Sprite* sprite;
+	int anim;
 };
 
 

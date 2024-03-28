@@ -21,6 +21,32 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 	loadLevel(levelFile);
 	prepareArrays(minCoords, program);
 	needToUpdate = false;
+	texProgram = program;
+
+	spritesheet.loadFromFile("images/destroyTile.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(32, 8), glm::vec2(1.f / 6.f, 0.5f), &spritesheet, &program);
+	sprite->setNumberAnimations(3);
+
+	sprite->setAnimationSpeed(0, 8);
+	sprite->addKeyframe(0, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(1.f / 6.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(2.f / 6.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(3.f / 6.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(4.f / 6.f, 0.f));
+	sprite->addKeyframe(0, glm::vec2(5.f / 6.f, 0.f));
+
+	sprite->setAnimationSpeed(1, 8);
+	sprite->addKeyframe(1, glm::vec2(0.f, 0.5f));
+	sprite->addKeyframe(1, glm::vec2(1.f / 6.f, 0.5f));
+	sprite->addKeyframe(1, glm::vec2(2.f / 6.f, 0.5f));
+	sprite->addKeyframe(1, glm::vec2(3.f / 6.f, 0.5f));
+	sprite->addKeyframe(1, glm::vec2(4.f / 6.f, 0.5f));
+	sprite->addKeyframe(1, glm::vec2(5.f / 6.f, 0.5f));
+
+	sprite->setAnimationSpeed(2, 8);
+	sprite->addKeyframe(2, glm::vec2(5.f/6.f, 0.f));
+
+	sprite->changeAnimation(2);
 }
 
 void TileMap::updateArrays(const glm::vec2& minCoords, ShaderProgram& program)
@@ -37,7 +63,7 @@ TileMap::~TileMap()
 }
 
 
-void TileMap::render() const
+void TileMap::render() 
 {
 	glEnable(GL_TEXTURE_2D);
 
@@ -56,6 +82,16 @@ void TileMap::render() const
 
 	glDisable(GL_TEXTURE_2D);
 	
+	if (visibleDt) 
+	{
+		--anim;
+		sprite->update(16);
+		sprite->render();
+		if (anim == 0) {
+			visibleDt = false;
+			sprite->changeAnimation(2);
+		}
+	}
 }
 
 void TileMap::free()
@@ -311,7 +347,6 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	
 	return false;
 }
-
 bool TileMap::collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
 {
 	int x0, x1, y;
@@ -330,7 +365,47 @@ bool TileMap::collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& s
 			}
 		}
 	}
+}
 
+bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int b2c)
+{
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize + 1;
+	x1 = (pos.x + size.x - 1) / tileSize + 1;
+	y = (pos.y / tileSize) - b2c - 1;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (mapStairs[y * mapSize.x + x] != 0)
+		{
+			int tile = map[y * mapSize.x + x];
+			if (tile >= 15 && tile <= 18) {
+				int left = tile - 15;
+				int right = 18 - tile;
+				for (int i = 0; i <= left + right; ++i)
+				{
+					map[y * mapSize.x + (x - left + i)] = 0;
+				}
+				sprite->changeAnimation(1);
+				sprite->setPosition(glm::vec2((x - left + 2) * tileSize, (y+2) * tileSize));
+				visibleDt = true;
+				anim = 40;
+			}
+			if (tile >= 10 && tile <= 12) {
+				int left = tile - 10;
+				int right = 12 - tile;
+				for (int i = 0; i <= left + right; ++i)
+				{
+					map[y * mapSize.x + (x - left + i)] = 0;
+				}
+				sprite->changeAnimation(0);
+				sprite->setPosition(glm::vec2((x - left + 2) * tileSize, (y+2) * tileSize));
+				visibleDt = true;
+				anim = 40;
+			}
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -354,42 +429,6 @@ bool TileMap::collisionMoveUpStairs(const glm::ivec2& pos, const glm::ivec2& siz
 		}
 	}
 
-	return false;
-}
-
-bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int b2c) const
-{
-	int x0, x1, y;
-	
-	x0 = pos.x / tileSize + 1;
-	x1 = (pos.x + size.x - 1) / tileSize + 1;
-	y = (pos.y/tileSize) - b2c-1;
-	for (int x = x0; x <= x1; x++)
-	{
-		if (map[y * mapSize.x + x] != 0)
-		{
-			int tile = map[y * mapSize.x + x];
-			if (tile >= 15 && tile <= 18) {
-				int left = tile - 15;
-				int right = 18 - tile;
-				for (int i = 0; i <= left + right; ++i)
-				{
-					map[y * mapSize.x + (x - left + i)] = 0;
-				}
-				map[y * mapSize.x + x] = 0;
-			}
-			if (tile >= 10 && tile <= 12) {
-				int left = tile - 10;
-				int right = 12 - tile;
-				for (int i = 0; i <= left + right; ++i)
-				{
-					map[y * mapSize.x + (x - left + i)] = 0;
-				}
-				map[y * mapSize.x + x] = 0;
-			}
-			return true;
-		}
-	}
 	return false;
 }
 
