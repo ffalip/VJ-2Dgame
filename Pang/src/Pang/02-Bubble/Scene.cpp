@@ -31,33 +31,33 @@ void Scene::init()
 {
 	initShaders();
 
-	map = TileMap::createTileMap("levels/lvl2.txt", glm::vec2(16, 16), texProgram);
-	bg = Background::createBackground("images/bg2.png", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl" + std::to_string(idLevel) + ".txt", glm::vec2(16, 16), texProgram);
+	bg = Background::createBackground("images/bg1.png", glm::vec2(16, 16), texProgram);
 
 	for (int i = 0; i < 15; ++i) {
 		bubble = new Bubble();
 		
 		if (i == 0) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f);
+			bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
 			bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else if (i > 0 && i <= 2) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 1, 1.f);
+			bubble->init(glm::ivec2(16, 16), texProgram, 1, 1.f, 130);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else if (i >= 3 && i <= 6) {
-			bubble->init(glm::ivec2(16, 16), texProgram, 2, 1.f);
+			bubble->init(glm::ivec2(16, 16), texProgram, 2, 1.f, 130);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
 		else {
-			bubble->init(glm::ivec2(16, 16), texProgram, 3, 1.f);
+			bubble->init(glm::ivec2(16, 16), texProgram, 3, 1.f, 130);
 			bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 10 * map->getTileSize()));
 			bubble->setTileMap(map);
 		}
-
+		
 		bubbles.push_back(bubble);
 	}
 	for (int i = 0; i < 15; ++i) {
@@ -76,11 +76,6 @@ void Scene::init()
 	bullet = new Bullet();
 	bullet->init(glm::ivec2(16, 16), texProgram);
 	bullet->setTileMap(map);
-	
-	//inv = new Invencibility();
-	//inv->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	//inv->setPosition(glm::vec2(30 * map->getTileSize(), 20 * map->getTileSize()));
-	//inv->setTileMap(map);
 
 
 
@@ -93,18 +88,7 @@ void Scene::init()
 	//inv->setPlayer(player);
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
-	currentTime = 0.0f;
-	/*
-	din = new Dinamita();
-	din->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	din->setPosition(glm::vec2(20 * map->getTileSize(), 20 * map->getTileSize()));
-	din->setTileMap(map);
 
-	pt = new PararTemps();
-	pt->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	pt->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
-	pt->setTileMap(map);
-	*/
 	fd = new Food();
 	fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	fd->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
@@ -244,11 +228,11 @@ void Scene::render()
 	bg->render();
 	map->updateArrays(glm::vec2(16, 16), texProgram);
 	map->render();
-	for (int i = 0; i < 15; ++i) {
+	for (int i = 0; i < bubblesActives.size(); ++i) {
 		if (bubblesActives[i]) bubbles[i]->render();	
 	}
 
-	for (int i = 0; i < 15; ++i) {
+	for (int i = 0; i < bubExs.size(); ++i) {
 		
 		bubExs[i]->render();
 	}
@@ -310,14 +294,14 @@ void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<
 			bubExs[i]->setAnimation(bubbles[i]->getSize());
 			if ((i + 1) * 2 < bubblesActives.size()) {
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity());
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY());
 				bubble->setPosition(glm::ivec2(bubbles[i] -> getPosition().x + 4, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[(i + 1) * 2 - 1] = bubble;
 				bubblesActives[(i + 1) * 2 - 1] = true;
 				
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()));
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY());
 				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - 4, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[(i + 1) * 2] = bubble;
@@ -347,14 +331,14 @@ void Scene::petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vect
 
 			if ((i + 1) * 2 < bubblesActives.size()) {
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity());
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY()- 20);
 				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x + rand() % 20, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[(i + 1) * 2 - 1] = bubble;
 				bubblesActives[(i + 1) * 2 - 1] = true;
 
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()));
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY()-20);
 				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - rand()%20, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[(i + 1) * 2] = bubble;

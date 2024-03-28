@@ -13,7 +13,7 @@ enum BubbleAnims
 	GRAN48, MITJA32, PETITA16, ENANA8
 };
 
-void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel)
+void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel, int startYini)
 {
 	spritesheet.loadFromFile("images/Bubble.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.5f, 0.5f), &spritesheet, &shaderProgram);
@@ -33,12 +33,12 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 
 	sprite->changeAnimation(anim);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
+	//sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = vel;
 	canJump = true;
-	startY = 130;
-	direccio = 2;
-	jumpAngle = 50;
+	startY = startYini;
+	direccio = 1;
+	jumpAngle = 70;
 	freeze = false;
 
 }
@@ -203,7 +203,6 @@ void Bubble::update(int deltaTime)
 
 			else
 			{
-
 				posBubble.y += 2;
 			}
 		}
@@ -248,6 +247,9 @@ void Bubble::update(int deltaTime)
 				if (jumpAngle == 180)
 				{
 					posBubble.y = startY;
+				}
+				if (jumpAngle > 180) {
+					canJump = false;
 				}
 				else
 				{
@@ -299,6 +301,10 @@ float Bubble::getVelocity() {
 	return velocity;
 }
 
+int Bubble::getStartY() {
+	return startY;
+}
+
 bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, int widthBullet) 
 {
 	int x0 = posBullet.x + 24 - widthBullet;
@@ -306,9 +312,9 @@ bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, 
 	int r;
 	switch (getSize())
 	{
-	case 0:  r = 26; break;
-	case 1:  r = 18; break;
-	case 3:  r = 10; break;
+	case 0:  r = 28; break;
+	case 1:  r = 20; break;
+	case 3:  r = 12; break;
 	default: r =  6; break;
 	}
 
@@ -344,9 +350,9 @@ bool Bubble::collisionWithPlayer(const glm::ivec2& posPlayer, int heightPlayer, 
 	int r;
 	switch (getSize())
 	{
-	case 0:  r = 22; break;
-	case 1:  r = 14; break;
-	case 3:  r = 6; break;
+	case 0:  r = 21; break;
+	case 1:  r = 13; break;
+	case 3:  r = 5; break;
 	default: r = 2; break;
 	}
 
@@ -357,10 +363,10 @@ bool Bubble::collisionWithPlayer(const glm::ivec2& posPlayer, int heightPlayer, 
 		float testY = posBubble.y+32;
 
 		// which edge is closest?
-		if (posBubble.x + 32 < posPlayer.x)         testX = posPlayer.x;      // test left edge
-		else if (posBubble.x + 32 > posPlayer.x + widthPlayer) testX = posPlayer.x + widthPlayer;   // right edge
-		if (posBubble.y + 32 < posPlayer.y)         testY = posPlayer.y;      // top edge
-		else if (posBubble.y + 32 > posPlayer.y + heightPlayer) testY = posPlayer.y + heightPlayer;   // bottom edge
+		if (posBubble.x + 32 < posPlayer.x+2)         testX = posPlayer.x+2;      // test left edge
+		else if (posBubble.x + 32 > posPlayer.x+2 + widthPlayer-4) testX = posPlayer.x+2 + widthPlayer-4;   // right edge
+		if (posBubble.y + 32 < posPlayer.y-+2)         testY = posPlayer.y+2;      // top edge
+		else if (posBubble.y + 32 > posPlayer.y+2 + heightPlayer-4) testY = posPlayer.y+2 + heightPlayer-4;   // bottom edge
 
 		// get distance from closest edges
 		float distX = posBubble.x + 32 - testX;

@@ -8,7 +8,7 @@
 class Bubble
 {
 public:
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel);
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel, int startYini);
 	void update(int deltaTime);
 	void render();
 
@@ -17,6 +17,7 @@ public:
 	glm::ivec2 getPosition();
 	int getSize();
 	float getVelocity();
+	int getStartY();
 	bool collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, int widthBullet);
 	bool Bubble::collisionWithPlayer(const glm::ivec2& posBullet, int heightPlayer, int widthPlayer);
 	bool freeze;
