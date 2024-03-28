@@ -13,10 +13,13 @@ public:
 	void update(int deltaTime);
 	void render();
 	int getLife();
+
 	void updateLife(int newLife);
 	void updateStage(int newStage);
+	void updateScore(int addScore);
 	int getScore();
-	void setScore(int amount);
+
+private:
 	vector<int> textReader(const string& txt); //retuns a vector with the sprite characters idx
 
 private:
@@ -29,8 +32,6 @@ private:
 	SimpleText* insertCoinDisplay[11];
 	SimpleText* stageDisplay[7];
 	int time, frames, life, stage, score;
-	
-	vector<SimpleText*> textDisplay;
 
 };
 

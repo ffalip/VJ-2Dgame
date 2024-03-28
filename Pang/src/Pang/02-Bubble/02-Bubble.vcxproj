@@ -16,7 +16,6 @@
     <ClInclude Include="Bubble.h" />
     <ClInclude Include="BubbleExplosions.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="DestroyTileAnim.h" />
     <ClInclude Include="Dinamita.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="Game.h" />
@@ -38,7 +37,6 @@
     <ClCompile Include="Bubble.cpp" />
     <ClCompile Include="BubbleExplosions.cpp" />
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="DestroyTileAnim.cpp" />
     <ClCompile Include="Dinamita.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Game.cpp" />

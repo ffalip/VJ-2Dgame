@@ -31,7 +31,7 @@ void Scene::init()
 {
 	initShaders();
 
-	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl2.txt", glm::vec2(16, 16), texProgram);
 	bg = Background::createBackground("images/bg2.png", glm::vec2(16, 16), texProgram);
 
 	for (int i = 0; i < 15; ++i) {
@@ -143,7 +143,7 @@ void Scene::update(int deltaTime)
 	}
 
 	if (bananaAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
-		timeDisp->setScore(50);
+		timeDisp->updateScore(50);
 		bananaAct = false;
 		cout << timeDisp->getScore() << endl;
 	}

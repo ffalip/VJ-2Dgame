@@ -92,13 +92,7 @@ void Interface::update(int deltaTime)
 		time--;
 	}
 	else ++frames;
-
-	vector<int> chars = textReader(to_string(time));
-	for (int i = chars.size()-1; i > 0; --i)
-	{
-		//textDisplay[i]->update(deltaTime, chars[i]);
-	}
-
+	
 
 }
 
@@ -106,12 +100,36 @@ void Interface::updateLife(int newLife) {
 	life = newLife;
 }
 
-void Interface::updateStage(int newStage) {
+void Interface::updateStage(int newStage) 
+{
 	stage = newStage;
 }
 
 int Interface::getLife() {
 	return life;
+}
+
+void Interface::updateScore(int addScore)
+{
+	score += addScore;
+	string int2str = to_string(score);
+	string aux = "";
+
+	if (int2str.length() - 1 < 6)
+	{
+		cout << (6 - int2str.length()) << " ";
+		for (int i = 0; i < (6 - int2str.length()); ++i) {
+			aux.append("0");
+		}
+	}
+	else int2str = "999999";
+
+	vector<int> chars = textReader(aux + int2str);
+	for (int i = 0; i < 6; ++i)
+	{
+		scoreDisplay[i]->update(16, chars[i]);
+	}
+
 }
 
 void Interface::render()
@@ -143,9 +161,6 @@ void Interface::render()
 
 int Interface::getScore() {
 	return score;
-}
-void Interface::setScore(int amount) {
-	score += amount;
 }
 
 vector<int> Interface::textReader(const string& txt)
