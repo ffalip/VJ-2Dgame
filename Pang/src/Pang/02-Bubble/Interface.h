@@ -15,6 +15,8 @@ public:
 	int getLife();
 	void updateLife(int newLife);
 	void updateStage(int newStage);
+	int getScore();
+	void setScore(int amount);
 	vector<int> textReader(const string& txt); //retuns a vector with the sprite characters idx
 
 private:
@@ -26,7 +28,7 @@ private:
 	SimpleText* scoreDisplay[6];
 	SimpleText* insertCoinDisplay[11];
 	SimpleText* stageDisplay[7];
-	int time, frames, life, stage;
+	int time, frames, life, stage, score;
 	
 	vector<SimpleText*> textDisplay;
 

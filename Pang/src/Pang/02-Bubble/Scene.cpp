@@ -105,6 +105,11 @@ void Scene::init()
 	pt->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
 	pt->setTileMap(map);
 	*/
+	fd = new Food();
+	fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	fd->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
+	fd->setTileMap(map);
+	bananaAct = true;
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
@@ -135,6 +140,12 @@ void Scene::update(int deltaTime)
 	if (invAct  && !inv->getAplied() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
 		inv->setAplied();
 		invAplied = inv->getAplied();
+	}
+
+	if (bananaAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
+		timeDisp->setScore(50);
+		bananaAct = false;
+		cout << timeDisp->getScore() << endl;
 	}
 
 	if (activarContadorFreeze) {
@@ -194,7 +205,7 @@ void Scene::update(int deltaTime)
 	timeDisp->update(deltaTime);
 	if (dinAct) din->update(deltaTime);
 	if (ptAct) pt->update(deltaTime);
-	
+	if(bananaAct)fd->update(deltaTime);
 	
 }
 
@@ -226,7 +237,7 @@ void Scene::render()
 	timeDisp->render();
 	if (dinAct) din->render();
 	if (ptAct) pt->render();
-	
+	if(bananaAct)fd->render();
 }
 
 void Scene::initShaders()

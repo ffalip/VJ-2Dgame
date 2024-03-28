@@ -18,6 +18,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="DestroyTileAnim.h" />
     <ClInclude Include="Dinamita.h" />
+    <ClInclude Include="Food.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Invencibility.h" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DestroyTileAnim.cpp" />
     <ClCompile Include="Dinamita.cpp" />
+    <ClCompile Include="Food.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Invencibility.cpp" />

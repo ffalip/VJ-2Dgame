@@ -74,6 +74,7 @@ void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 		stageDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_STAGE_X + i * 7, POS_STAGE_Y));
 		stageDisplay[i]->update(16, chars4[i]);
 	}
+	score = 0;
 }
 
 void Interface::update(int deltaTime) 
@@ -138,6 +139,13 @@ void Interface::render()
 			insertCoinDisplay[i]->render();
 		}
 	}
+}
+
+int Interface::getScore() {
+	return score;
+}
+void Interface::setScore(int amount) {
+	score += amount;
 }
 
 vector<int> Interface::textReader(const string& txt)

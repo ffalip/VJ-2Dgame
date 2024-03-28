@@ -15,6 +15,7 @@
 #include "Dinamita.h"
 #include "PararTemps.h"
 #include "Invencibility.h"
+#include "Food.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -49,6 +50,7 @@ private:
 	Dinamita* din;
 	PararTemps* pt;
 	Invencibility* inv;
+	Food* fd;
 	ShaderProgram texProgram;
 	Interface *timeDisp;
 	float currentTime;
@@ -58,7 +60,7 @@ private:
 	int idLevel;
 	int contadorFreeze;
 	bool activarContadorFreeze;
-	bool dinAct, ptAct, invAct;
+	bool dinAct, ptAct, invAct, bananaAct;
 	bool invAplied;
 };
 

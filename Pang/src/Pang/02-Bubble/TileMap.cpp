@@ -237,6 +237,24 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 	return false;
 }
 
+bool TileMap::collisionMoveLeftStairs(const glm::ivec2& pos, const glm::ivec2& size) const
+{
+	int x, y0, y1;
+
+	x = (pos.x + OFFSET) / tileSize;
+	y0 = pos.y / tileSize;
+	y1 = (pos.y + size.y - 1) / tileSize;
+	for (int y = y0; y <= y1; y++)
+	{
+		if (mapStairs[y * mapSize.x + x] != 0) {
+			return true;
+		}
+			
+	}
+
+	return false;
+}
+
 bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const
 {
 	int x, y0, y1;
@@ -250,6 +268,24 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 			return true;
 	}
 	
+	return false;
+}
+
+bool TileMap::collisionMoveRightStairs(const glm::ivec2& pos, const glm::ivec2& size) const
+{
+	int x, y0, y1;
+
+	x = ((pos.x + size.x - OFFSET - 1) / tileSize) - 1;
+	y0 = pos.y / tileSize;
+	y1 = (pos.y + size.y - 1) / tileSize;
+	for (int y = y0; y <= y1; y++)
+	{
+		if (mapStairs[y * mapSize.x + x] != 0) {
+			return true;
+		}
+			
+	}
+
 	return false;
 }
 
@@ -272,6 +308,51 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 		}
 	}
 	
+	return false;
+}
+
+bool TileMap::collisionMoveDownStairs(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x + OFFSET) / tileSize;
+	x1 = (pos.x + size.x - OFFSET - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (mapStairs[y * mapSize.x + x] != 0)
+		{
+			if (*posY - tileSize * y + size.y <= 4)
+			{
+				*posY = tileSize * y - size.y;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool TileMap::collisionMoveUpStairs(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x + OFFSET) / tileSize;
+	x1 = (pos.x + size.x - OFFSET - 1) / tileSize;
+	y = pos.y / tileSize; // Cambio aquí para detectar colisiones desde arriba
+
+	for (int x = x0; x <= x1; x++)
+	{
+		if (mapStairs[y * mapSize.x + x] != 0)
+		{
+			if (*posY + size.y - tileSize * y <= 4) // Cambio aquí para detectar colisiones desde arriba
+			{
+				*posY = tileSize * (y + 1); // Ajustar la posición para evitar la colisión
+				return true;
+			}
+		}
+	}
+
 	return false;
 }
 
@@ -308,79 +389,6 @@ bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int
 			return true;
 		}
 	}
-	return false;
-}
-
-bool TileMap::collisionMoveRightCircle(const glm::ivec2& pos, float radius) const
-{
-	int y0 = (pos.y - radius) / tileSize;
-	int y1 = (pos.y + radius - 1) / tileSize;
-	int x = (pos.x + radius - 1) / tileSize; // Ajuste para incluir el radio del círculo
-
-	for (int y = y0; y <= y1; y++)
-	{
-		if (map[y * mapSize.x + x] != 0)
-			return true;
-	}
-	return false;
-}
-
-bool TileMap::collisionMoveLeftCircle(const glm::ivec2& pos, float radius) const
-{
-	int y0 = (pos.y - radius) / tileSize;
-	int y1 = (pos.y + radius - 1) / tileSize;
-	int x = (pos.x - radius) / tileSize; // Ajuste para incluir el radio del círculo
-
-
-	for (int y = y0; y <= y1; y++)
-	{
-		if (map[y * mapSize.x + x] != 0)
-			return true;
-	}
-	return false;
-}
-
-bool TileMap::collisionMoveDownCircle(const glm::ivec2& pos, float radius, int* posY) const
-{
-	int x0, x1, y;
-
-	x0 = (pos.x - radius) / tileSize;
-	x1 = (pos.x + radius - 1) / tileSize;
-	y = (pos.y + radius - 1) / tileSize;
-	for (int x = x0; x <= x1; x++)
-	{
-		if (map[y * mapSize.x + x] != 0)
-		{
-			if (*posY - tileSize * y + radius <= 4)
-			{
-				*posY = tileSize * y - radius;
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-bool TileMap::collisionMoveTopCircle(const glm::ivec2& pos, float radius, int* posY) const
-{
-	int x0, x1, y;
-
-	x0 = (pos.x - radius) / tileSize;
-	x1 = (pos.x + radius - 1) / tileSize;
-	y = (pos.y - radius - 1) / tileSize;
-	for (int x = x0; x <= x1; x++)
-	{
-		if (map[y * mapSize.x + x] != 0)
-		{
-			if (tileSize * (y + 1) - (pos.y - radius) <= 4)
-			{
-				*posY = tileSize * (y + 1) + radius;
-				return true;
-			}
-		}
-	}
-
 	return false;
 }
 
