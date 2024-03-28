@@ -13,8 +13,6 @@ private:
 public:
 	static Background* createBackground(const string& bgFile, const glm::vec2& minCoords, ShaderProgram& program);
 
-	~Background();
-
 	void render() const;
 
 private:

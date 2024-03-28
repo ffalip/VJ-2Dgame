@@ -21,7 +21,6 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 	loadLevel(levelFile);
 	prepareArrays(minCoords, program);
 	needToUpdate = false;
-	texProgram = program;
 
 	spritesheet.loadFromFile("images/destroyTile.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 8), glm::vec2(1.f / 6.f, 0.5f), &spritesheet, &program);
