@@ -31,8 +31,8 @@ void Scene::init()
 {
 	initShaders();
 
-	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(16, 16), texProgram);
-	bg = Background::createBackground("images/bg1.png", glm::vec2(16, 16), texProgram);
+	map = TileMap::createTileMap("levels/lvl3.txt", glm::vec2(16, 16), texProgram);
+	bg = Background::createBackground("images/bg2.png", glm::vec2(16, 16), texProgram);
 
 	for (int i = 0; i < 15; ++i) {
 		bubble = new Bubble();
