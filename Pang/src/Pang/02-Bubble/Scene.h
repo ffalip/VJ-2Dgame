@@ -16,6 +16,7 @@
 #include "PararTemps.h"
 #include "Invencibility.h"
 #include "Food.h"
+#include "Menu.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -53,6 +54,7 @@ private:
 	Food* fd;
 	ShaderProgram texProgram;
 	Interface *timeDisp;
+	Menu* menu;
 	float currentTime;
 	glm::mat4 projection;
 	int f;
@@ -64,6 +66,8 @@ private:
 	bool invAplied;
 	bool guanyat;
 	bool perdut;
+
+	int window;
 };
 
 

@@ -8,14 +8,14 @@
 
 class Menu
 {
-private:
+public:
 	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
 	void update(int deltaTime);
 	void render();
 	void changeMenu(int m) { actual = m; };
 
 
-public:
+private:
 	Texture menuTex;
 	Texture controlsTex;
 	Texture creditsTex;
