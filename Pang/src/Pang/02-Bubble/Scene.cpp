@@ -128,8 +128,8 @@ void Scene::init()
 	fd->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
 	fd->setTileMap(map);
 	bananaAct = true;
-	UIinterface = new Interface();
-	UIinterface->init(glm::ivec2(16, 16), texProgram);
+	timeDisp = new Interface();
+	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
 	contadorFreeze = contadorInvencibilitat = 0;
 	activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
