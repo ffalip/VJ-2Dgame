@@ -35,7 +35,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 	tileMapDispl = tileMapPos;
 	//sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = vel;
-	canJump = true;
+	canJump = false;
 	startY = startYini;
 	direccio = 1;
 	jumpAngle = 70;
