@@ -17,7 +17,7 @@ public:
 	void updateLife(int newLife);
 	void updateStage(int newStage);
 	void updateScore(int addScore);
-	void reset();
+	void reset(int lvl);
 	int getScore();
 
 private:
@@ -32,7 +32,11 @@ private:
 	SimpleText* scoreDisplay[6];
 	SimpleText* insertCoinDisplay[11];
 	SimpleText* stageDisplay[7];
-	int time, frames, life, stage, score;
+	int time   = 100; 
+	int frames = 0; 
+	int life   = 4; 
+	int stage  = 1; 
+	int score  = 0;
 
 };
 

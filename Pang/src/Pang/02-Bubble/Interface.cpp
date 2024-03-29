@@ -23,10 +23,6 @@ using namespace std;
 
 void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
-	stage = 1;
-	time = 100;
-	life = 4;
-	frames = 0;
 
 	for (int i = 0; i < 4; ++i) 
 	{
@@ -60,6 +56,7 @@ void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 		scoreDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_SCORE_X + i * 7, POS_SCORE_Y));
 		scoreDisplay[i]->update(16, chars2[i]);
 	}
+	updateScore(score);
 	vector<int> chars3 = textReader("INSERT COIN");
 	for (int i = 0; i < 11; ++i)
 	{
@@ -74,7 +71,6 @@ void Interface::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 		stageDisplay[i]->init(tileMapPos, shaderProgram, glm::ivec2(POS_STAGE_X + i * 7, POS_STAGE_Y));
 		stageDisplay[i]->update(16, chars4[i]);
 	}
-	score = 0;
 }
 
 void Interface::update(int deltaTime) 
@@ -163,8 +159,8 @@ int Interface::getScore() {
 	return score;
 }
 
-void Interface::reset() {
-	stage = 1;
+void Interface::reset(int lvl) {
+	stage = lvl;
 	time = 100;
 	frames = 0;
 }
