@@ -59,15 +59,16 @@ private:
 	glm::mat4 projection;
 	int f;
 	int t;
-	int idLevel;
+	int idLevel = 1;
 	int contadorFreeze, contadorInvencibilitat;
 	bool activarContadorFreeze, activarContadorInvencibilitat;
 	bool dinAct, ptAct, invAct, bananaAct;
 	bool invAplied;
 	bool guanyat;
 	bool perdut;
-
-	int window;
+	bool buttonPressed;
+	int window = 0;
+	int timer = 0;
 };
 
 

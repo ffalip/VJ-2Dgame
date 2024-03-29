@@ -196,9 +196,8 @@ void Player::update(int deltaTime)
 	if (shooting > 0) --shooting;
 
 		sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-		spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x-16), float(tileMapDispl.y + posPlayer.y-16)));
-	}
- else dieAnim();
+		//spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x-16), float(tileMapDispl.y + posPlayer.y-16)));
+	
 }
 
 void Player::dieAnim() 

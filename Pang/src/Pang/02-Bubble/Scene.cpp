@@ -35,19 +35,15 @@ void Scene::init()
 {
 	initShaders();
 
-	window = MENU;
+	
 	//MENUS INIT
 	menu = new Menu;
-	menu->init(glm::ivec2(0,0), texProgram);
+	menu->init(glm::ivec2(16,16), texProgram);
 	menu->changeMenu(MENU);
 
 
 
 	//LEVEL INIT
-	idLevel = 1;
-	
-	
-
 	if (idLevel == 1 || idLevel == 3) {
 		map = TileMap::createTileMap("levels/lvl" + std::to_string(idLevel) + ".txt", glm::vec2(16, 16), texProgram);
 		bg = Background::createBackground("images/bg" + std::to_string(idLevel) + ".png", glm::vec2(16, 16), texProgram);
@@ -141,16 +137,46 @@ void Scene::update(int deltaTime)
 	{
 	case MENU:
 		menu->update(deltaTime);
-		if (Game::instance().getKey(GLFW_KEY_S)) window = LEVELS;
-		else if (Game::instance().getKey(GLFW_KEY_C)) window = CONTROLS;
+		if (Game::instance().getKey(GLFW_KEY_S) && !buttonPressed) 
+		{
+			window = LEVELS;
+			buttonPressed = true;
+			timer = 60;
+		}
+		else if (Game::instance().getKey(GLFW_KEY_C) && !buttonPressed) 
+		{
+			window = CONTROLS;
+			buttonPressed = true;
+			timer = 60;
+		}
+		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
+		if (buttonPressed && timer > 0) --timer;
+		else buttonPressed = false;
 		break;
 
 	case CONTROLS:
 		menu->update(deltaTime);
+		if (Game::instance().getKey(GLFW_KEY_S) && !buttonPressed) 
+		{
+			window = LEVELS;
+			buttonPressed = true;
+			timer = 60;
+		}
+		else if (Game::instance().getKey(GLFW_KEY_C) && !buttonPressed) 
+		{
+			window = MENU;
+			buttonPressed = true;
+			timer = 60;
+		}
+		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
+		if (buttonPressed && timer > 0) --timer;
+		else buttonPressed = false;
 		break;
 
 	case CREDITS:
 		menu->update(deltaTime);
+		if (Game::instance().getKey(GLFW_KEY_S)) window = MENU;
+		
 		break;
 	default:
 
@@ -168,6 +194,8 @@ void Scene::update(int deltaTime)
 			if (algunBubbleActive) guanyat = false;
 			else {
 				guanyat = true;
+				if (idLevel < 3) ++idLevel;
+				else window = CREDITS;
 				std::cout << "guanyaaaaaat" << endl;
 				resetScene();
 			}
@@ -332,10 +360,6 @@ void Scene::render()
 		if (bananaAct)fd->render();
 		break;
 	}
-	
-
-	
-
 }
 
 void Scene::initShaders()
@@ -477,11 +501,12 @@ void Scene::resetScene() {
 	inv = nullptr;
 
 	// Reiniciar variables de estado
-	guanyat = perdut = false;
+	guanyat = false;
+	perdut = false;
 	bubblesActives.clear();
 	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = bananaAct = activarContadorInvencibilitat =  false;
 	contadorFreeze = contadorInvencibilitat =  0;
-
+	cout << idLevel;
 	// Volver a inicializar la escena
 	init();
 }
