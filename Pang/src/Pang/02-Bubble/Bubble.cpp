@@ -363,10 +363,10 @@ bool Bubble::collisionWithPlayer(const glm::ivec2& posPlayer, int heightPlayer, 
 		float testY = posBubble.y+32;
 
 		// which edge is closest?
-		if (posBubble.x + 32 < posPlayer.x+2)         testX = posPlayer.x+2;      // test left edge
-		else if (posBubble.x + 32 > posPlayer.x+2 + widthPlayer-4) testX = posPlayer.x+2 + widthPlayer-4;   // right edge
-		if (posBubble.y + 32 < posPlayer.y-+2)         testY = posPlayer.y+2;      // top edge
-		else if (posBubble.y + 32 > posPlayer.y+2 + heightPlayer-4) testY = posPlayer.y+2 + heightPlayer-4;   // bottom edge
+		if (posBubble.x + 32 < posPlayer.x+4)         testX = posPlayer.x+4;      // test left edge
+		else if (posBubble.x + 32 > posPlayer.x + widthPlayer-8) testX = posPlayer.x + widthPlayer-8;   // right edge
+		if (posBubble.y + 32 < posPlayer.y+8)         testY = posPlayer.y+8;      // top edge
+		else if (posBubble.y + 32 > posPlayer.y + heightPlayer-8) testY = posPlayer.y + heightPlayer-8;   // bottom edge
 
 		// get distance from closest edges
 		float distX = posBubble.x + 32 - testX;
