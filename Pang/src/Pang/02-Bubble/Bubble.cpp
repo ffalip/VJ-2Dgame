@@ -13,7 +13,7 @@ enum BubbleAnims
 	GRAN48, MITJA32, PETITA16, ENANA8
 };
 
-void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel, int startYini)
+void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim, float vel, int startYini, bool startFreeze)
 {
 	spritesheet.loadFromFile("images/Bubble.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.5f, 0.5f), &spritesheet, &shaderProgram);
@@ -39,7 +39,7 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 	startY = startYini;
 	direccio = 1;
 	jumpAngle = 70;
-	freeze = false;
+	freeze = startFreeze;
 
 }
 

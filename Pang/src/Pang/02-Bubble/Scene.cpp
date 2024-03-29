@@ -50,7 +50,7 @@ void Scene::init()
 		for (int i = 0; i < 16; ++i) {
 			bubble = new Bubble();
 			if (i == 1) {
-				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
+				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130, activarContadorFreeze);
 				bubble->setPosition(glm::vec2((10 + i) * map->getTileSize(), 4 * map->getTileSize()));
 				bubble->setTileMap(map);
 			}
@@ -77,12 +77,12 @@ void Scene::init()
 			bubble = new Bubble();
 
 			if (i == 2) {
-				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
+				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130, activarContadorFreeze);
 				bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 10 * map->getTileSize()));
 				bubble->setTileMap(map);
 			}
 			else if (i == 3) {
-				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130);
+				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130, activarContadorFreeze);
 				bubble->setPosition(glm::vec2(40 * map->getTileSize(), 10 * map->getTileSize()));
 				bubble->setTileMap(map);
 			}
@@ -287,7 +287,7 @@ void Scene::update(int deltaTime)
 				}
 				if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32)) {
 					if ( !player->getDie() &&  !invAplied && (!activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
-						//timeDisp->updateLife(timeDisp->getLife() - 1);
+						
 						player->setDie();
 						activarContadorMort = true;
 					}
@@ -426,17 +426,17 @@ void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<
 
 			bubExs[i]->setAnimation(bubbles[i]->getSize());
 
-			if ((i + 1) * 2 < bubblesActives.size()) {
+			if ((i * 2) + 1 < bubblesActives.size()) {
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY());
-				bubble->setPosition(glm::ivec2(bubbles[i] -> getPosition().x + 4, bubbles[i]->getPosition().y));
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY(), activarContadorFreeze);
+				bubble->setPosition(glm::ivec2(bubbles[i] -> getPosition().x + 2, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[i * 2] = bubble;
 				bubblesActives[i * 2] = true;
 				
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY());
-				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - 4, bubbles[i]->getPosition().y));
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY(), activarContadorFreeze);
+				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - 2, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[i * 2+1] = bubble;
 				bubblesActives[i * 2+1] = true;
@@ -465,14 +465,14 @@ void Scene::petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vect
 
 			if ((i  * 2) + 1 < bubblesActives.size()) {
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY()+10);
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, bubbles[i]->getVelocity(), bubbles[i]->getStartY()+10, activarContadorFreeze);
 				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x + rand() % 10, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[i * 2] = bubble;
 				bubblesActives[i * 2] = true;
 
 				bubble = new Bubble();
-				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY()+10);
+				bubble->init(glm::ivec2(16, 16), texProgram, bubbles[i]->getSize() + 1, -(bubbles[i]->getVelocity()), bubbles[i]->getStartY()+10, activarContadorFreeze);
 				bubble->setPosition(glm::ivec2(bubbles[i]->getPosition().x - rand()%10, bubbles[i]->getPosition().y));
 				bubble->setTileMap(map);
 				bubbles[(i * 2)+1] = bubble;
