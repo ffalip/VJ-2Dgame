@@ -83,7 +83,7 @@ void Interface::update(int deltaTime)
 	timeDisplay[1]->update(16, t1);
 	timeDisplay[2]->update(16, t2);
 
-	if (frames == 60 && time > 0) {
+	if (frames == 60 && time > 0 && timeActive) {
 		frames = 0;
 		time--;
 	}
@@ -168,6 +168,9 @@ void Interface::reset(int lvl) {
 	stage = lvl;
 	time = 100;
 	frames = 0;
+}
+void Interface::unsetTimeActive() {
+	timeActive = false;
 }
 
 vector<int> Interface::textReader(const string& txt)

@@ -18,6 +18,7 @@ public:
 	void updateStage(int newStage);
 	void updateScore(int addScore);
 	void reset(int lvl);
+	void unsetTimeActive();
 	int getScore();
 	int getTime() { return time; }
 
@@ -38,6 +39,7 @@ private:
 	int life   = 4; 
 	int stage  = 1; 
 	int score  = 0;
+	bool timeActive = true;
 
 };
 

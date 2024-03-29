@@ -336,6 +336,7 @@ void Scene::update(int deltaTime)
 			}
 		}
 		if (activarContadorMort || timeDisp->getTime() == 0) {
+			timeDisp->unsetTimeActive();
 			++contadorMort; 
 			player->setDie();
 			if (contadorMort > 240) {
