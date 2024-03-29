@@ -99,6 +99,11 @@ void Interface::updateLife(int newLife) {
 void Interface::updateStage(int newStage) 
 {
 	stage = newStage;
+	vector<int> chars4 = textReader("STAGE-" + to_string(stage));
+	for (int i = 0; i < 7; ++i)
+	{
+		stageDisplay[i]->update(16, chars4[i]);
+	}
 }
 
 int Interface::getLife() {

@@ -19,6 +19,7 @@ public:
 	void updateScore(int addScore);
 	void reset(int lvl);
 	int getScore();
+	int getTime() { return time; }
 
 private:
 	vector<int> textReader(const string& txt); //retuns a vector with the sprite characters idx
