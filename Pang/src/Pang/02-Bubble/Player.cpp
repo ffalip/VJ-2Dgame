@@ -129,7 +129,7 @@ void Player::update(int deltaTime)
 		}
 		else if (Game::instance().getKey(GLFW_KEY_LEFT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
 		{
-			if (sprite->animation() != CLIMB_DOWN && sprite->animation() != CLIMB_UP && sprite->animation() != MOVE_LEFT)
+			if ( sprite->animation() != MOVE_LEFT)
 				sprite->changeAnimation(MOVE_LEFT);
 			posPlayer.x -= 2;
 			if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
@@ -140,7 +140,7 @@ void Player::update(int deltaTime)
 		}
 		else if (Game::instance().getKey(GLFW_KEY_RIGHT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
 		{
-			if (sprite->animation() != CLIMB_DOWN && sprite->animation() != CLIMB_UP && sprite->animation() != MOVE_RIGHT)
+			if ( sprite->animation() != MOVE_RIGHT)
 				sprite->changeAnimation(MOVE_RIGHT);
 			posPlayer.x += 2;
 			if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
