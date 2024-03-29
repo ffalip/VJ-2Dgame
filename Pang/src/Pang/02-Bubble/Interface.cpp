@@ -118,7 +118,6 @@ void Interface::updateScore(int addScore)
 
 	if (int2str.length() - 1 < 6)
 	{
-		cout << (6 - int2str.length()) << " ";
 		for (int i = 0; i < (6 - int2str.length()); ++i) {
 			aux.append("0");
 		}

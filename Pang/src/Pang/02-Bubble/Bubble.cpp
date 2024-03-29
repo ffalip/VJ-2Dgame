@@ -54,12 +54,10 @@ void Bubble::update(int deltaTime)
 			if (direccio == 0) {
 				velocity = -(velocity);
 				posBubble.x -= 4;
-				//cout << "right" << endl;
 			}
 			else if (direccio == 1) {
 				velocity = -(velocity);
 				posBubble.x += 4;
-				//cout << "left" << endl;
 			}
 			else if (direccio == 2)
 			{
@@ -68,15 +66,11 @@ void Bubble::update(int deltaTime)
 				startY = posBubble.y;
 				posBubble.y -= 4;
 				jumpAngle = 0;
-				//cout << "bot" << endl;
 			}
 			else if (direccio == 3) {
 				canJump = false;
 				posBubble.y += 4;
-				//cout << "top" << endl;
-
 			}
-
 
 			posBubble.x += velocity;
 
@@ -104,18 +98,15 @@ void Bubble::update(int deltaTime)
 
 		if (sprite->animation() == MITJA32)
 		{
-			//cout << jumpAngle  << " " << startY << endl;
 			direccio = map->circleCollisionWithMap(posBubble.x + 32, posBubble.y + 32, 16);
 
 			if (direccio == 0) {
 				velocity = -(velocity);
 				posBubble.x -= 2;
-				//cout << "right" << endl;
 			}
 			else if (direccio == 1) {
 				velocity = -(velocity);
 				posBubble.x += 2;
-				//cout << "left" << endl;
 			}
 			else if (direccio == 2)
 			{
@@ -123,15 +114,11 @@ void Bubble::update(int deltaTime)
 				startY = posBubble.y;
 				posBubble.y -= 2;
 				jumpAngle = 0;
-				//cout << "bot" << endl;
-
-
 
 			}
 			else if (direccio == 3) {
 				canJump = false;
 				posBubble.y += 2;
-				//cout << "top" << endl;
 
 			}
 			posBubble.x += velocity;
@@ -154,9 +141,7 @@ void Bubble::update(int deltaTime)
 
 			else
 			{
-
 				posBubble.y += 3;
-
 			}
 		}
 
@@ -168,12 +153,10 @@ void Bubble::update(int deltaTime)
 			if (direccio == 0) {
 				velocity = -(velocity);
 				posBubble.x -= 2;
-				//cout << "right" << endl;
 			}
 			else if (direccio == 1) {
 				velocity = -(velocity);
 				posBubble.x += 2;
-				//cout << "left" << endl;
 			}
 			else if (direccio == 2)
 			{
@@ -182,12 +165,10 @@ void Bubble::update(int deltaTime)
 				startY = posBubble.y;
 				posBubble.y -= 2;
 				jumpAngle = 0;
-				//cout << "bot" << endl;
 			}
 			else if (direccio == 3) {
 				canJump = false;
 				posBubble.y += 2;
-				//cout << "top" << endl;
 
 			}
 
@@ -226,12 +207,10 @@ void Bubble::update(int deltaTime)
 			if (direccio == 0) {
 				velocity = -(velocity);
 				posBubble.x -= 2;
-				//cout << "right" << endl;
 			}
 			else if (direccio == 1) {
 				velocity = -(velocity);
 				posBubble.x += 2;
-				//cout << "left" << endl;
 			}
 			else if (direccio == 2)
 			{
@@ -240,12 +219,10 @@ void Bubble::update(int deltaTime)
 				startY = posBubble.y;
 				posBubble.y -= 2;
 				jumpAngle = 0;
-				//cout << "bot" << endl;
 			}
 			else if (direccio == 3) {
 				canJump = false;
 				posBubble.y += 2;
-				//cout << "top" << endl;
 
 			}
 
@@ -330,7 +307,6 @@ bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, 
 
 	glm::ivec2 bCenter = glm::ivec2(posBubble.x + 32, posBubble.y + 32);
 
-	//cout << "->" << posBullet.y - heightBullet << " (" << bCenter.x << " " << bCenter.y << ") " << r << endl;
 	for (int i = 0; i < heightBullet + 32; ++i) 
 	{
 		float distX0 = abs(x0 - bCenter.x);

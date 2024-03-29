@@ -46,7 +46,8 @@ public:
 	int circleCollisionWithMap(float cx, float cy, float radius);
 	int circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh);
 	void updateArrays(const glm::vec2& minCoords, ShaderProgram& program);
-
+	bool getTileBroken() { return tileBroken; }
+	void actTileBroken() { tileBroken = false; }
 private:
 	bool loadLevel(const string &levelFile);
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
@@ -66,6 +67,7 @@ private:
 	Texture spritesheet;
 	Sprite* sprite;
 	int anim;
+	bool tileBroken = false;
 };
 
 

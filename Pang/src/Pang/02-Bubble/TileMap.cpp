@@ -146,7 +146,6 @@ bool TileMap::loadLevel(const string &levelFile)
 		fin.get(tile);
 #endif
 	}
-	cout << layers;
 	if (layers > 1) {
 		
 		for (int j = 0; j < mapSize.y; j++)
@@ -386,6 +385,7 @@ bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int
 				{
 					map[y * mapSize.x + (x - left + i)] = 0;
 				}
+				tileBroken = true;
 				sprite->changeAnimation(1);
 				sprite->setPosition(glm::vec2((x - left + 2) * tileSize, (y+2) * tileSize));
 				visibleDt = true;
@@ -398,6 +398,7 @@ bool TileMap::collisionBullet(const glm::ivec2& pos, const glm::ivec2& size, int
 				{
 					map[y * mapSize.x + (x - left + i)] = 0;
 				}
+				tileBroken = true;
 				sprite->changeAnimation(0);
 				sprite->setPosition(glm::vec2((x - left + 2) * tileSize, (y+2) * tileSize));
 				visibleDt = true;

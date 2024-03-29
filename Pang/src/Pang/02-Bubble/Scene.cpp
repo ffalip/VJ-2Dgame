@@ -145,7 +145,6 @@ void Scene::update(int deltaTime)
 			buttonPressed = true;
 			timer = 60;
 		}
-		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
 		break;
 
 	case CONTROLS:
@@ -162,19 +161,22 @@ void Scene::update(int deltaTime)
 			buttonPressed = true;
 			timer = 60;
 		}
-		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
 		break;
 
 	case CREDITS:
-		idLevel = 1;
+		//idLevel = 1;
 		menu->update(deltaTime);
-		if (Game::instance().getKey(GLFW_KEY_S)) window = MENU;
+		if (Game::instance().getKey(GLFW_KEY_S) && !buttonPressed) 
+		{	
+			window = MENU;
+			buttonPressed = true;
+			timer = 60;
+		}
 		break;
 	default:
 
 		if (timeDisp->getLife() <= 0 || timeDisp->getTime() == 0) {
 			perdut = true;
-			//cout << "perdut" << endl;
 		}
 		if (!guanyat) {
 			bool algunBubbleActive = false;
@@ -187,17 +189,24 @@ void Scene::update(int deltaTime)
 			else {
 				guanyat = true;
 				if (idLevel < 3) ++idLevel;
-				else window = CREDITS;
-				std::cout << "guanyaaaaaat" << endl;
+				else {
+					idLevel = 1;
+					window = CREDITS;
+				}
+				int timeScore = timeDisp->getTime() * 100;
+				timeDisp->updateScore(timeScore);
+				lvlScore += timeScore;
+				std::cout << "guanyat!" << endl;
 				resetScene();
 			}
 		}
-		if (Game::instance().getKey(GLFW_KEY_G)) {
-			godMode = true;
-			if (godMode) cout << "invenciblexd" << endl;
-		}
-		if (Game::instance().getKey(GLFW_KEY_H)) {
-			godMode = false;
+		if (Game::instance().getKey(GLFW_KEY_G) && !buttonPressed)
+		{
+			buttonPressed = true;
+			timer = 60;
+			godMode = !godMode;
+			if (godMode) cout << "GOD MODE ON" << endl;
+			else cout << "GOD MODE OFF" << endl;
 		}
 
 		if ((dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16) && !player->getDie()) || Game::instance().getKey(GLFW_KEY_T)) {
@@ -251,12 +260,10 @@ void Scene::update(int deltaTime)
 			
 			}
 			fdAct = false;
-			std::cout << timeDisp->getScore() << endl;
 		}
 
 		if (activarContadorFreeze) {
 			++contadorFreeze;
-			std::cout << contadorFreeze << endl;
 			if (contadorFreeze >= 300) {
 				for (int i = 0; i < bubbles.size(); ++i) {
 					bubbles[i]->freeze = false;
@@ -336,12 +343,18 @@ void Scene::update(int deltaTime)
 			timeDisp->unsetTimeActive();
 			++contadorMort; 
 			player->setDie();
-			if (contadorMort > 240) {
+			if (contadorMort > 120) {
 				if (Game::instance().getKey(GLFW_KEY_R)) resetScene();
 			}
 		}
 		for (int i = 0; i < bubExs.size(); ++i) {
 			bubExs[i]->update(deltaTime);
+		}
+
+		if (map->getTileBroken()) {
+			timeDisp->updateScore(500);
+			lvlScore += 500;
+			map->actTileBroken();
 		}
 
 		bullet->update(deltaTime);
@@ -601,7 +614,7 @@ void Scene::resetScene() {
 	bubblesActives.clear();
 	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = fdAct = activarContadorInvencibilitat =  false;
 	contadorFreeze = contadorInvencibilitat =  0;
-	cout << idLevel;
+
 	// Volver a inicializar la escena
 	init();
 }
