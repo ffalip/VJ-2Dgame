@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "Game.h"
 
-
 #define SCREEN_X 16
 #define SCREEN_Y 16
 
@@ -177,7 +176,8 @@ void Scene::update(int deltaTime)
 		
 		break;
 	default:
-		if (timeDisp->getLife() <= 0) {
+
+		if (timeDisp->getLife() <= 0 || timeDisp->getTime() == 0) {
 			perdut = true;
 			//cout << "perdut" << endl;
 		}
@@ -238,10 +238,23 @@ void Scene::update(int deltaTime)
 		}
 
 		if (fdAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16) && !player->getDie()) {
-			if (fd->getAnim() == 0) timeDisp->updateScore(2000);
-			else if (fd->getAnim() == 1) timeDisp->updateScore(4000);
-			else if (fd->getAnim() == 2) timeDisp->updateScore(6000);
-			else if (fd->getAnim() == 3) timeDisp->updateScore(10000);
+			if (fd->getAnim() == 0) {
+				timeDisp->updateScore(2000);
+				lvlScore += 2000;
+			}
+			else if (fd->getAnim() == 1) {
+				timeDisp->updateScore(4000);
+				lvlScore += 4000;
+			}
+			else if (fd->getAnim() == 2) {
+				timeDisp->updateScore(6000);
+				lvlScore += 6000;
+			}
+			else if (fd->getAnim() == 3) {
+				timeDisp->updateScore(10000);
+				lvlScore += 10000;
+			
+			}
 			fdAct = false;
 			std::cout << timeDisp->getScore() << endl;
 		}
@@ -322,8 +335,9 @@ void Scene::update(int deltaTime)
 				}
 			}
 		}
-		if (activarContadorMort) {
-			++contadorMort;
+		if (activarContadorMort || timeDisp->getTime() == 0) {
+			++contadorMort; 
+			player->setDie();
 			if (contadorMort > 240) {
 				if (Game::instance().getKey(GLFW_KEY_R)) resetScene();
 			}
@@ -437,8 +451,6 @@ void Scene::peta(int i) {
 			bubExs[i] = bubEx;
 
 			bubblesActives[i] = false;
-
-			
 
 			bubExs[i]->setAnimation(bubbles[i]->getSize());
 
