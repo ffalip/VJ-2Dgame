@@ -307,8 +307,8 @@ int Bubble::getStartY() {
 
 bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, int widthBullet) 
 {
-	int x0 = posBullet.x + 24 - widthBullet;
-	int x1 = posBullet.x + 24 + widthBullet;
+	int x0 = posBullet.x + 16;
+	//int x1 = posBullet.x + 20 + widthBullet;
 	int r;
 	switch (getSize())
 	{
@@ -324,22 +324,23 @@ bool Bubble::collisionWithBullet(const glm::ivec2& posBullet, int heightBullet, 
 	for (int i = 0; i < heightBullet + 32; ++i) 
 	{
 		float distX0 = abs(x0 - bCenter.x);
-		float distX1 = abs(x0 - bCenter.x);
+		//float distX1 = abs(x1 - bCenter.x);
 		float distY  = abs((posBullet.y - i + 32) - bCenter.y);
 
 		float dist2center0 = sqrt((distX0 * distX0) + (distY * distY));
-		float dist2center1 = sqrt((distX1 * distX1) + (distY * distY));
+		//float dist2center1 = sqrt((distX1 * distX1) + (distY * distY));
 
 		if (dist2center0 < r) return true;
-		if (dist2center1 < r) return true;
+		//if (dist2center1 < r) return true;
 	}
+	/*
 	for (int i = x0; i < x1+1; ++i)
 	{
 		float distX = abs((x0 + i) - bCenter.x);
 		float distY = abs((posBullet.y + heightBullet) - bCenter.y);
 		float dist2center = sqrt((distX * distX) + (distY * distY));
 		if (dist2center < r) return true;
-	}
+	}*/
 	return false;
 
 

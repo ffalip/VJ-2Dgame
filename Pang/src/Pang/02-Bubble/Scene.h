@@ -35,9 +35,10 @@ public:
 
 private:
 	void initShaders();
-	void peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs, int i);
+	void peta(int i);
 	void petaTot(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs);
 	void resetScene();
+	int calcScore(int size);
 private:
 	Background* bg;
 	TileMap *map;
@@ -69,6 +70,11 @@ private:
 	bool buttonPressed;
 	int window = 0;
 	int timer = 0;
+	int lastPopped = -1; 
+	int scoreMult = 1;
+	int lvlScore = 0;
+	int score = 0;
+	int lifes = 4;
 };
 
 

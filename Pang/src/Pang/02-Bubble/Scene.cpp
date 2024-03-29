@@ -42,7 +42,6 @@ void Scene::init()
 	menu->changeMenu(MENU);
 
 
-
 	//LEVEL INIT
 	if (idLevel == 1 || idLevel == 3) {
 		map = TileMap::createTileMap("levels/lvl" + std::to_string(idLevel) + ".txt", glm::vec2(16, 16), texProgram);
@@ -122,6 +121,9 @@ void Scene::init()
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
+	timeDisp->updateScore(score);
+	timeDisp->updateStage(idLevel);
+	timeDisp->updateLife(lifes);
 	contadorMort = contadorFreeze = contadorInvencibilitat = 0;
 	activarContadorMort = activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = fdAct = false;
 }
@@ -147,6 +149,7 @@ void Scene::update(int deltaTime)
 		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
 		if (buttonPressed && timer > 0) --timer;
 		else buttonPressed = false;
+		
 		break;
 
 	case CONTROLS:
@@ -194,9 +197,6 @@ void Scene::update(int deltaTime)
 				std::cout << "guanyaaaaaat" << endl;
 				resetScene();
 			}
-		}
-		if (Game::instance().getKey(GLFW_KEY_X)) {
-			peta(bubblesActives, bubbles, bubExs, 0);
 		}
 
 		if (dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16) && !player->getDie()) {
@@ -247,8 +247,9 @@ void Scene::update(int deltaTime)
 		for (int i = 0; i < bubblesActives.size(); ++i) {
 			if (bubblesActives[i]) {
 				bubbles[i]->update(deltaTime);
-				if (bullet->shooting() && bubbles[i]->collisionWithBullet(bullet->getPos(), bullet->getHeight(), 8)) {
-					peta(bubblesActives, bubbles, bubExs, i);
+				if (bullet->shooting() && bubbles[i]->collisionWithBullet(bullet->getPos(), bullet->getHeight(), 4)) {
+					peta(i);
+					timeDisp->updateScore(calcScore(bubbles[i]->getSize()));
 					bullet->stopShooting();
 					if (!dinAct && rand() % 6 == 0) {
 						dinAct = true;
@@ -409,7 +410,7 @@ void Scene::initShaders()
 	fShader.free();
 }
 
-void Scene::peta(vector<bool>& bubblesActives, vector<Bubble*>& bubbles, vector<BubbleExplosions*>& bubExs, int i) {
+void Scene::peta(int i) {
 	//for (int i = 0; i < bubblesActives.size(); ++i) {
 		if (bubblesActives[i]) {
 
@@ -507,8 +508,18 @@ void Scene::resetScene() {
 	delete fd;
 	fd = nullptr;
 
-	timeDisp->updateLife(timeDisp->getLife() - 1);
-	timeDisp->reset();
+
+	if (guanyat) score += lvlScore;
+	else lifes -= 1;
+
+	if (lifes == 0) {
+		window = MENU;
+		idLevel = 1;
+		lifes = 4;
+		score = 0;
+		idLevel = 1;
+	}
+		
 
 	delete din;
 	din = nullptr;
@@ -528,4 +539,14 @@ void Scene::resetScene() {
 	init();
 }
 
+int Scene::calcScore(int size) 
+{
 
+	if (size == lastPopped && scoreMult < 8)
+		scoreMult *= 2;
+	else if (size != lastPopped)
+		scoreMult = 1;
+	lastPopped = size;
+	lvlScore += 50 * (size + 1) * scoreMult;
+	return (50 * (size + 1) * scoreMult);
+}
