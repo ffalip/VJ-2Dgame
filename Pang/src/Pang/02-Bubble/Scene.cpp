@@ -257,21 +257,22 @@ void Scene::update(int deltaTime)
 					peta(i);
 					timeDisp->updateScore(calcScore(bubbles[i]->getSize()));
 					bullet->stopShooting();
-					if (!dinAct && rand() % 6 == 0) {
+					int r = rand() % 12;
+					if (!dinAct && r == 0) {
 						dinAct = true;
 						din = new Dinamita();
 						din->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 						din->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
 						din->setTileMap(map);
 					}
-					if (!ptAct && rand() % 6 == 1) {
+					if (!ptAct && r == 1) {
 						ptAct = true;
 						pt = new PararTemps();
 						pt->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 						pt->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
 						pt->setTileMap(map);
 					}
-					if (!invAct && rand() % 6 == 2 || !invAct && rand() % 6 == 5) {
+					if (!invAct && r == 2 || !invAct && r == 3) {
 						invAct = true;
 						inv = new Invencibility();
 						inv->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -279,7 +280,7 @@ void Scene::update(int deltaTime)
 						inv->setTileMap(map);
 						inv->setPlayer(player);
 					}
-					if (!fdAct && rand() % 4 == 3) {
+					if (!fdAct && r > 3) {
 						fdAct = true;
 						fd = new Food();
 						int random = rand() % 13;
