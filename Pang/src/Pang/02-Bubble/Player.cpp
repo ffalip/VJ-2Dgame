@@ -12,16 +12,22 @@
 
 enum PlayerAnims
 {
-	STAND_RIGHT, STAND_LEFT, MOVE_LEFT, MOVE_RIGHT, FIRE_RIGHT, FIRE_LEFT, CLIMB_UP, CLIMB_DOWN, TOP_STAIRS, HIT, CLIMB_IDLE
+	STAND_RIGHT, STAND_LEFT, MOVE_LEFT, MOVE_RIGHT, FIRE_RIGHT, FIRE_LEFT, CLIMB_UP, CLIMB_DOWN, TOP_STAIRS, CLIMB_IDLE, HIT
 };
 
+enum PlayerDie
+{
+	DIE
+};
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 {
 	bJumping = false;
 	spritesheet.loadFromFile("images/PlayerInGame.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.1, 1.f/6.f), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(12);
+	spriteDie = Sprite::createSprite(glm::ivec2(48, 32), glm::vec2(3.f/20, 1.f / 6.f), &spritesheet, &shaderProgram);
+	sprite->setNumberAnimations(11);
+	spriteDie->setNumberAnimations(1);
 
 	sprite->setAnimationSpeed(STAND_RIGHT, 8);
 	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.4f, 1.f / 6.f));
@@ -61,14 +67,21 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->addKeyframe(CLIMB_IDLE, glm::vec2(0.f, 1.f / 6.f));
 
 	sprite->setAnimationSpeed(HIT, 1);
-	sprite->addKeyframe(HIT, glm::vec2(0.2f, 1.f / 6.f));
+	spriteDie->addKeyframe(HIT, glm::vec2(0.3f, 2.f / 6.f));
+
+	spriteDie->setAnimationSpeed(DIE, 1);
+	spriteDie->addKeyframe(DIE, glm::vec2(4.f/20.f, 3.f / 6.f));
+
+
 
 	sprite->changeAnimation(0);
+	spriteDie->changeAnimation(0);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	fire_cooldown = 0;
 	shooting = 0;
 	frames = 0;
+	die = false;
 }
 
 void Player::update(int deltaTime)
@@ -182,12 +195,36 @@ void Player::update(int deltaTime)
 	if (fire_cooldown > 0) --fire_cooldown;
 	if (shooting > 0) --shooting;
 
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+		sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+		spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x-16), float(tileMapDispl.y + posPlayer.y-16)));
+	}
+ else dieAnim();
+}
+
+void Player::dieAnim() 
+{
+	spriteDie->update(16);
+	jumpAngle += 2;
+	if (jumpAngle == 180)
+	{
+		bJumping = false;
+		posPlayer.y = startY;
+	}
+	else
+	{
+		posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+		posPlayer.x += 2;
+		
+	}
+	spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x - 16), float(tileMapDispl.y + posPlayer.y - 16)));
 }
 
 void Player::render()
 {
-	sprite->render();
+	if (!die)
+		sprite->render();
+	else
+		spriteDie->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
