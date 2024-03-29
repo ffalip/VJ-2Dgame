@@ -123,7 +123,7 @@ void Scene::init()
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
 	contadorMort = contadorFreeze = contadorInvencibilitat = 0;
-	activarContadorMort = activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = fdAct = false;
+	activarContadorMort = activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = fdAct = godMode = false;
 }
 
 void Scene::update(int deltaTime)
@@ -174,7 +174,6 @@ void Scene::update(int deltaTime)
 		
 		break;
 	default:
-
 		if (timeDisp->getLife() <= 0) {
 			perdut = true;
 			//cout << "perdut" << endl;
@@ -195,8 +194,12 @@ void Scene::update(int deltaTime)
 				resetScene();
 			}
 		}
-		if (Game::instance().getKey(GLFW_KEY_X)) {
-			peta(bubblesActives, bubbles, bubExs, 0);
+		if (Game::instance().getKey(GLFW_KEY_G)) {
+			godMode = true;
+			if (godMode) cout << "invenciblexd" << endl;
+		}
+		if (Game::instance().getKey(GLFW_KEY_H)) {
+			godMode = false;
 		}
 
 		if (dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16) && !player->getDie()) {
@@ -286,7 +289,7 @@ void Scene::update(int deltaTime)
 					}
 				}
 				if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32)) {
-					if ( !player->getDie() &&  !invAplied && (!activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
+					if (!godMode && !player->getDie() &&  !invAplied && (!activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
 						
 						player->setDie();
 						activarContadorMort = true;

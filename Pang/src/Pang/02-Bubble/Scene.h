@@ -66,6 +66,7 @@ private:
 	bool invAplied;
 	bool guanyat;
 	bool perdut;
+	bool godMode;
 	bool buttonPressed;
 	int window = 0;
 	int timer = 0;
