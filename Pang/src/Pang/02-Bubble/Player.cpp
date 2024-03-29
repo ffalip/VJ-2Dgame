@@ -86,137 +86,144 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 void Player::update(int deltaTime)
 {
-	sprite->update(deltaTime);
-	if (map->collisionMoveLeftStairs(posPlayer, glm::ivec2(32, 32)) || map->collisionMoveRightStairs(posPlayer, glm::ivec2(32, 32))) {
-		if (Game::instance().getKey(GLFW_KEY_UP)) {
-			if(sprite->animation() != CLIMB_UP) sprite->changeAnimation(CLIMB_UP);
-			posPlayer.y -= 2;
-		} 
-		else if (Game::instance().getKey(GLFW_KEY_DOWN)) {
-			if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
-			posPlayer.y += 2;
-		} 
-		else {
-			sprite->changeAnimation(CLIMB_IDLE);
+	if (!die) {
+		sprite->update(deltaTime);
+		if (map->collisionMoveLeftStairs(posPlayer, glm::ivec2(32, 32)) || map->collisionMoveRightStairs(posPlayer, glm::ivec2(32, 32))) {
+			if (Game::instance().getKey(GLFW_KEY_UP)) {
+				if (sprite->animation() != CLIMB_UP) sprite->changeAnimation(CLIMB_UP);
+				posPlayer.y -= 2;
+			}
+			else if (Game::instance().getKey(GLFW_KEY_DOWN)) {
+				if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
+				posPlayer.y += 2;
+			}
+			else {
+				sprite->changeAnimation(CLIMB_IDLE);
+			}
 		}
-	}
-	else if (map->collisionMoveDownStairs(posPlayer, glm::ivec2(32, 33), &posPlayer.y)) {
-		if (Game::instance().getKey(GLFW_KEY_DOWN )) {
+		else if (map->collisionMoveDownStairs(posPlayer, glm::ivec2(32, 33), &posPlayer.y)) {
+			if (Game::instance().getKey(GLFW_KEY_DOWN)) {
 
-			if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
-			
-			posPlayer.y += 8;
-			
-		}
-		
-	}
-	
-	if (Game::instance().getKey(GLFW_KEY_S) && fire_cooldown == 0)
-	{
-		if (sprite->animation() != FIRE_RIGHT && sprite->animation() != FIRE_LEFT)
-		{
-			if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT) {
-				sprite->changeAnimation(FIRE_RIGHT);
+				if (sprite->animation() != CLIMB_DOWN)sprite->changeAnimation(CLIMB_DOWN);
+
+				posPlayer.y += 8;
+
 			}
-			else if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT) {
-				sprite->changeAnimation(FIRE_LEFT);
+
+		}
+		if (Game::instance().getKey(GLFW_KEY_D)) die = true;
+		if (Game::instance().getKey(GLFW_KEY_S) && fire_cooldown == 0)
+		{
+			if (sprite->animation() != FIRE_RIGHT && sprite->animation() != FIRE_LEFT)
+			{
+				if (sprite->animation() == STAND_RIGHT || sprite->animation() == MOVE_RIGHT) {
+					sprite->changeAnimation(FIRE_RIGHT);
+				}
+				else if (sprite->animation() == STAND_LEFT || sprite->animation() == MOVE_LEFT) {
+					sprite->changeAnimation(FIRE_LEFT);
+				}
+				fire_cooldown = 30; //30 = 0.5s
+				shooting = 6;
 			}
-			fire_cooldown = 30; //30 = 0.5s
-			shooting = 6;
+			
 		}
-	}
-	else if(Game::instance().getKey(GLFW_KEY_LEFT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
-	{
-		if(sprite->animation() != MOVE_LEFT)
-			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 2;
-		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		else if (Game::instance().getKey(GLFW_KEY_LEFT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
 		{
-			posPlayer.x += 2;
-			sprite->changeAnimation(STAND_LEFT);
-		}
-	}
-	else if(Game::instance().getKey(GLFW_KEY_RIGHT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
-	{
-		if(sprite->animation() != MOVE_RIGHT)
-			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 2;
-		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
-		{
+			if (sprite->animation() != MOVE_LEFT)
+				sprite->changeAnimation(MOVE_LEFT);
 			posPlayer.x -= 2;
-			sprite->changeAnimation(STAND_RIGHT);
+			if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+			{
+				posPlayer.x += 2;
+				sprite->changeAnimation(STAND_LEFT);
+			}
 		}
-	}
-	
-	else
-	{
-		if (sprite->animation() == FIRE_RIGHT && shooting != 0)
-			sprite->changeAnimation(FIRE_RIGHT);
-		else if (sprite->animation() == FIRE_LEFT && shooting != 0)
-			sprite->changeAnimation(FIRE_LEFT);
-		else if ((sprite->animation() == FIRE_RIGHT && shooting == 0) || sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-		else if ((sprite->animation() == FIRE_LEFT && shooting == 0) || sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-	}
-	
-	if(bJumping)
-	{	
-		/*
-		jumpAngle += JUMP_ANGLE_STEP;
-		if(jumpAngle == 180)
+		else if (Game::instance().getKey(GLFW_KEY_RIGHT) && (sprite->animation() != FIRE_LEFT) && (sprite->animation() != FIRE_RIGHT))
 		{
-			bJumping = false;
-			posPlayer.y = startY;
+			if (sprite->animation() != MOVE_RIGHT)
+				sprite->changeAnimation(MOVE_RIGHT);
+			posPlayer.x += 2;
+			if (map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+			{
+				posPlayer.x -= 2;
+				sprite->changeAnimation(STAND_RIGHT);
+			}
 		}
+
 		else
 		{
-			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
-			if(jumpAngle > 90)
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+			if (sprite->animation() == FIRE_RIGHT && shooting != 0)
+				sprite->changeAnimation(FIRE_RIGHT);
+			else if (sprite->animation() == FIRE_LEFT && shooting != 0)
+				sprite->changeAnimation(FIRE_LEFT);
+			else if ((sprite->animation() == FIRE_RIGHT && shooting == 0) || sprite->animation() == MOVE_RIGHT)
+				sprite->changeAnimation(STAND_RIGHT);
+			else if ((sprite->animation() == FIRE_LEFT && shooting == 0) || sprite->animation() == MOVE_LEFT)
+				sprite->changeAnimation(STAND_LEFT);
 		}
-		*/
-	}
-	
-	if (!(map->collisionMoveLeftStairs(posPlayer, glm::ivec2(32, 32)) || map->collisionMoveRightStairs(posPlayer, glm::ivec2(32, 32))))
-	{
-		posPlayer.y += FALL_STEP;
-	}
-	if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
-	{
-		if (Game::instance().getKey(GLFW_KEY_UP))
+
+		if (bJumping)
 		{
-			bJumping = true;
-			jumpAngle = 0;
-			startY = posPlayer.y;
+			/*
+			jumpAngle += JUMP_ANGLE_STEP;
+			if(jumpAngle == 180)
+			{
+				bJumping = false;
+				posPlayer.y = startY;
+			}
+			else
+			{
+				posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+				if(jumpAngle > 90)
+					bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+			}
+			*/
 		}
-	}
-	
-	if (fire_cooldown > 0) --fire_cooldown;
-	if (shooting > 0) --shooting;
+
+		if (!(map->collisionMoveLeftStairs(posPlayer, glm::ivec2(32, 32)) || map->collisionMoveRightStairs(posPlayer, glm::ivec2(32, 32))))
+		{
+			posPlayer.y += FALL_STEP;
+		}
+		if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+		{
+			if (Game::instance().getKey(GLFW_KEY_UP))
+			{
+				bJumping = true;
+				jumpAngle = 0;
+				startY = posPlayer.y;
+			}
+		}
+
+		if (fire_cooldown > 0) --fire_cooldown;
+		if (shooting > 0) --shooting;
 
 		sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-		spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x-16), float(tileMapDispl.y + posPlayer.y-16)));
+		spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x - 16), float(tileMapDispl.y + posPlayer.y - 16)));
 	}
- else dieAnim();
+	
+	else {
+		dieAnim();
+	}
+
 }
 
 void Player::dieAnim() 
 {
 	spriteDie->update(16);
+
 	jumpAngle += 2;
-	if (jumpAngle == 180)
+	if (jumpAngle >= 180)
 	{
-		bJumping = false;
-		posPlayer.y = startY;
+		posPlayer.y += 2;
+		posPlayer.x += 2;
 	}
 	else
 	{
-		posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
+		posPlayer.y = int(150 - 96 * sin(3.14159f * jumpAngle / 180.f));
 		posPlayer.x += 2;
-		
 	}
 	spriteDie->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x - 16), float(tileMapDispl.y + posPlayer.y - 16)));
+	
 }
 
 void Player::render()
@@ -244,6 +251,13 @@ glm::ivec2 Player::getPos()
 	return posPlayer;
 }
 
+void Player::setDie() {
+	die = true;
+}
+
+bool Player::getDie() {
+	return die;
+}
 
 bool Player::interseccio(glm::ivec2& topLeft1, int width1, int height1,
 	glm::ivec2& topLeft2, int width2, int height2) {

@@ -60,8 +60,8 @@ private:
 	int f;
 	int t;
 	int idLevel;
-	int contadorFreeze, contadorInvencibilitat;
-	bool activarContadorFreeze, activarContadorInvencibilitat;
+	int contadorFreeze, contadorInvencibilitat, contadorMort;
+	bool activarContadorFreeze, activarContadorInvencibilitat, activarContadorMort;
 	bool dinAct, ptAct, invAct, bananaAct;
 	bool invAplied;
 	bool guanyat;

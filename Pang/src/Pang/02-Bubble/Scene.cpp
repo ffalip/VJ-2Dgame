@@ -35,7 +35,7 @@ void Scene::init()
 {
 	initShaders();
 
-	window = MENU;
+	window = LEVELS;
 	//MENUS INIT
 	menu = new Menu;
 	menu->init(glm::ivec2(0,0), texProgram);
@@ -131,8 +131,8 @@ void Scene::init()
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
-	contadorFreeze = contadorInvencibilitat = 0;
-	activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
+	contadorMort = contadorFreeze = contadorInvencibilitat = 0;
+	activarContadorMort = activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
 }
 
 void Scene::update(int deltaTime)
@@ -248,25 +248,32 @@ void Scene::update(int deltaTime)
 					}
 				}
 				if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32)) {
-					if (!invAplied && (!activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
+					if ( !player->getDie() &&  !invAplied && (!activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
 						//timeDisp->updateLife(timeDisp->getLife() - 1);
-						resetScene();
+						player->setDie();
+						activarContadorMort = true;
 					}
 					else if (activarContadorInvencibilitat) {
+						if (invAplied) inv->setApliedFalse();
 						invAplied = false;
-						inv->setApliedFalse();
 						activarContadorInvencibilitat = true;
 					}
 					else {
+						if (invAplied) inv->setApliedFalse();
 						invAplied = false;
-						inv->setApliedFalse();
+						
 						activarContadorInvencibilitat = true;
 						contadorInvencibilitat = 0;
 					}
 				}
 			}
 		}
-
+		if (activarContadorMort) {
+			++contadorMort;
+			if (contadorMort > 240) {
+				if (Game::instance().getKey(GLFW_KEY_R)) resetScene();
+			}
+		}
 		for (int i = 0; i < bubExs.size(); ++i) {
 			bubExs[i]->update(deltaTime);
 		}
@@ -479,8 +486,8 @@ void Scene::resetScene() {
 	// Reiniciar variables de estado
 	guanyat = perdut = false;
 	bubblesActives.clear();
-	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = bananaAct = activarContadorInvencibilitat =  false;
-	contadorFreeze = contadorInvencibilitat =  0;
+	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = bananaAct = activarContadorInvencibilitat = activarContadorMort =  false;
+	contadorFreeze = contadorInvencibilitat = contadorMort =  0;
 
 	// Volver a inicializar la escena
 	init();

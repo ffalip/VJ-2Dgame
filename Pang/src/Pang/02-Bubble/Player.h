@@ -21,6 +21,8 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	glm::ivec2 getPos();
+	void setDie();
+	bool getDie();
 	bool interseccio(glm::ivec2& topLeft1, int width1, int height1,
 		glm::ivec2& topLeft2, int width2, int height2) ;
 
