@@ -146,9 +146,6 @@ void Scene::update(int deltaTime)
 			timer = 60;
 		}
 		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
-		if (buttonPressed && timer > 0) --timer;
-		else buttonPressed = false;
-		
 		break;
 
 	case CONTROLS:
@@ -166,14 +163,12 @@ void Scene::update(int deltaTime)
 			timer = 60;
 		}
 		else if (Game::instance().getKey(GLFW_KEY_M) && !buttonPressed) window = CREDITS;
-		if (buttonPressed && timer > 0) --timer;
-		else buttonPressed = false;
 		break;
 
 	case CREDITS:
+		idLevel = 1;
 		menu->update(deltaTime);
 		if (Game::instance().getKey(GLFW_KEY_S)) window = MENU;
-		
 		break;
 	default:
 
@@ -318,6 +313,8 @@ void Scene::update(int deltaTime)
 					if (!godMode && !player->getDie() &&  !invAplied && (!activarContadorInvencibilitat || contadorInvencibilitat >= 120)) {
 						
 						player->setDie();
+						lifes -= 1;
+						timeDisp->updateLife(lifes);
 						activarContadorMort = true;
 					}
 					else if (activarContadorInvencibilitat) {
@@ -356,7 +353,49 @@ void Scene::update(int deltaTime)
 		if (fdAct)fd->update(deltaTime);
 		break;
 	}
-	
+	//change between levels
+	if (Game::instance().getKey(GLFW_KEY_0) && !buttonPressed) 
+	{
+		window = MENU;
+		buttonPressed = true; 
+		timer = 30;
+		resetScene();
+	}
+	else if (Game::instance().getKey(GLFW_KEY_1) && !buttonPressed)
+	{
+		window = LEVELS;
+		idLevel = 1;
+		buttonPressed = true;
+		timer = 30;
+		resetScene();
+	}
+	else if (Game::instance().getKey(GLFW_KEY_2) && !buttonPressed)
+	{
+		window = LEVELS;
+		idLevel = 2;
+		buttonPressed = true;
+		timer = 30;
+		resetScene();
+	}
+	else if (Game::instance().getKey(GLFW_KEY_3) && !buttonPressed)
+	{
+		window = LEVELS;
+		idLevel = 3;
+		buttonPressed = true;
+		timer = 30;
+		resetScene();
+	}
+	else if (Game::instance().getKey(GLFW_KEY_4) && !buttonPressed)
+	{
+		window = CREDITS;
+		buttonPressed = true;
+		timer = 30;
+		resetScene();
+	}
+
+	//decrease timer for button cooldown
+	if (buttonPressed && timer > 0) --timer;
+	else buttonPressed = false;
 }
 
 
@@ -538,7 +577,7 @@ void Scene::resetScene() {
 
 
 	if (guanyat) score += lvlScore;
-	else lifes -= 1;
+	//else if (perdut) lifes -= 1;
 
 	if (lifes == 0) {
 		window = MENU;
@@ -569,7 +608,6 @@ void Scene::resetScene() {
 
 int Scene::calcScore(int size) 
 {
-
 	if (size == lastPopped && scoreMult < 8)
 		scoreMult *= 2;
 	else if (size != lastPopped)

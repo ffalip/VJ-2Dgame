@@ -494,6 +494,7 @@ int TileMap::circleCollisionWithMap(float cx, float cy, float radius)
 
 				// Check for collision between the circle and the rectangle
 				int collisionDirection = circleRect(cx, cy, radius, rx, ry, rw, rh);
+				if (tile == 9 && radius > 20) collisionDirection = -1;
 				if (collisionDirection != -1)
 				{
 					return collisionDirection; // Collision detected
