@@ -77,7 +77,7 @@ void Scene::init()
 
 			if (i == 2) {
 				bubble->init(glm::ivec2(16, 16), texProgram, 0, 1.f, 130, activarContadorFreeze);
-				bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 10 * map->getTileSize()));
+				bubble->setPosition(glm::vec2((20 + i) * map->getTileSize(), 12));
 				bubble->setTileMap(map);
 			}
 			else if (i == 3) {
@@ -205,12 +205,12 @@ void Scene::update(int deltaTime)
 			godMode = false;
 		}
 
-		if (dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16) && !player->getDie()) {
+		if ((dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16) && !player->getDie()) || Game::instance().getKey(GLFW_KEY_T)) {
 			petaTot(bubblesActives, bubbles, bubExs);
 			dinAct = false;
 		}
 
-		if (ptAct && player->interseccio(player->getPos(), 32, 32, pt->getPosition(), 16, 16)&& !player->getDie()) {
+		if ((ptAct && player->interseccio(player->getPos(), 32, 32, pt->getPosition(), 16, 16)&& !player->getDie()) || Game::instance().getKey(GLFW_KEY_Y)) {
 			contadorFreeze = 0;
 			activarContadorFreeze = true;
 			for (int i = 0; i < bubbles.size(); ++i) {
@@ -218,8 +218,16 @@ void Scene::update(int deltaTime)
 			}
 			ptAct = false;
 		}
-
-		if (invAct && inv->getGetInv() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16) && !player->getDie()) {
+		if (Game::instance().getKey(GLFW_KEY_U)) {
+			invAct = true;
+			invAplied = true;
+			inv = new Invencibility();
+			inv->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			inv->setPosition(player->getPos());
+			inv->setTileMap(map);
+			inv->setPlayer(player);
+		}
+		if ((invAct && inv->getGetInv() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16) && !player->getDie())) {
 			inv->setApliedTrue();
 			inv->setGetInvFalse();
 			invAplied = inv->getAplied();
@@ -289,7 +297,7 @@ void Scene::update(int deltaTime)
 						else if (random >= 9 && random <= 11) fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, 2);
 						else if (random == 12) fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, 3);
 						
-						fd->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
+						fd->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 24));
 						fd->setTileMap(map);
 					}
 				}

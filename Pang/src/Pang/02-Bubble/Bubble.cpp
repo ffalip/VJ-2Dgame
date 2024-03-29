@@ -36,7 +36,6 @@ void Bubble::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, in
 	//sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 	velocity = vel;
 	canJump = false;
-	startY = startYini;
 	direccio = 1;
 	jumpAngle = 70;
 	freeze = startFreeze;
@@ -86,6 +85,9 @@ void Bubble::update(int deltaTime)
 				if (jumpAngle == 180)
 				{
 					posBubble.y = startY;
+				}
+				if (jumpAngle > 180) {
+					canJump = false;
 				}
 				else
 				{
@@ -141,6 +143,9 @@ void Bubble::update(int deltaTime)
 				{
 					posBubble.y = startY;
 				}
+				if (jumpAngle > 180) {
+					canJump = false;
+				}
 				else
 				{
 					posBubble.y = int(startY - (100 * startY / 150) * sin(3.14159f * jumpAngle * 150 / startY / 180.f));
@@ -195,6 +200,10 @@ void Bubble::update(int deltaTime)
 				{
 					posBubble.y = startY;
 				}
+				if (jumpAngle > 180) {
+					canJump = false;
+				}
+				
 				else
 				{
 					posBubble.y = int(startY - 70 * sin(3.14159f * jumpAngle / 180.f));
@@ -281,6 +290,7 @@ void Bubble::setTileMap(TileMap* tileMap)
 void Bubble::setPosition(const glm::vec2& pos)
 {
 	posBubble = pos;
+	startY = posBubble.y;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBubble.x), float(tileMapDispl.y + posBubble.y)));
 }
 
