@@ -199,12 +199,12 @@ void Scene::update(int deltaTime)
 			peta(bubblesActives, bubbles, bubExs, 0);
 		}
 
-		if (dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16)) {
+		if (dinAct && player->interseccio(player->getPos(), 32, 32, din->getPosition(), 16, 16) && !player->getDie()) {
 			petaTot(bubblesActives, bubbles, bubExs);
 			dinAct = false;
 		}
 
-		if (ptAct && player->interseccio(player->getPos(), 32, 32, pt->getPosition(), 16, 16)) {
+		if (ptAct && player->interseccio(player->getPos(), 32, 32, pt->getPosition(), 16, 16)&& !player->getDie()) {
 			contadorFreeze = 0;
 			activarContadorFreeze = true;
 			for (int i = 0; i < bubbles.size(); ++i) {
@@ -213,7 +213,7 @@ void Scene::update(int deltaTime)
 			ptAct = false;
 		}
 
-		if (invAct && inv->getGetInv() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16)) {
+		if (invAct && inv->getGetInv() && player->interseccio(player->getPos(), 32, 32, inv->getPosition(), 16, 16) && !player->getDie()) {
 			inv->setApliedTrue();
 			inv->setGetInvFalse();
 			invAplied = inv->getAplied();
@@ -223,7 +223,7 @@ void Scene::update(int deltaTime)
 			if (contadorInvencibilitat > 120) activarContadorInvencibilitat = false;
 		}
 
-		if (fdAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
+		if (fdAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16) && !player->getDie()) {
 			if (fd->getAnim() == 0) timeDisp->updateScore(2000);
 			else if (fd->getAnim() == 1) timeDisp->updateScore(4000);
 			else if (fd->getAnim() == 2) timeDisp->updateScore(6000);
