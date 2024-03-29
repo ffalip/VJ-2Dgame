@@ -31,6 +31,7 @@ void PararTemps::update(int deltaTime)
 	{
 		fall = 0;
 	}
+	else fall = 1;
 	sprite->update(deltaTime);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posDin.x), float(tileMapDispl.y + posDin.y)));
 }

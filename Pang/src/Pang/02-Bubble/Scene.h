@@ -62,7 +62,7 @@ private:
 	int idLevel = 1;
 	int contadorFreeze, contadorInvencibilitat, contadorMort;
 	bool activarContadorFreeze, activarContadorInvencibilitat, activarContadorMort;
-	bool dinAct, ptAct, invAct, bananaAct;
+	bool dinAct, ptAct, invAct, fdAct;
 	bool invAplied;
 	bool guanyat;
 	bool perdut;

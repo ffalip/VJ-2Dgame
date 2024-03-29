@@ -51,7 +51,7 @@ void Invencibility::update(int deltaTime)
 	{
 		fall = 0;
 	}
-	
+	else fall = 1;
 	if (aplied) {
 		spriteAura->setPosition(glm::vec2((player->getPos().x), (player->getPos().y)));
 		spriteAura->update(deltaTime);

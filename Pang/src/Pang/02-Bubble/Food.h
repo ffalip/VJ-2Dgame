@@ -9,7 +9,7 @@
 class Food
 {
 public:
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, int anim);
 	void update(int deltaTime);
 	void render();
 
@@ -20,7 +20,7 @@ public:
 	void setPlayer(Player* play);
 	void setAplied();
 	bool getAplied();
-
+	int getAnim();
 private:
 	glm::ivec2 tileMapDispl, posFd;
 	int fall;

@@ -119,16 +119,11 @@ void Scene::init()
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH), float(SCREEN_HEIGHT), 0.f);
 
-	fd = new Food();
-	fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-	fd->setPosition(glm::vec2(40 * map->getTileSize(), 20 * map->getTileSize()));
-	fd->setTileMap(map);
-	bananaAct = true;
 	timeDisp = new Interface();
 	timeDisp->init(glm::ivec2(16, 16), texProgram);
 
 	contadorMort = contadorFreeze = contadorInvencibilitat = 0;
-	activarContadorMort = activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = false;
+	activarContadorMort = activarContadorInvencibilitat =  activarContadorFreeze = invAct = ptAct = dinAct = invAplied = fdAct = false;
 }
 
 void Scene::update(int deltaTime)
@@ -228,9 +223,12 @@ void Scene::update(int deltaTime)
 			if (contadorInvencibilitat > 120) activarContadorInvencibilitat = false;
 		}
 
-		if (bananaAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
-			timeDisp->updateScore(50);
-			bananaAct = false;
+		if (fdAct && player->interseccio(player->getPos(), 32, 32, fd->getPosition(), 16, 16)) {
+			if (fd->getAnim() == 0) timeDisp->updateScore(2000);
+			else if (fd->getAnim() == 1) timeDisp->updateScore(4000);
+			else if (fd->getAnim() == 2) timeDisp->updateScore(6000);
+			else if (fd->getAnim() == 3) timeDisp->updateScore(10000);
+			fdAct = false;
 			std::cout << timeDisp->getScore() << endl;
 		}
 
@@ -252,27 +250,39 @@ void Scene::update(int deltaTime)
 				if (bullet->shooting() && bubbles[i]->collisionWithBullet(bullet->getPos(), bullet->getHeight(), 8)) {
 					peta(bubblesActives, bubbles, bubExs, i);
 					bullet->stopShooting();
-					if (!dinAct && rand() % 3 == 0) {
+					if (!dinAct && rand() % 6 == 0) {
 						dinAct = true;
 						din = new Dinamita();
 						din->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 						din->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
 						din->setTileMap(map);
 					}
-					if (!ptAct && rand() % 3 == 1) {
+					if (!ptAct && rand() % 6 == 1) {
 						ptAct = true;
 						pt = new PararTemps();
 						pt->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 						pt->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
 						pt->setTileMap(map);
 					}
-					if (!invAct && rand() % 3 == 2) {
+					if (!invAct && rand() % 6 == 2 || !invAct && rand() % 6 == 5) {
 						invAct = true;
 						inv = new Invencibility();
 						inv->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 						inv->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
 						inv->setTileMap(map);
 						inv->setPlayer(player);
+					}
+					if (!fdAct && rand() % 4 == 3) {
+						fdAct = true;
+						fd = new Food();
+						int random = rand() % 13;
+						if (random < 6) fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, 0);
+						else if (random >= 6 && random < 9) fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, 1);
+						else if (random >= 9 && random <= 11) fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, 2);
+						else if (random == 12) fd->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, 3);
+						
+						fd->setPosition(glm::vec2(bubbles[i]->getPosition().x + 32, bubbles[i]->getPosition().y + 32));
+						fd->setTileMap(map);
 					}
 				}
 				if (bubbles[i]->collisionWithPlayer(player->getPos(), 32, 32)) {
@@ -312,7 +322,7 @@ void Scene::update(int deltaTime)
 		timeDisp->update(deltaTime);
 		if (dinAct) din->update(deltaTime);
 		if (ptAct) pt->update(deltaTime);
-		if (bananaAct)fd->update(deltaTime);
+		if (fdAct)fd->update(deltaTime);
 		break;
 	}
 	
@@ -364,7 +374,7 @@ void Scene::render()
 		timeDisp->render();
 		if (dinAct) din->render();
 		if (ptAct) pt->render();
-		if (bananaAct)fd->render();
+		if (fdAct)fd->render();
 		break;
 	}
 }
@@ -511,7 +521,7 @@ void Scene::resetScene() {
 	guanyat = false;
 	perdut = false;
 	bubblesActives.clear();
-	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = bananaAct = activarContadorInvencibilitat =  false;
+	invAplied = dinAct = ptAct = invAct = activarContadorFreeze = fdAct = activarContadorInvencibilitat =  false;
 	contadorFreeze = contadorInvencibilitat =  0;
 	cout << idLevel;
 	// Volver a inicializar la escena
