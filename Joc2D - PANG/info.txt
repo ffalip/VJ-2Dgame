@@ -1,0 +1,48 @@
+Noms i congoms:
+Ferriol Falip Torras ferriol.falip@estudiantat.upc.edu
+Martí Puerta Juvés marti.puerta@estudiantat.upc.edu
+
+Funcionalitats:
+- Estructura de 4 pantalles (menú principal, jugar, instruccions,
+crèdits).
+- Els tres nivells esmentats en l'enunciat.
+- Globos de fins a 4 tamanys afectats per la gravetat i amb col·lisions.
+- Capacitat del jugador de disparar el ganxo per trencar els globos així com alguns blocs destructibles.
+- Powerups implementats que cauen de les bombolles en ser explotades:
+	- Invulnerabilitat (pots rebre un cop de bombolla sense perdre una vida).
+	- Congelar el temps (les bombolles es congelen durant 5 segons).
+	- Dinamita (explota totes les bombolles a tamany mínim).
+- Explotar bombolles dona punts de la mateixa manera que en el joc original (amb multiplicador inclòs). 
+En petar bombolles també pot caure menjar que dona punts (plàtan, síndria, raïm i cogombre, donen els mateixos punts que en el joc original). 
+Els punts es poden veure a la part inferior de la pantalla.
+També es donen punts en funció del temps final en acabar el nivell i en trencar blocs destruibles.
+- Es pot pujar i baixar per les escales (hem decidit mantenir la capacitat de moure's cap a la dreta i cap a l'esquerra encara que estiguem 
+pujant o baixant, degut a que creiem que fa la movilitat en el joc més fluida).
+- Si una bombolla impacta  en el jugador o s'acaba el temps, es perden els punts obtinguts en aquell nivell, 
+es perd 1 vida i si les vides arriben a 0, ets enviat al menú principal per començar desde 0.
+- En tot moment de la partida es pot visualitzar el temps restant a la cantonada superior esquerra i, els punts i les vides restants, 
+a sota de la pantalla de joc a la cantonada inferior esquerra. 
+- Tecles per saltar contingut:
+	- T activa dinamita.
+	- Y activa congelar el temps.
+	- U activa invencibilitat de 1 cop.
+	- G activar/desactivar godmode.
+
+	- 0 et porta al menú principal.
+	- 1, 2, 3 al respectiu nivell.
+	- 4 et porta als crèdits.
+	- Per accedir als controls s'ha de premer C al menú principal.
+
+- Hi ha animacions per la gran majoria d'esdeveniments.
+
+Instruccions:
+- L'objectiu del joc és superar els 3 nivells amb el màxim de punts possibles.
+- Per començar a jugar prèmer 'S' en el menú inicial.
+- Per superar un nivell s'ha de explotar totes les bombolles del nivell.         
+- Utilitzar <- -> per moure's d'esquerra a dreta i ^ i v per moure's amunt i avall en les escales.
+- Utilitzar 'S' per disparar el ganxo per petar les bombolles.
+- Si una bombolla impacta en el jugador o s'acaba el temps, es perdrà una vida, s'ha de completar els tres nivells abans de perdre 4 vides.
+
+
+
+
